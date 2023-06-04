@@ -54,6 +54,7 @@ export const AuthenticationContextProvider = ({ children }) => {
 
   const admins = useMemo(() => [
     'dangerworm@gmail.com',
+    'lowenstein.anna@gmail.com'
   ], []);
 
   const userIsAdmin = useMemo(() =>
