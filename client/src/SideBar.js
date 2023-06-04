@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { List, Toolbar } from '@mui/material';
+import { Button, List, ListItemButton, Toolbar } from '@mui/material';
+import { Loading } from './Loading';
+import { Search } from './Search';
 import { useWordsContext } from './Contexts/WordsContext';
 import MuiDrawer from '@mui/material/Drawer';
+import React from 'react';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -32,23 +34,15 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
   }),
 );
 
-export const Drawer = () => {
-  const { getWordBases } = useWordsContext();
-
-  const [wordBases, setWordBases] = useState([]);
-
-  useEffect(() => {
-    getWordBases()
-      .then((wordBases) => {
-        setWordBases(wordBases);
-      });
-  }, []);
+export const SideBar = () => {
+  const { loadingWords, searchResults, setWord } = useWordsContext();
 
   return (
     <StyledDrawer variant="permanent" open={true}>
       <div style={{
         left: "1em",
         fontSize: "120%",
+        marginBottom: '1em',
         position: "absolute",
         top: "1em",
         width: "50%"
@@ -64,11 +58,24 @@ export const Drawer = () => {
         }}
       >
       </Toolbar>
-      <List component="nav">
-        {wordBases && wordBases.length > 0 && wordBases.slice(10).map(({ wordBase }) => (
-          <p>{wordBase.vorto}</p>
-        ))}
-      </List>
-    </StyledDrawer >
+      {loadingWords && <Loading />}
+      {!loadingWords && searchResults &&
+        (
+          <>
+            <Search />
+            <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
+              {searchResults.map(({ vorto }) => (
+                <ListItemButton 
+                  key={vorto}
+                  onClick={() => setWord(vorto)}
+                  sx={{ paddingLeft: '2.8em' 
+                }}>
+                  {vorto}
+                </ListItemButton>
+              ))}
+            </List>
+          </>
+        )}
+    </StyledDrawer>
   );
 }

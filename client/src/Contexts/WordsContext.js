@@ -1,79 +1,94 @@
-import { Pool } from 'pg';
-import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export const WordsContext = createContext();
+export const WordsContext = createContext(null);
 
 export const WordsContextProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
-  const [wordBases, setWordBases] = useState([]);
+  const [loadingWords, setLoadingWords] = useState(false);
+  const [loadingWord, setLoadingWord] = useState(false);
+  const [upsertSuccessful, setUpsertSuccessful] = useState(undefined);
+  const [words, setWords] = useState([]);
+  const [word, setWord] = useState("");
+  const [query, setQuery] = useState("");
 
-  const dbUrl = process.env.REACT_APP_FACILA_VORTARO_POSTGRES_URL;
+  const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL;
 
-  const db = new Pool(
-    {
-      host: dbUrl,
-      pool: {
-        min: 1,
-        max: 2,
-        idleTimeoutMillis: 5000,
+  const getWords = async () => {
+    setLoadingWords(true);
+
+    axios
+      .post(`${baseUrl}/get-word-bases`)
+      .then((response) => {
+        setWords(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setLoadingWords(false);
+  }
+
+  const getWord = async (vorto) => {
+    setLoadingWord(true);
+
+    axios
+      .post(`${baseUrl}/get-word-base`, {
+        vorto
       }
-    });
+        .then((response) => {
+          setWord(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        }));
 
-  const getWordBases = async (query) => {
-    setLoading(true);
-
-    const result = await db.query(
-      'SELECT vorto, vortbildo, FROM vortoj',
-    );
-
-    const rows = result.rows.slice(0, 10);
-    console.log(rows);
-
-    setLoading(false);
+    setLoadingWord(false);
   }
 
-  const getWordBase = async (vorto) => {
-    setLoading(true);
+  const upsertWord = async (vorto, bildadreso) => {
+    setLoadingWord(true);
+    setUpsertSuccessful(undefined);
 
-    const result = await db.query(
-      'SELECT vorto, vortbildo, FROM vortoj WHERE vorto LIKE $1',
-      { params: [`${vorto}%`] }
-    );
+    axios
+      .post(`${baseUrl}/upsert-word-base`, {
+        vorto,
+        bildadreso
+      })
+      .then((response) => {
+        setUpsertSuccessful(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setUpsertSuccessful(false);
+      });
 
-    const rows = result.rows.slice(0, 10);
-    console.log(rows);
-
-    setLoading(false);
+    setLoadingWord(false);
   }
 
-  const upsertWordBase = async (vorto, bildadreso) => {
-    setLoading(true);
-
-    const result = await db.query(
-      'INSERT INTO public.vortoj (vorto, bildadreso) ' +
-      'VALUES ($1, $2) ' +
-      'ON CONFLICT (vorto) DO UPDATE SET bildadreso = excluded.bildadreso;',
-      { params: [vorto, bildadreso] }
-    );
-
-    const rows = result.rows.slice(0, 10);
-    console.log(rows);
-
-    setLoading(false);
-  }
+  const searchResults = useMemo(() => {
+    return words.filter((word) => {
+      return word.vorto.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
+    })
+  }, [query, words]);
 
   useEffect(() => {
-    getWordBases();
+    getWords();
   }, []);
 
   return (
     <WordsContext.Provider
       value={{
-        getWordBases,
-        getWordBase,
-        upsertWordBase,
-        loading,
-        wordBases
+        loadingWords,
+        loadingWord,
+        getWords,
+        getWord,
+        upsertWord,
+        words,
+        searchResults,
+        word,
+        setWord,
+        query,
+        setQuery,
       }}
     >
       {children}

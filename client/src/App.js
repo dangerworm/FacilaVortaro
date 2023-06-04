@@ -1,3 +1,4 @@
+import React from 'react';
 import { ThemeProvider } from '@emotion/react';
 import { Box, createTheme, CssBaseline } from '@mui/material';
 import { Main } from './Main';
@@ -16,7 +17,6 @@ function App() {
             <Box sx={{ display: 'flex' }}>
               <CssBaseline />
               <Main />
-              <p>Hello</p>
             </Box>
           </WordsContextProvider>
         </AuthenticationContextProvider>

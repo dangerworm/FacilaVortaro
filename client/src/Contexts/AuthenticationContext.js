@@ -1,12 +1,13 @@
 import jwtDecode from "jwt-decode";
+import React, { useMemo } from "react";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
-export const AuthenticationContext = createContext();
+export const AuthenticationContext = createContext(null);
 
 export const AuthenticationContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({ id: "", picture: "" });
 
   const browserCacheTokenName = 'facila-vortaro-token';
 
@@ -15,7 +16,6 @@ export const AuthenticationContextProvider = ({ children }) => {
       return;
     }
 
-    setLoading(true);
     setToken(credential);
 
     const decodedToken = jwtDecode(credential);
@@ -50,18 +50,27 @@ export const AuthenticationContextProvider = ({ children }) => {
     }
   }, [user, authenticateUser])
 
-  return (
-    <AuthenticationContext.Provider
-      value={{
-        loading,
-        authenticateUser,
-        user,
-        logout
-      }}
-    >
-      {children}
-    </AuthenticationContext.Provider>
-  );
+  const adminUserIds = useMemo(() => [
+    '110254523195739495555', // Drew
+  ], []);
+
+  const userIsAdmin = useMemo(() =>
+    user && adminUserIds.includes(user.id)
+  , [adminUserIds, user]);
+
+return (
+  <AuthenticationContext.Provider
+    value={{
+      loading,
+      authenticateUser,
+      user,
+      userIsAdmin,
+      logout
+    }}
+  >
+    {children}
+  </AuthenticationContext.Provider>
+);
 }
 
 export const useAuthenticationContext = () => {
