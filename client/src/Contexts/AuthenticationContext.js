@@ -7,7 +7,7 @@ export const AuthenticationContext = createContext(null);
 export const AuthenticationContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState();
-  const [user, setUser] = useState({ id: "", picture: "" });
+  const [user, setUser] = useState({ id: "", email: "", name: "", picture: "" });
 
   const browserCacheTokenName = 'facila-vortaro-token';
 
@@ -21,6 +21,8 @@ export const AuthenticationContextProvider = ({ children }) => {
     const decodedToken = jwtDecode(credential);
     setUser(_ => ({
       id: decodedToken.sub,
+      email: decodedToken.email,
+      name: decodedToken.name,
       picture: decodedToken.picture,
     }));
 
@@ -50,13 +52,13 @@ export const AuthenticationContextProvider = ({ children }) => {
     }
   }, [user, authenticateUser])
 
-  const adminUserIds = useMemo(() => [
-    '110254523195739495555', // Drew
+  const admins = useMemo(() => [
+    'dangerworm@gmail.com',
   ], []);
 
   const userIsAdmin = useMemo(() =>
-    user && adminUserIds.includes(user.id)
-  , [adminUserIds, user]);
+    user && admins.includes(user.email)
+  , [admins, user]);
 
 return (
   <AuthenticationContext.Provider

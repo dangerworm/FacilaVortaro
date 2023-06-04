@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { AppBar, Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
-import { Link } from "react-router-dom";
 
 export const Header = () => {
   const { authenticateUser, user, userIsAdmin, logout } = useAuthenticationContext();
@@ -96,7 +96,7 @@ export const Header = () => {
               <MenuItem onClick={() => setDialogVisible(true)}>Log in</MenuItem>
             )}
             {user && (
-              <MenuItem onClick={handleLogout}>Log out</MenuItem>
+              <MenuItem component={Link} to='/' onClick={handleLogout}>Log out</MenuItem>
             )}
           </Menu>
         </Toolbar>
