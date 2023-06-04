@@ -17,7 +17,7 @@ export const WordsContextProvider = ({ children }) => {
   const [performingUpsert, setPerformingUpsert] = useState(false);
   const [upsertSuccessful, setUpsertSuccessful] = useState(undefined);
 
-  const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL;
+  const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
 
   const getWordBases = async () => {
     setLoadingWordBases(true);
