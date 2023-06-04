@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 
 const { Pool } = require('pg');
-const { getWords, getWord, upsertWord } = require('./databaseQueries');
+const { getWordBases, getRelatedWords, addWordBase, deleteWordBase, upsertDefinition } = require('./databaseQueries');
 
 const app = express();
 const dbUrl = process.env.REACT_APP_FACILA_VORTARO_POSTGRES_URL;
@@ -44,20 +44,22 @@ app.options('*', (request, response) => {
 
 app.post('/api/get-word-bases', async (request, response) => {
   const client = await pool.connect();
-  const result = await client.query(getWords);
+  const result = await client.query(getWordBases);
 
   const rows = result.rows;
   response.json(rows);
   client.release();
 });
 
-app.get('/api/get-word-base', async (request, response) => {
-  const { vorto } = req.query;
+app.post('/api/get-related-words', async (request, response) => {
+  const { vortBazo } = request.body;
 
   const client = await pool.connect();
   const result = await client.query(
-    getWord,
-    { params: [`${vorto}%`] }
+    getRelatedWords,
+    [
+      `${vortBazo}%`
+    ]
   );
 
   const rows = result.rows;
@@ -65,17 +67,71 @@ app.get('/api/get-word-base', async (request, response) => {
   client.release();
 });
 
-app.post('/api/upsert-word-base', async (request, response) => {
-  const { vorto, bildadreso } = req.query;
+app.post('/api/add-word-base', async (request, response) => {
+  const { vortbazo } = request.body;
 
   const client = await pool.connect();
-  const result = await client.query(
-    getWord,
-    { params: [vorto, bildadreso] }
-  );
+  try {
+    const result = await client.query(
+      addWordBase,
+      [
+        vortbazo
+      ]
+    );
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
 
-  response.status(200);
-  client.release();
+
+app.post('/api/delete-word-base', async (request, response) => {
+  const { vortbazo } = request.body;
+
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      deleteWordBase,
+      [
+        vortbazo
+      ]
+    );
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
+
+app.post('/api/upsert-definition', async (request, response) => {
+  const { vorto, difino, bildadreso } = request.body;
+
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      upsertDefinition,
+      [
+        vorto,
+        difino,
+        bildadreso
+      ]
+    );
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
 });
 
 app.listen(port, () => {

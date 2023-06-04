@@ -6,7 +6,7 @@ const alphabet = "abcĉdefgĝhĥijĵklmnoprsŝtuŭvz";
 const keyboard = "ŝĝertŭuiopĵĥasdfghjklzĉcvbnm";
 
 export const Search = () => {
-  const { query, setQuery, searchResults } = useWordsContext();
+  const { query, setQuery } = useWordsContext();
 
   const [letterLayout, setLetterLayout] = React.useState(alphabet);
 

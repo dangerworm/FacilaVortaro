@@ -1,10 +1,10 @@
-CREATE TABLE public.vortoj (
-	vorto text NOT NULL,
-	bildadreso text NULL
+CREATE TABLE public.vortbazoj (
+	vortbazo text NOT NULL,
+  CONSTRAINT uq_vortbazoj_vortbazo UNIQUE (vortbazo)
 );
 
 INSERT INTO
-  public."vortoj" ("vorto")
+  public."vortbazoj" ("vortbazo")
 VALUES
   ('abon'),
   ('aĉet'),

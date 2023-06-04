@@ -1,57 +1,102 @@
 import axios from "axios";
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 export const WordsContext = createContext(null);
 
 export const WordsContextProvider = ({ children }) => {
-  const [loadingWords, setLoadingWords] = useState(false);
-  const [loadingWord, setLoadingWord] = useState(false);
-  const [upsertSuccessful, setUpsertSuccessful] = useState(undefined);
-  const [words, setWords] = useState([]);
-  const [word, setWord] = useState("");
+  const [loadingWordBases, setLoadingWordBases] = useState(false);
+  const [wordBases, setWordBases] = useState([]);
   const [query, setQuery] = useState("");
+  const [wordBase, setWordBase] = useState("");
+  const [loadingRelatedWords, setLoadingRelatedWords] = useState(false);
+  const [relatedWords, setRelatedWords] = useState([]);
+  const [addingWordBase, setAddingWordBase] = useState(false);
+  const [deletingWordBase, setDeletingWordBase] = useState(false);
+  const [addingWordBaseSuccessful, setAddingWordBaseSuccessful] = useState(undefined);
+  const [wordBaseError, setWordBaseError] = useState(undefined);
+  const [performingUpsert, setPerformingUpsert] = useState(false);
+  const [upsertSuccessful, setUpsertSuccessful] = useState(undefined);
 
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL;
 
-  const getWords = async () => {
-    setLoadingWords(true);
+  const getWordBases = async () => {
+    setLoadingWordBases(true);
 
     axios
       .post(`${baseUrl}/get-word-bases`)
       .then((response) => {
-        setWords(response.data);
+        response.data.sort((a, b) => a.vortbazo.localeCompare(b.vortbazo));
+        setWordBases(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
 
-    setLoadingWords(false);
+    setLoadingWordBases(false);
   }
 
-  const getWord = async (vorto) => {
-    setLoadingWord(true);
+  const getRelatedWords = useCallback(async (vortBazo) => {
+    setLoadingRelatedWords(true);
 
     axios
-      .post(`${baseUrl}/get-word-base`, {
-        vorto
-      }
-        .then((response) => {
-          setWord(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        }));
+      .post(`${baseUrl}/get-related-words`, {
+        vortBazo
+      })
+      .then((response) => {
+        setRelatedWords(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    setLoadingWord(false);
+    setLoadingRelatedWords(false);
+  }, [baseUrl])
+
+  const addWordBase = async (vortbazo) => {
+    setAddingWordBase(true);
+
+    axios
+      .post(`${baseUrl}/add-word-base`, {
+        vortbazo
+      })
+      .then((response) => {
+        setAddingWordBaseSuccessful(true);
+        getWordBases();
+      })
+      .catch((error) => {
+        setAddingWordBaseSuccessful(false);
+        setWordBaseError(error.response.data.detail)
+      });
+
+    setAddingWordBase(false);
   }
 
-  const upsertWord = async (vorto, bildadreso) => {
-    setLoadingWord(true);
+  const deleteWordBase = async (vortbazo) => {
+    setDeletingWordBase(true);
+
+    axios
+      .post(`${baseUrl}/delete-word-base`, {
+        vortbazo
+      })
+      .then((response) => {
+        getWordBases();
+      })
+      .catch((error) => {
+        console.log(error);
+        setWordBaseError(error.response.data.detail)
+      });
+
+      setDeletingWordBase(false);
+  }
+
+  const upsertWord = async (vorto, difino, bildadreso) => {
+    setPerformingUpsert(true);
     setUpsertSuccessful(undefined);
 
     axios
-      .post(`${baseUrl}/upsert-word-base`, {
+      .post(`${baseUrl}/upsert-definition`, {
         vorto,
+        difino,
         bildadreso
       })
       .then((response) => {
@@ -62,33 +107,45 @@ export const WordsContextProvider = ({ children }) => {
         setUpsertSuccessful(false);
       });
 
-    setLoadingWord(false);
+    setPerformingUpsert(false);
   }
 
   const searchResults = useMemo(() => {
-    return words.filter((word) => {
-      return word.vorto.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
+    return wordBases.filter((word) => {
+      return word.vortbazo?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
     })
-  }, [query, words]);
+  }, [query, wordBases]);
 
   useEffect(() => {
-    getWords();
+    getWordBases();
   }, []);
+
+  useEffect(() => {
+    if (wordBase) {
+      getRelatedWords(wordBase);
+    }
+  }, [getRelatedWords, wordBase]);
 
   return (
     <WordsContext.Provider
       value={{
-        loadingWords,
-        loadingWord,
-        getWords,
-        getWord,
-        upsertWord,
-        words,
-        searchResults,
-        word,
-        setWord,
-        query,
+        loadingWordBases,
         setQuery,
+        query,
+        searchResults,
+        setWordBase,
+        wordBase,
+        getRelatedWords,
+        loadingRelatedWords,
+        relatedWords,
+        addWordBase,
+        addingWordBase,
+        addingWordBaseSuccessful,
+        deleteWordBase,
+        wordBaseError,
+        upsertWord,
+        performingUpsert,
+        upsertSuccessful,
       }}
     >
       {children}

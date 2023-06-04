@@ -1,12 +1,14 @@
-import { AppBar, Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
-import { Box } from "@mui/system";
-import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
-import PersonIcon from '@mui/icons-material/Person';
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { AppBar, Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
+import { Box } from "@mui/system";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import PersonIcon from '@mui/icons-material/Person';
+import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
-  const { authenticateUser, user, logout } = useAuthenticationContext();
+  const { authenticateUser, user, userIsAdmin, logout } = useAuthenticationContext();
 
   const [anchorElement, setAnchorElement] = useState();
   const [dialogVisible, setDialogVisible] = useState(false);
@@ -51,6 +53,13 @@ export const Header = () => {
             sx={{ flexGrow: 1 }}
           >
           </Typography>
+          {userIsAdmin && (
+            <Link to='/admin' style={{ color: 'inherit', textDecoration: 'none' }}>
+              <IconButton color="inherit">
+                <AdminPanelSettingsIcon style={{ fontSize: '40pt' }} />
+              </IconButton>
+            </Link>
+          )}
           <IconButton
             color="inherit"
             onClick={handleUserMenuOpen}
@@ -65,6 +74,7 @@ export const Header = () => {
                     borderRadius: '50%',
                     height: 50,
                     width: 50,
+                    marginLeft: '1em',
                     maxHeight: { xs: 50, md: 100 },
                     maxWidth: { xs: 50, md: 100 },
                   }}
@@ -101,6 +111,7 @@ export const Header = () => {
         <DialogContent style={{ width: '30em' }}>
           <DialogContentText id="alert-dialog-description">
             Bonvolu ensaluti per via Google-konto.
+            <br />
             <GoogleLogin onSuccess={onLoginSuccess} onError={onLoginError} />
           </DialogContentText>
         </DialogContent>

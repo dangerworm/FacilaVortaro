@@ -1,10 +1,11 @@
 import { styled } from '@mui/material/styles';
-import { Button, List, ListItemButton, Toolbar } from '@mui/material';
+import { List, ListItemButton, Toolbar } from '@mui/material';
 import { Loading } from './Loading';
 import { Search } from './Search';
 import { useWordsContext } from './Contexts/WordsContext';
 import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 300;
 
@@ -35,7 +36,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 );
 
 export const SideBar = () => {
-  const { loadingWords, searchResults, setWord } = useWordsContext();
+  const { loadingWordBases, searchResults, setWordBase } = useWordsContext();
 
   return (
     <StyledDrawer variant="permanent" open={true}>
@@ -58,19 +59,21 @@ export const SideBar = () => {
         }}
       >
       </Toolbar>
-      {loadingWords && <Loading />}
-      {!loadingWords && searchResults &&
+      {loadingWordBases && <Loading />}
+      {!loadingWordBases && searchResults &&
         (
           <>
             <Search />
             <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
-              {searchResults.map(({ vorto }) => (
-                <ListItemButton 
-                  key={vorto}
-                  onClick={() => setWord(vorto)}
+              {searchResults.map(({ vortbazo }) => (
+                <ListItemButton
+                  component={Link}
+                  to = '/'
+                  key={vortbazo}
+                  onClick={() => setWordBase(vortbazo)}
                   sx={{ paddingLeft: '2.8em' 
                 }}>
-                  {vorto}
+                  {vortbazo}
                 </ListItemButton>
               ))}
             </List>

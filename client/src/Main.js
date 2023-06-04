@@ -1,26 +1,14 @@
 import React from "react";
-import { Backdrop, Box, CircularProgress, Container, Grid, Paper } from "@mui/material";
-import { SideBar } from "./SideBar";
-import { Footer } from "./Footer";
-import { GoogleLogin } from "@react-oauth/google";
-import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
+import { Route, Routes } from "react-router-dom";
+import { Box, Container } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
-import { Word } from "./Word";
-import { useWordsContext } from "Contexts/WordsContext";
 import { Header } from "./Header";
+import { SideBar } from "./SideBar";
+import { Word } from "./Word";
+import { Admin } from "./Admin";
+import { Footer } from "./Footer";
 
 export const Main = () => {
-  const { loading, authenticateUser, user, logout } = useAuthenticationContext();
-  const { word } = useWordsContext();
-
-  const responseMessage = (response) => {
-    authenticateUser(response.credential);
-  };
-
-  const errorMessage = () => {
-    console.log("An error occurred connecting to the Google API");
-  };
-
   return (
     <>
       <Header />
@@ -39,7 +27,10 @@ export const Main = () => {
       >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Word />
+          <Routes>
+            <Route path="/" element={<Word />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
           <Footer />
         </Container>
       </Box>
