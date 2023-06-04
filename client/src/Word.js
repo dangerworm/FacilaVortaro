@@ -40,12 +40,12 @@ export const Word = () => {
             </Grid>
           )}
           {wordBase && (
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               <h1 style={{ marginTop: '1em' }}>{wordBase}-</h1>
             </Grid>
           )}
           {userIsAdmin && wordBase && (
-            <Grid item xs={6} sx={{ marginTop: '2em', textAlign: 'right' }}>
+            <Grid item xs={4} sx={{ marginTop: '2em', textAlign: 'right' }}>
               <Button variant='contained' color={'error'} onClick={() => deleteCurrentWordBase()}>
                 Forigu vortbazon
               </Button>
@@ -61,13 +61,14 @@ export const Word = () => {
                 minWidth: '100px',
                 minHeight: '100px',
                 borderRadius: 1,
+                width: '100%',
               }}
             >
               <Grid key={vorto} container spacing={0} style={{ marginLeft: '1em', textAlign: 'left' }}>
                 <Grid item xs={8} sx={{ m: 0 }}>
                   <h3 style={{ margin: 0 }}>{vorto}</h3>
                 </Grid>
-                {!wordBeingEdited && (
+                {(!wordBeingEdited || wordBeingEdited !== vorto) && (
                   <>
                     {userIsAdmin && (
                       <Grid item xs={4} sx={{ pr: 3, marginTop: '-5px', textAlign: 'right' }}>
