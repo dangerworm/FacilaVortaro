@@ -5,16 +5,26 @@ import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 
 export const Word = () => {
   const { userIsAdmin } = useAuthenticationContext();
-  const { wordBase, setWordBase, getRelatedWords, relatedWords, deleteWordBase, upsertWord } = useWordsContext();
+  const { wordRoot, setWordRoot, getRelatedWords, setRelatedWords, relatedWords, deleteWordRoot, upsertWord, deleteWord } = useWordsContext();
 
+  const [addingNewWord, setAddingNewWord] = React.useState(false);
   const [wordBeingEdited, setWordBeingEdited] = React.useState('');
   const [newDefinition, setNewDefinition] = React.useState('');
   const [newImageAddress, setNewImageAddress] = React.useState('');
-
-  const deleteCurrentWordBase = () => {
-    deleteWordBase(wordBase);
+  
+  const deleteCurrentWordRoot = () => {
+    deleteWordRoot(wordRoot);
+    setWordRoot('');
     setWordBeingEdited('');
-    setWordBase('');
+    setWordRoot('');
+  }
+
+  const addNewWord = () => {
+    setRelatedWords(current => [...current, { vorto: '', difino: '', bildadreso: '' }]);
+    setAddingNewWord(true);
+    setWordBeingEdited('');
+    setNewDefinition('');
+    setNewImageAddress('');
   }
 
   const startEditing = (vorto, difino, bildadreso) => {
@@ -24,30 +34,39 @@ export const Word = () => {
   }
 
   const saveEdits = (vorto, difino, bildadreso) => {
-    upsertWord(vorto, difino, bildadreso);
+    upsertWord(wordRoot, addingNewWord ? wordBeingEdited : vorto, difino, bildadreso);
     setWordBeingEdited('');
-    getRelatedWords(wordBase);
+    setNewDefinition('');
+    setNewImageAddress('');
+    setAddingNewWord(false);
+  }
+
+  const deleteCurrentWord = (vorto) => {
+    deleteWord(wordRoot, vorto);
   }
 
   return (
-    <Paper sx={{ p: 2, pl: 5, pb: 5, minHeight: '50vh' }}>
+    <Paper sx={{ p: 2, pl: 5, pr: 5, pb: 5, minHeight: '50vh' }}>
       <Grid container spacing={2} textAlign={'left'}>
         <>
-          {!wordBase && (
+          {!wordRoot && (
             <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
               <h1>Bonvenon!</h1>
               <Typography variant={'subtitle1'}>Bonvolu serĉi kaj elekti vorton per la flanka stango.</Typography>
             </Grid>
           )}
-          {wordBase && (
-            <Grid item xs={8}>
-              <h1 style={{ marginTop: '1em' }}>{wordBase}-</h1>
+          {wordRoot && (
+            <Grid item xs={4}>
+              <h1 style={{ marginTop: '1em' }}>{wordRoot}-</h1>
             </Grid>
           )}
-          {userIsAdmin && wordBase && (
-            <Grid item xs={4} sx={{ marginTop: '2em', textAlign: 'right' }}>
-              <Button variant='contained' color={'error'} onClick={() => deleteCurrentWordBase()}>
-                Forigu vortbazon
+          {userIsAdmin && wordRoot && (
+            <Grid item xs={8} sx={{ marginTop: '2.5em', textAlign: 'right' }}>
+              <Button variant='outlined' color={'primary'} onClick={() => addNewWord()}>
+                Aldonu vorton
+              </Button>
+              <Button variant='outlined' color={'error'} style={{ marginLeft: '1em' }} onClick={() => deleteCurrentWordRoot()}>
+                Forigu radikon
               </Button>
             </Grid>
           )}
@@ -65,14 +84,25 @@ export const Word = () => {
               }}
             >
               <Grid key={vorto} container spacing={0} style={{ marginLeft: '1em', textAlign: 'left' }}>
-                <Grid item xs={8} sx={{ m: 0 }}>
-                  <h3 style={{ margin: 0 }}>{vorto}</h3>
+                <Grid item xs={6} sx={{ m: 0 }}>
+                  {addingNewWord && (
+                    <TextField
+                      fullWidth
+                      label={'Vorto'}
+                      value={wordBeingEdited}
+                      onChange={(e) => setWordBeingEdited(e.target.value)}
+                      sx={{ mb: 2 }}
+                    />
+                  )}
+                  {!addingNewWord && (
+                    <h3 style={{ margin: 0 }}>{vorto}</h3>
+                  )}
                 </Grid>
-                {(!wordBeingEdited || wordBeingEdited !== vorto) && (
+                {((!wordBeingEdited || wordBeingEdited !== vorto) && !addingNewWord) && (
                   <>
                     {userIsAdmin && (
-                      <Grid item xs={4} sx={{ pr: 3, marginTop: '-5px', textAlign: 'right' }}>
-                        <Button variant={'outlined'} color={'primary'} onClick={() => startEditing(vorto, difino, bildadreso)}>
+                      <Grid item xs={6} sx={{ pr: 3, marginTop: '-5px', textAlign: 'right' }}>
+                        <Button variant={'outlined'} color={'secondary'} onClick={() => startEditing(vorto, difino, bildadreso)}>
                           Redaktu
                         </Button>
                       </Grid>
@@ -87,20 +117,23 @@ export const Word = () => {
                     </Grid>
                   </>
                 )}
-                {wordBeingEdited === vorto && userIsAdmin && (
+                {(wordBeingEdited === vorto || addingNewWord) && userIsAdmin && (
                   <>
-                    <Grid item xs={4} sx={{ pr: 3, textAlign: 'right' }}>
+                    <Grid item xs={6} sx={{ pr: 3, textAlign: 'right' }}>
                       <Button variant={'outlined'} color={'success'} sx={{ mr: 2 }} onClick={() => saveEdits(vorto, newDefinition, newImageAddress)}>
                         Konservu
                       </Button>
-                      <Button variant={'outlined'} color={'error'} onClick={() => setWordBeingEdited('')}>
+                      <Button variant={'outlined'} color={'warning'} sx={{ mr: 2 }} onClick={() => setWordBeingEdited('')}>
                         Nuligu
+                      </Button>
+                      <Button variant={'outlined'} color={'error'} onClick={() => deleteCurrentWord(vorto)}>
+                        Forigu
                       </Button>
                     </Grid>
                     <Grid item xs={12} sx={{ mt: 2, pr: 3, textAlign: 'left' }}>
                       <TextField
                         fullWidth
-                        label={'Defino'}
+                        label={'Difino'}
                         value={newDefinition}
                         onChange={(e) => setNewDefinition(e.target.value)}
                         sx={{ mb: 2 }}

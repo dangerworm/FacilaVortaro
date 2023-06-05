@@ -4,148 +4,189 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 export const WordsContext = createContext(null);
 
 export const WordsContextProvider = ({ children }) => {
-  const [loadingWordBases, setLoadingWordBases] = useState(false);
-  const [wordBases, setWordBases] = useState([]);
+  const [loadingWordRoots, setLoadingWordRoots] = useState(false);
+  const [wordRoots, setWordRoots] = useState([]);
   const [query, setQuery] = useState("");
-  const [wordBase, setWordBase] = useState("");
+  const [wordRoot, setWordRoot] = useState("");
   const [loadingRelatedWords, setLoadingRelatedWords] = useState(false);
   const [relatedWords, setRelatedWords] = useState([]);
-  const [addingWordBase, setAddingWordBase] = useState(false);
-  const [deletingWordBase, setDeletingWordBase] = useState(false);
-  const [addingWordBaseSuccessful, setAddingWordBaseSuccessful] = useState(undefined);
-  const [wordBaseError, setWordBaseError] = useState(undefined);
+  const [addingWordRoot, setAddingWordRoot] = useState(false);
+  const [deletingWordRoot, setDeletingWordRoot] = useState(false);
+  const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
+  const [wordRootError, setWordRootError] = useState(undefined);
   const [performingUpsert, setPerformingUpsert] = useState(false);
   const [upsertSuccessful, setUpsertSuccessful] = useState(undefined);
+  const [deletingWord, setDeletingWord] = useState(false);
+  const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
+  //*
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
+  /*/
+  const baseUrl = "http://localhost:5000/api";
+  //*/
 
-  const getWordBases = async () => {
-    setLoadingWordBases(true);
+  const getWordRoots = async () => {
+    setLoadingWordRoots(true);
 
     axios
-      .post(`${baseUrl}/get-word-bases`)
+      .post(`${baseUrl}/get-word-roots`)
       .then((response) => {
-        response.data.sort((a, b) => a.vortbazo.localeCompare(b.vortbazo));
-        setWordBases(response.data);
+        response.data.sort((a, b) => a.radiko.localeCompare(b.radiko));
+        setWordRoots(response.data);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setLoadingWordRoots(false);
       });
-
-    setLoadingWordBases(false);
   }
 
-  const getRelatedWords = useCallback(async (vortBazo) => {
+  const getRelatedWords = useCallback(async (radiko) => {
     setLoadingRelatedWords(true);
 
     axios
       .post(`${baseUrl}/get-related-words`, {
-        vortBazo
+        radiko
       })
       .then((response) => {
+        response.data.sort((a, b) => a.vorto.localeCompare(b.vorto));
         setRelatedWords(response.data);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setLoadingRelatedWords(false);
       });
 
-    setLoadingRelatedWords(false);
   }, [baseUrl])
 
-  const addWordBase = async (vortbazo) => {
-    setAddingWordBase(true);
+  const addWordRoot = async (radiko) => {
+    setAddingWordRoot(true);
 
     axios
-      .post(`${baseUrl}/add-word-base`, {
-        vortbazo
+      .post(`${baseUrl}/add-word-root`, {
+        radiko
       })
       .then((response) => {
-        setAddingWordBaseSuccessful(true);
-        getWordBases();
+        setAddingWordRootSuccessful(true);
+        getWordRoots();
       })
       .catch((error) => {
-        setAddingWordBaseSuccessful(false);
-        setWordBaseError(error.response.data.detail)
+        setAddingWordRootSuccessful(false);
+        setWordRootError(error.response.data.detail)
+      })
+      .finally(() => {
+        setAddingWordRoot(false);
       });
-
-    setAddingWordBase(false);
   }
 
-  const deleteWordBase = async (vortbazo) => {
-    setDeletingWordBase(true);
+  const deleteWordRoot = async (radiko) => {
+    setDeletingWordRoot(true);
 
     axios
-      .post(`${baseUrl}/delete-word-base`, {
-        vortbazo
+      .post(`${baseUrl}/delete-word-root`, {
+        radiko
       })
       .then((response) => {
-        getWordBases();
+        getWordRoots();
       })
       .catch((error) => {
         console.log(error);
-        setWordBaseError(error.response.data.detail)
+        setWordRootError(error.response.data.detail)
+      })
+      .finally(() => {
+        setDeletingWordRoot(false);
       });
-
-      setDeletingWordBase(false);
   }
 
-  const upsertWord = async (vorto, difino, bildadreso) => {
+  const upsertWord = async (radiko, vorto, difino, bildadreso) => {
     setPerformingUpsert(true);
     setUpsertSuccessful(undefined);
 
     axios
       .post(`${baseUrl}/upsert-definition`, {
+        radiko,
         vorto,
         difino,
         bildadreso
       })
       .then((response) => {
         setUpsertSuccessful(true);
+        getRelatedWords(radiko);
       })
       .catch((error) => {
         console.log(error);
         setUpsertSuccessful(false);
+      })
+      .finally(() => {
+        setPerformingUpsert(false);
       });
+  }
 
-    setPerformingUpsert(false);
+  const deleteWord = async (radiko, vorto) => {
+    setDeletingWord(true);
+    setDeletingWordSuccessful(undefined);
+
+    axios
+      .post(`${baseUrl}/delete-word`, {
+        radiko,
+        vorto,
+      })
+      .then((response) => {
+        setDeletingWordSuccessful(true);
+        getRelatedWords(radiko);
+      })
+      .catch((error) => {
+        console.log(error);
+        setDeletingWordSuccessful(false);
+      })
+      .finally(() => {
+        setDeletingWord(false);
+      });
   }
 
   const searchResults = useMemo(() => {
-    return wordBases.filter((word) => {
-      return word.vortbazo?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
+    return wordRoots.filter((word) => {
+      return word.radiko?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
     })
-  }, [query, wordBases]);
+  }, [query, wordRoots]);
 
   useEffect(() => {
-    getWordBases();
+    getWordRoots();
   }, []);
 
   useEffect(() => {
-    if (wordBase) {
-      getRelatedWords(wordBase);
+    if (wordRoot) {
+      getRelatedWords(wordRoot);
     }
-  }, [getRelatedWords, wordBase]);
+  }, [getRelatedWords, wordRoot]);
 
   return (
     <WordsContext.Provider
       value={{
-        loadingWordBases,
+        loadingWordRoots,
         setQuery,
         query,
         searchResults,
-        setWordBase,
-        wordBase,
+        setWordRoot,
+        wordRoot,
         getRelatedWords,
         loadingRelatedWords,
+        setRelatedWords,
         relatedWords,
-        addWordBase,
-        addingWordBase,
-        addingWordBaseSuccessful,
-        deleteWordBase,
-        wordBaseError,
+        addWordRoot,
+        addingWordRoot,
+        addingWordRootSuccessful,
+        deleteWordRoot,
+        wordRootError,
         upsertWord,
         performingUpsert,
         upsertSuccessful,
+        deleteWord,
+        deletingWord,
+        deletingWordSuccessful
       }}
     >
       {children}

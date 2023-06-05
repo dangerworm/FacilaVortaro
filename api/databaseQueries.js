@@ -1,29 +1,35 @@
-const getWordBases =
-  'SELECT vortbazo ' +
-  'FROM public.vortbazoj;';
+const getWordRoots =
+  'SELECT radiko ' +
+  'FROM public.radikoj;';
 
-const getRelatedWords =
-  'SELECT vorto, difino, bildadreso ' +
-  'FROM difinoj ' +
-  'WHERE vorto LIKE $1;';
-
-const addWordBase =
-  'INSERT INTO public.vortbazoj (vortbazo) ' +
+const addWordRoot =
+  'INSERT INTO public.radikoj (radiko) ' +
   'VALUES ($1);';
 
-const deleteWordBase =
-  'DELETE FROM public.vortbazoj ' +
-  'WHERE vortbazo = $1;';
+const deleteWordRoot =
+  'DELETE FROM public.radikoj ' +
+  'WHERE radiko = $1;';
+
+const getRelatedWords =
+'SELECT radiko, vorto, difino, bildadreso ' +
+'FROM difinoj ' +
+'WHERE vorto LIKE $1;';
 
 const upsertDefinition =
-  'INSERT INTO public.difinoj (vorto, difino, bildadreso) ' +
-  'VALUES ($1, $2, $3) ' +
-  'ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino, bildadreso = excluded.bildadreso;';
+  'INSERT INTO public.difinoj (radiko, vorto, difino, bildadreso) ' +
+  'VALUES ($1, $2, $3, $4) ' +
+  'ON CONFLICT (radiko, vorto) DO UPDATE SET difino = excluded.difino, bildadreso = excluded.bildadreso;';
+
+const deleteWord = 
+  'DELETE FROM public.difinoj ' +
+  'WHERE radiko = $1 ' +
+  'AND vorto = $2;';
 
 module.exports = {
-  getWordBases,
+  getWordRoots,
   getRelatedWords,
-  addWordBase,
-  deleteWordBase,
-  upsertDefinition
+  addWordRoot,
+  deleteWordRoot,
+  upsertDefinition,
+  deleteWord
 };

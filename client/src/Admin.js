@@ -5,14 +5,14 @@ import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 
 export const Admin = () => {
   const { userIsAdmin } = useAuthenticationContext();
-  const { addWordBase, addingWordBaseSuccessful, wordBaseError } = useWordsContext();
+  const { addWordRoot, addingWordRootSuccessful, wordRootError } = useWordsContext();
 
-  const [wordBase, setWordBase] = React.useState('');
+  const [wordRoot, setWordRoot] = React.useState('');
   const [showResponse, setShowResponse] = React.useState(false);
 
-  const submitWordBase = () => {
+  const submitWordRoot = () => {
     setShowResponse(true);
-    addWordBase(wordBase);
+    addWordRoot(wordRoot);
 
     setTimeout(() => {
       setShowResponse(false);
@@ -28,32 +28,32 @@ export const Admin = () => {
               <h1>Administrado</h1>
             </Grid >
             <Grid item xs={12} sx={{ m: 0, p: 0 }}>
-              <h3 style={{ margin: 0 }}>Aldonu vortbazon</h3>
+              <h3 style={{ margin: 0 }}>Aldonu radikon</h3>
             </Grid >
             <Grid item xs={12} sx={{ m: 0, p: 0 }}>
               <>
                 <TextField
                   fullWidth
-                  id="wordBase"
-                  label="Vortbazo"
+                  id="wordRoot"
+                  label="radiko"
                   variant="outlined"
-                  value={wordBase}
-                  onChange={(e) => setWordBase(e.target.value)}
+                  value={wordRoot}
+                  onChange={(e) => setWordRoot(e.target.value)}
                 />
-                {wordBaseError && (
+                {wordRootError && (
                   <Typography variant={'caption'} sx={{ color: 'red' }}>
-                    {wordBaseError}
+                    {wordRootError}
                   </Typography>
                 )}
-                {showResponse && addingWordBaseSuccessful === true && (
+                {showResponse && addingWordRootSuccessful === true && (
                   <Typography variant={'caption'} sx={{ color: 'green' }}>
-                    Vortbazo aldonita sukcese
+                    Radiko aldonita sukcese
                   </Typography>
                 )}
               </>
             </Grid >
             <Grid item xs={12} sx={{ textAlign: 'right' }}>
-              <Button variant={'outlined'} color={'primary'} onClick={submitWordBase}>
+              <Button variant={'outlined'} color={'primary'} onClick={submitWordRoot}>
                 Aldonu
               </Button>
             </Grid>

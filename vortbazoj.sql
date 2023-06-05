@@ -1,10 +1,10 @@
-CREATE TABLE public.vortbazoj (
-	vortbazo text NOT NULL,
-  CONSTRAINT uq_vortbazoj_vortbazo UNIQUE (vortbazo)
+CREATE TABLE public.radikoj (
+	radiko text NOT NULL,
+  CONSTRAINT uq_radikoj_radiko UNIQUE (radiko)
 );
 
 INSERT INTO
-  public."vortbazoj" ("vortbazo")
+  public."radikoj" ("radiko")
 VALUES
   ('abon'),
   ('aĉet'),

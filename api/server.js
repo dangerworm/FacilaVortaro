@@ -3,10 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 
 const { Pool } = require('pg');
-const { getWordBases, getRelatedWords, addWordBase, deleteWordBase, upsertDefinition } = require('./databaseQueries');
+const { getWordRoots, getRelatedWords, addWordRoot, deleteWordRoot, upsertDefinition, deleteWord } = require('./databaseQueries');
 
 const app = express();
-const dbUrl = process.env.REACT_APP_FACILA_VORTARO_POSTGRES_URL;
 const port = process.env.PORT ?? 5000;
 
 const pool = new Pool({
@@ -42,9 +41,9 @@ app.options('*', (request, response) => {
   response.sendStatus(200);
 });
 
-app.post('/api/get-word-bases', async (request, response) => {
+app.post('/api/get-word-roots', async (request, response) => {
   const client = await pool.connect();
-  const result = await client.query(getWordBases);
+  const result = await client.query(getWordRoots);
 
   const rows = result.rows;
   response.json(rows);
@@ -52,13 +51,13 @@ app.post('/api/get-word-bases', async (request, response) => {
 });
 
 app.post('/api/get-related-words', async (request, response) => {
-  const { vortBazo } = request.body;
+  const { radiko } = request.body;
 
   const client = await pool.connect();
   const result = await client.query(
     getRelatedWords,
     [
-      `${vortBazo}%`
+      `${radiko}%`
     ]
   );
 
@@ -67,15 +66,15 @@ app.post('/api/get-related-words', async (request, response) => {
   client.release();
 });
 
-app.post('/api/add-word-base', async (request, response) => {
-  const { vortbazo } = request.body;
+app.post('/api/add-word-root', async (request, response) => {
+  const { radiko } = request.body;
 
   const client = await pool.connect();
   try {
     const result = await client.query(
-      addWordBase,
+      addWordRoot,
       [
-        vortbazo
+        radiko
       ]
     );
     response.status(200).json(result);
@@ -88,16 +87,15 @@ app.post('/api/add-word-base', async (request, response) => {
   }
 });
 
-
-app.post('/api/delete-word-base', async (request, response) => {
-  const { vortbazo } = request.body;
+app.post('/api/delete-word-root', async (request, response) => {
+  const { radiko } = request.body;
 
   const client = await pool.connect();
   try {
     const result = await client.query(
-      deleteWordBase,
+      deleteWordRoot,
       [
-        vortbazo
+        radiko
       ]
     );
     response.status(200).json(result);
@@ -111,7 +109,7 @@ app.post('/api/delete-word-base', async (request, response) => {
 });
 
 app.post('/api/upsert-definition', async (request, response) => {
-  const { vorto, difino, bildadreso } = request.body;
+  const { radiko, vorto, difino, bildadreso } = request.body;
 
   const client = await pool.connect();
 
@@ -119,9 +117,34 @@ app.post('/api/upsert-definition', async (request, response) => {
     const result = await client.query(
       upsertDefinition,
       [
+        radiko,
         vorto,
         difino,
         bildadreso
+      ]
+    );
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
+
+
+app.post('/api/delete-word', async (request, response) => {
+  const { radiko, vorto } = request.body;
+
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      deleteWord,
+      [
+        radiko,
+        vorto,
       ]
     );
     response.status(200).json(result);

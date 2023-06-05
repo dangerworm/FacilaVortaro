@@ -1,10 +1,12 @@
 CREATE TABLE public.difinoj (
-	vorto text NOT NULL,
-  difino text NULL,
-	bildadreso text NULL,
-  CONSTRAINT uq_difinoj_vorto UNIQUE (vorto)
+	radiko TEXT NOT NULL,
+	vorto TEXT NOT NULL,
+  difino TEXT NULL,
+	bildadreso TEXT NULL,
+  CONSTRAINT uq_difinoj_radiko_vorto UNIQUE (radiko, vorto)
 );
 
+/*
 INSERT INTO public.difinoj (vorto, difino) VALUES ('abelo', 'utila insekto, kiu vizitas florojn kaj faras dolĉan manĝaĵon.') ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino;
 INSERT INTO public.difinoj (vorto, difino) VALUES ('abio', 'alta ĉiam-verda arbo.') ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino;
 INSERT INTO public.difinoj (vorto, difino) VALUES ('abomena', 'kaŭzanta senton de malamego pro siaj tre malagrablaj kaj malŝatindaj ecoj.') ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino;
@@ -1977,3 +1979,4 @@ INSERT INTO public.difinoj (vorto, difino) VALUES ('zigzagi', 'iri malrekte, unu
 INSERT INTO public.difinoj (vorto, difino) VALUES ('zono', 'longa, maldika ligilo el ŝtofo aŭ alia materialo, kiu ĉirkaŭas la mezan parton de la korpo por teni la pantalonon aŭ alian veston; vojo aŭ regiono, kiu ĉirkaŭas kiel zono. [') ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino;
 INSERT INTO public.difinoj (vorto, difino) VALUES ('zonzio', 'ĉina manĝaĵo el rizo volvita en folioj. [Ilus.]') ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino;
 INSERT INTO public.difinoj (vorto, difino) VALUES ('Zoom', 'komputila programo per kiu eblas komuniki kaj kunveni interrete anstataŭ samloke.') ON CONFLICT (vorto) DO UPDATE SET difino = excluded.difino;
+*/

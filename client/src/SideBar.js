@@ -36,7 +36,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 );
 
 export const SideBar = () => {
-  const { loadingWordBases, searchResults, setWordBase } = useWordsContext();
+  const { loadingWordRoots, searchResults, setWordRoot } = useWordsContext();
 
   return (
     <StyledDrawer variant="permanent" open={true}>
@@ -59,26 +59,24 @@ export const SideBar = () => {
         }}
       >
       </Toolbar>
-      {loadingWordBases && <Loading />}
-      {!loadingWordBases && searchResults &&
-        (
-          <>
-            <Search />
-            <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
-              {searchResults.map(({ vortbazo }) => (
-                <ListItemButton
-                  component={Link}
-                  to = '/'
-                  key={vortbazo}
-                  onClick={() => setWordBase(vortbazo)}
-                  sx={{ paddingLeft: '2.8em' 
-                }}>
-                  {vortbazo}
-                </ListItemButton>
-              ))}
-            </List>
-          </>
-        )}
+      <Search />
+      {loadingWordRoots && <Loading />}
+      {!loadingWordRoots && searchResults && (
+        <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
+          {searchResults.map(({ radiko }) => (
+            <ListItemButton
+              component={Link}
+              to='/'
+              key={radiko}
+              onClick={() => setWordRoot(radiko)}
+              sx={{
+                paddingLeft: '2.8em'
+              }}>
+              {radiko}{'-'}
+            </ListItemButton>
+          ))}
+        </List>
+      )}
     </StyledDrawer>
   );
 }
