@@ -34,9 +34,11 @@ export const Search = () => {
           onChange={(event) => setQuery(event.target.value)}
         />
       </Grid>
-      <Grid item xs={12} sx={{ m: 1, mt: 0, p: 0, fontSize: 'smaller', height: '1em', lineHeight: '1', textAlign: 'right' }}>
+      {/* 
+      <Grid item xs={12} sx={{ mr: 1, mb: 2, mt: 0, p: 0, fontSize: 'smaller', height: '1em', lineHeight: '1.5', textAlign: 'right' }}>
         <Button size="small" variant="text" onClick={toggleLayout}>baskulu klavaran aranĝon</Button>
-      </Grid>
+      </Grid> 
+      */}
       <Grid item xs={12} sx={{ m: 2, mt: 0 }}>
         {Array
           .from({ length: 3 }, (_, i) => i)
