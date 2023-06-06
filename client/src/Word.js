@@ -55,6 +55,7 @@ export const Word = () => {
 
   const deleteCurrentWord = (vorto) => {
     deleteWord(wordRoot, vorto);
+    setEditIndex(-1);
   }
 
   return (
