@@ -44,6 +44,7 @@ export const WordsContextProvider = ({ children }) => {
 
   const getRelatedWords = useCallback(async (radiko) => {
     setLoadingRelatedWords(true);
+    setRelatedWords([]);
 
     axios
       .post(`${baseUrl}/get-related-words`, {
@@ -159,6 +160,7 @@ export const WordsContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (wordRoot) {
+      setRelatedWords([]);
       getRelatedWords(wordRoot);
     }
   }, [getRelatedWords, wordRoot]);

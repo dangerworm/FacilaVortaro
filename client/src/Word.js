@@ -2,43 +2,55 @@ import React from 'react';
 import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import { useWordsContext } from './Contexts/WordsContext';
 import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
+import { Loading } from 'Loading';
 
 export const Word = () => {
   const { userIsAdmin } = useAuthenticationContext();
-  const { wordRoot, setWordRoot, getRelatedWords, setRelatedWords, relatedWords, deleteWordRoot, upsertWord, deleteWord } = useWordsContext();
+  const { wordRoot, setWordRoot, loadingRelatedWords, setRelatedWords, getRelatedWords, relatedWords, deleteWordRoot, upsertWord, deleteWord } = useWordsContext();
 
   const [addingNewWord, setAddingNewWord] = React.useState(false);
+  const [editIndex, setEditIndex] = React.useState(-1);
   const [wordBeingEdited, setWordBeingEdited] = React.useState('');
   const [newDefinition, setNewDefinition] = React.useState('');
   const [newImageAddress, setNewImageAddress] = React.useState('');
-  
+
   const deleteCurrentWordRoot = () => {
     deleteWordRoot(wordRoot);
     setWordRoot('');
-    setWordBeingEdited('');
-    setWordRoot('');
+    setEditIndex(-1);
   }
 
   const addNewWord = () => {
-    setRelatedWords(current => [...current, { vorto: '', difino: '', bildadreso: '' }]);
     setAddingNewWord(true);
-    setWordBeingEdited('');
+    setEditIndex(relatedWords.length);
+    setRelatedWords(current => [...current, { vorto: '', difino: '', bildadreso: '' }]);
     setNewDefinition('');
     setNewImageAddress('');
   }
 
-  const startEditing = (vorto, difino, bildadreso) => {
-    setWordBeingEdited(vorto);
+  const startEditing = (index, difino, bildadreso) => {
+    setEditIndex(index);
+    setWordBeingEdited(relatedWords[index].vorto);
     setNewDefinition(difino);
     setNewImageAddress(bildadreso);
   }
 
   const saveEdits = (vorto, difino, bildadreso) => {
-    upsertWord(wordRoot, addingNewWord ? wordBeingEdited : vorto, difino, bildadreso);
+    upsertWord(wordRoot, editIndex > -1 ? wordBeingEdited : vorto, difino, bildadreso);
+    setAddingNewWord(false);
+    setEditIndex(-1);
     setWordBeingEdited('');
     setNewDefinition('');
     setNewImageAddress('');
+  }
+
+  const cancelEditing = () => {
     setAddingNewWord(false);
+    setWordBeingEdited('');
+    setNewDefinition('');
+    setNewImageAddress('');
+    setEditIndex(-1);
+    getRelatedWords(wordRoot);
   }
 
   const deleteCurrentWord = (vorto) => {
@@ -70,7 +82,12 @@ export const Word = () => {
               </Button>
             </Grid>
           )}
-          {relatedWords && relatedWords.map(({ vorto, difino, bildadreso }) => (
+          {loadingRelatedWords && (
+            <Grid item xs={12} sx={{ ml: 2, mr: 2, textAlign: 'center' }}>
+              <Loading />
+            </Grid>
+          )}
+          {relatedWords && relatedWords.map(({ vorto, difino, bildadreso }, index) => (
             <Box
               key={vorto}
               sx={{
@@ -85,7 +102,7 @@ export const Word = () => {
             >
               <Grid key={vorto} container spacing={0} style={{ marginLeft: '1em', textAlign: 'left' }}>
                 <Grid item xs={6} sx={{ m: 0 }}>
-                  {addingNewWord && (
+                  {editIndex === index && addingNewWord && (
                     <TextField
                       fullWidth
                       label={'Vorto'}
@@ -94,15 +111,15 @@ export const Word = () => {
                       sx={{ mb: 2 }}
                     />
                   )}
-                  {!addingNewWord && (
+                  {(editIndex !== index || !addingNewWord) && (
                     <h3 style={{ margin: 0 }}>{vorto}</h3>
                   )}
                 </Grid>
-                {((!wordBeingEdited || wordBeingEdited !== vorto) && !addingNewWord) && (
+                {editIndex !== index && (
                   <>
-                    {userIsAdmin && (
+                    {userIsAdmin && editIndex !== index && (
                       <Grid item xs={6} sx={{ pr: 3, marginTop: '-5px', textAlign: 'right' }}>
-                        <Button variant={'outlined'} color={'secondary'} onClick={() => startEditing(vorto, difino, bildadreso)}>
+                        <Button variant={'outlined'} color={'secondary'} onClick={() => startEditing(index, difino, bildadreso)}>
                           Redaktu
                         </Button>
                       </Grid>
@@ -117,13 +134,13 @@ export const Word = () => {
                     </Grid>
                   </>
                 )}
-                {(wordBeingEdited === vorto || addingNewWord) && userIsAdmin && (
+                {userIsAdmin && editIndex === index && (
                   <>
                     <Grid item xs={6} sx={{ pr: 3, textAlign: 'right' }}>
                       <Button variant={'outlined'} color={'success'} sx={{ mr: 2 }} onClick={() => saveEdits(vorto, newDefinition, newImageAddress)}>
                         Konservu
                       </Button>
-                      <Button variant={'outlined'} color={'warning'} sx={{ mr: 2 }} onClick={() => setWordBeingEdited('')}>
+                      <Button variant={'outlined'} color={'warning'} sx={{ mr: 2 }} onClick={() => cancelEditing()}>
                         Nuligu
                       </Button>
                       <Button variant={'outlined'} color={'error'} onClick={() => deleteCurrentWord(vorto)}>
