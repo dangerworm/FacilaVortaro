@@ -65,7 +65,9 @@ export const Word = () => {
           {!wordRoot && (
             <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
               <h1>Bonvenon!</h1>
-              <Typography variant={'subtitle1'}>Bonvolu serĉi kaj elekti vorton per la flanka stango.</Typography>
+              <Typography variant={'subtitle1'}>
+              Bonvolu serĉi kaj elekti vorton el la listo maldekstre.
+              </Typography>
             </Grid>
           )}
           {wordRoot && (
@@ -79,7 +81,7 @@ export const Word = () => {
                 Aldonu vorton
               </Button>
               <Button variant='outlined' color={'error'} style={{ marginLeft: '1em' }} onClick={() => deleteCurrentWordRoot()}>
-                Forigu radikon
+                Forigu kapvorton
               </Button>
             </Grid>
           )}

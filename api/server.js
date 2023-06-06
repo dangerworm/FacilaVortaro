@@ -51,13 +51,13 @@ app.post('/api/get-word-roots', async (request, response) => {
 });
 
 app.post('/api/get-related-words', async (request, response) => {
-  const { radiko } = request.body;
+  const { kapvorto } = request.body;
 
   const client = await pool.connect();
   const result = await client.query(
     getRelatedWords,
     [
-      `${radiko}%`
+      `${kapvorto}%`
     ]
   );
 
@@ -67,14 +67,14 @@ app.post('/api/get-related-words', async (request, response) => {
 });
 
 app.post('/api/add-word-root', async (request, response) => {
-  const { radiko } = request.body;
+  const { kapvorto } = request.body;
 
   const client = await pool.connect();
   try {
     const result = await client.query(
       addWordRoot,
       [
-        radiko
+        kapvorto
       ]
     );
     response.status(200).json(result);
@@ -88,14 +88,14 @@ app.post('/api/add-word-root', async (request, response) => {
 });
 
 app.post('/api/delete-word-root', async (request, response) => {
-  const { radiko } = request.body;
+  const { kapvorto } = request.body;
 
   const client = await pool.connect();
   try {
     const result = await client.query(
       deleteWordRoot,
       [
-        radiko
+        kapvorto
       ]
     );
     response.status(200).json(result);
@@ -109,7 +109,7 @@ app.post('/api/delete-word-root', async (request, response) => {
 });
 
 app.post('/api/upsert-definition', async (request, response) => {
-  const { radiko, vorto, difino, bildadreso } = request.body;
+  const { kapvorto, vorto, difino, bildadreso } = request.body;
 
   const client = await pool.connect();
 
@@ -117,7 +117,7 @@ app.post('/api/upsert-definition', async (request, response) => {
     const result = await client.query(
       upsertDefinition,
       [
-        radiko,
+        kapvorto,
         vorto,
         difino,
         bildadreso
@@ -135,7 +135,7 @@ app.post('/api/upsert-definition', async (request, response) => {
 
 
 app.post('/api/delete-word', async (request, response) => {
-  const { radiko, vorto } = request.body;
+  const { kapvorto, vorto } = request.body;
 
   const client = await pool.connect();
 
@@ -143,7 +143,7 @@ app.post('/api/delete-word', async (request, response) => {
     const result = await client.query(
       deleteWord,
       [
-        radiko,
+        kapvorto,
         vorto,
       ]
     );

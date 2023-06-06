@@ -68,16 +68,16 @@ export const SideBar = () => {
       )}
       {!loadingWordRoots && query && searchResults && (
         <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
-          {searchResults.map(({ radiko }) => (
+          {searchResults.map(({ kapvorto }) => (
             <ListItemButton
               component={Link}
               to='/'
-              key={radiko}
-              onClick={() => setWordRoot(radiko)}
+              key={kapvorto}
+              onClick={() => setWordRoot(kapvorto)}
               sx={{
                 paddingLeft: '2.8em'
               }}>
-              {radiko}{'-'}
+              {kapvorto}{'-'}
             </ListItemButton>
           ))}
         </List>

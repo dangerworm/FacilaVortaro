@@ -20,7 +20,7 @@ admoni: kuraĝigi homon per firma parolo al ago aŭ plenumo de devo; aŭ diri, k
 adoleskanto: junulo inter proksimume 12 kaj 18 jaroj.
 adopti: alpreni nepropran infanon kiel sian.
 adverbo: e-vorto en Esperanto, ekzemple “bone”, “rapide”, “feliĉe”.
-afikso: vortero, kiun oni aldonas antaŭ aŭ post Esperanta radiko por krei novan vorton, ekzemple mal-, -in-, -et-.
+afikso: vortero, kiun oni aldonas antaŭ aŭ post Esperanta kapvorto por krei novan vorton, ekzemple mal-, -in-, -et-.
 aflikti: kaŭzi fortan kor-doloron. 
 afranko: pago por la sendokosto de letero aŭ pako; metado de poŝtmarkoj sur leteron aŭ pakon.
 agentejo (gazetara): novaĵ-servo, kiu sendas novaĵojn kaj informojn al gazetoj kaj aliaj amas-komunikiloj.
@@ -119,7 +119,7 @@ apogo: helpo kaj kunlaboro por plifortigi la situacion de iu aŭ io.
 apoteko: vendejo, kie oni vendas kuracilojn. https://www.islandhealth.co.uk/pharmacy/
 aprobi: diri, ke la faroj aŭ diraĵoj de alia homo aŭ grupo, estas bonaj.
 araba: lingvo parolata en la sud-okcidenta parto de Irano kaj en multaj landoj de Mez-oriento kaj Norda Afriko.
-arbo-trunko: la plej forta, dika, ligna parto de arbo, sub kiu kreskas radikoj kaj supre la folioj.
+arbo-trunko: la plej forta, dika, ligna parto de arbo, sub kiu kreskas kapvortoj kaj supre la folioj.
 arbusto: ligneca planto malpli alta ol arbo. https://commons.wikimedia.org/wiki/File:Shrub_2.JPG
 Wikimedia Commons/Arek982 CC SA 4.0
 areo: loko aŭ spaco kun difinitaj limoj kaj difinita uzo.
@@ -459,7 +459,7 @@ el-lerni: tiel bone lerni, ke oni plene scias.
 el-migri: forlasi sian propran landon por transloĝiĝi en fremda lando.
 el-migrinto: homo, kiu forlasis sian propran landon por transloĝiĝi en fremda lando.
 elp.: elparolo
-el-radikigi: elŝiri planton el la tero kune kun la radikoj; tute eltiri ion.  https://www.publicdomainpictures.net/en/free-download.php?image=uprooted&id=208295
+el-radikigi: elŝiri planton el la tero kune kun la kapvortoj; tute eltiri ion.  https://www.publicdomainpictures.net/en/free-download.php?image=uprooted&id=208295
 el-sendi: dissendi programon per radio, televido aŭ Interreto.
 el-sendo: programo dissendata per radio, televido aŭ Interreto.
 el-stara: staranta alte super la aliaj membroj de grupo pro rimarkinda kvalito.
@@ -1451,7 +1451,7 @@ pragmata: rigardanta la faktojn nur el la vidpunkto de ilia praktika valoro.
 predanto: besto, kiu atakas aliajn por manĝi ilin.
 prediki: parole komuniki al publiko sciojn religiajn; doni konsilojn ne deziratajn.
 prediko: parolado en preĝejo aŭ alia loko per kiu religia gvidanto komunikas al la publiko religiajn sciojn aŭ konsilojn.
-prefikso: vortero, kiun oni aldonas antaŭ Esperanta radiko por krei novan vorton, ekzemple mal-, re-, dis-.
+prefikso: vortero, kiun oni aldonas antaŭ Esperanta kapvorto por krei novan vorton, ekzemple mal-, re-, dis-.
 premio: donaco al gajninto.
 prestiĝa: tre fama, konsiderata havi altan valoron pro merito kaj sukcesa agado.
 preteksto: ŝajna kialo por ne fari ion, proponita por kaŝi la veran kialon.
@@ -1765,7 +1765,7 @@ subtila: delikata, malfacile rimarkebla.
 sub-titolo: skriba teksto aldonita al filmo en la malsupro de la ekrano.
 subvencii: doni monhelpon al iu projekto.
 subvencio: monhelpo por projekto.
-sufikso: vortero, kiun oni aldonas post Esperanta radiko por krei novan vorton, ekzemple -in-, -et-, -ul-.
+sufikso: vortero, kiun oni aldonas post Esperanta kapvorto por krei novan vorton, ekzemple -in-, -et-, -ul-.
 sugesti: venigi en ies penson iun ideon, proponi ideon.
 sulfura: flava materialo, kiu troviĝas nature en la tero, kun forta malbona odoro. https://en.wikipedia.org/wiki/Sulfur#/media/File:Sulfur-sample.jpg
 sultano: reĝo en la islamaj landoj.
@@ -1796,7 +1796,7 @@ svisa: rilata al Svislando, lando en centra Eŭropo kun ĉefurbo Berno.
 ŝarko: granda, tre danĝera mar-fiŝo kun multaj dentoj, kiu foje eĉ atakas naĝantojn. [https://en.wikipedia.org/wiki/Great_white_shark#/media/File:Carcharodon_carcharias.jpg]
 ŝat-okupo: neprofesia agado, kiun oni faras pro plezuro kaj intereso.
 Ŝava: rilata al la irlanda verkisto George Bernard Shaw (1856-1950).
-ŝelo: la ekstera parto de frukto aŭ legomo, de ovo, kaj ankaŭ de planto-radiko aŭ arbo. https://pixabay.com/photos/apples-knife-fruit-peel-skin-1803049/
+ŝelo: la ekstera parto de frukto aŭ legomo, de ovo, kaj ankaŭ de planto-kapvorto aŭ arbo. https://pixabay.com/photos/apples-knife-fruit-peel-skin-1803049/
 ŝelo-zingibro: Azia kreskaĵo kun belaj floroj kaj bongustaj folioj. https://en.wikipedia.org/wiki/Alpinia_zerumbet#/media/File:Alpinia_zerumbet_pods.jpg
 ŝildo: tabulo, ofte el metalo, kun skribita informo. https://pixabay.com/photos/traffic-sign-road-traffic-3008267/
 ŝirmi: stari antaŭ aŭ super io por defendi ĝin kontraŭ ia malbonaĵo.
@@ -1907,7 +1907,7 @@ trono: speciala seĝo, kie sidas reĝo aŭ reĝino. https://pixabay.com/photos/t
 trudi: devigi homon akcepti iun malagrablan aferon.
 trud-izoliĝo: deviga restado sola sen kontakto kun aliaj homoj.
 trud-mesaĝo: nedezirata mesaĝo dissendata al multenombraj ricevantoj sen ilia konsento.
-trunko: la plej forta, dika, ligna parto de arbo, sub kiu kreskas radikoj kaj supre la folioj.
+trunko: la plej forta, dika, ligna parto de arbo, sub kiu kreskas kapvortoj kaj supre la folioj.
 tuberkulozo: grava malsano, iam mortiga, sed nun kuracebla.
 tulipo: brilkolora, taso-forma floro, kiun oni kreskigas precipe en Nederlando por vendado al ĝardenoj tutmonde. https://pixabay.com/photos/tulips-spring-flowers-blossom-bloom-2048324/
 tumulo: monteto el tero aŭ ŝtonoj, kiun la homoj konstruis antaŭ multaj jarcentoj super loko, kie oni enterigis mortintojn. https://en.wikipedia.org/wiki/Marathon_tumuli#/media/File:Tumulusmarathon.JPG

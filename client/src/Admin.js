@@ -28,14 +28,14 @@ export const Admin = () => {
               <h1>Administrado</h1>
             </Grid >
             <Grid item xs={12} sx={{ m: 0, p: 0 }}>
-              <h3 style={{ margin: 0 }}>Aldonu radikon</h3>
+              <h3 style={{ margin: 0 }}>Aldonu kapvorton</h3>
             </Grid >
             <Grid item xs={12} sx={{ m: 0, p: 0 }}>
               <>
                 <TextField
                   fullWidth
                   id="wordRoot"
-                  label="radiko"
+                  label="kapvorto"
                   variant="outlined"
                   value={wordRoot}
                   onChange={(e) => setWordRoot(e.target.value)}
@@ -47,7 +47,7 @@ export const Admin = () => {
                 )}
                 {showResponse && addingWordRootSuccessful === true && (
                   <Typography variant={'caption'} sx={{ color: 'green' }}>
-                    Radiko aldonita sukcese
+                    Kapvorto aldonita sukcese
                   </Typography>
                 )}
               </>

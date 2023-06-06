@@ -1,3 +1,4 @@
+import { sortAlphabeticallyInEsperanto } from "Helpers/alphabetisation";
 import axios from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
@@ -31,7 +32,7 @@ export const WordsContextProvider = ({ children }) => {
     axios
       .post(`${baseUrl}/get-word-roots`)
       .then((response) => {
-        response.data.sort((a, b) => a.radiko.localeCompare(b.radiko));
+        response.data.sort(sortAlphabeticallyInEsperanto);
         setWordRoots(response.data);
       })
       .catch((error) => {
@@ -42,16 +43,16 @@ export const WordsContextProvider = ({ children }) => {
       });
   }
 
-  const getRelatedWords = useCallback(async (radiko) => {
+  const getRelatedWords = useCallback(async (kapvorto) => {
     setLoadingRelatedWords(true);
     setRelatedWords([]);
 
     axios
       .post(`${baseUrl}/get-related-words`, {
-        radiko
+        kapvorto
       })
       .then((response) => {
-        response.data.sort((a, b) => a.vorto.localeCompare(b.vorto));
+        response.data.sort(sortAlphabeticallyInEsperanto);
         setRelatedWords(response.data);
       })
       .catch((error) => {
@@ -63,12 +64,12 @@ export const WordsContextProvider = ({ children }) => {
 
   }, [baseUrl])
 
-  const addWordRoot = async (radiko) => {
+  const addWordRoot = async (kapvorto) => {
     setAddingWordRoot(true);
 
     axios
       .post(`${baseUrl}/add-word-root`, {
-        radiko
+        kapvorto
       })
       .then((response) => {
         setAddingWordRootSuccessful(true);
@@ -83,12 +84,12 @@ export const WordsContextProvider = ({ children }) => {
       });
   }
 
-  const deleteWordRoot = async (radiko) => {
+  const deleteWordRoot = async (kapvorto) => {
     setDeletingWordRoot(true);
 
     axios
       .post(`${baseUrl}/delete-word-root`, {
-        radiko
+        kapvorto
       })
       .then((response) => {
         getWordRoots();
@@ -102,20 +103,20 @@ export const WordsContextProvider = ({ children }) => {
       });
   }
 
-  const upsertWord = async (radiko, vorto, difino, bildadreso) => {
+  const upsertWord = async (kapvorto, vorto, difino, bildadreso) => {
     setPerformingUpsert(true);
     setUpsertSuccessful(undefined);
 
     axios
       .post(`${baseUrl}/upsert-definition`, {
-        radiko,
+        kapvorto,
         vorto,
         difino,
         bildadreso
       })
       .then((response) => {
         setUpsertSuccessful(true);
-        getRelatedWords(radiko);
+        getRelatedWords(kapvorto);
       })
       .catch((error) => {
         console.log(error);
@@ -126,18 +127,18 @@ export const WordsContextProvider = ({ children }) => {
       });
   }
 
-  const deleteWord = async (radiko, vorto) => {
+  const deleteWord = async (kapvorto, vorto) => {
     setDeletingWord(true);
     setDeletingWordSuccessful(undefined);
 
     axios
       .post(`${baseUrl}/delete-word`, {
-        radiko,
+        kapvorto,
         vorto,
       })
       .then((response) => {
         setDeletingWordSuccessful(true);
-        getRelatedWords(radiko);
+        getRelatedWords(kapvorto);
       })
       .catch((error) => {
         console.log(error);
@@ -150,7 +151,7 @@ export const WordsContextProvider = ({ children }) => {
 
   const searchResults = useMemo(() => {
     return wordRoots.filter((word) => {
-      return word.radiko?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
+      return word.kapvorto?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
     })
   }, [query, wordRoots]);
 
