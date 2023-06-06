@@ -50,22 +50,6 @@ app.post('/api/get-word-roots', async (request, response) => {
   client.release();
 });
 
-app.post('/api/get-related-words', async (request, response) => {
-  const { kapvorto } = request.body;
-
-  const client = await pool.connect();
-  const result = await client.query(
-    getRelatedWords,
-    [
-      `${kapvorto}%`
-    ]
-  );
-
-  const rows = result.rows;
-  response.json(rows);
-  client.release();
-});
-
 app.post('/api/add-word-root', async (request, response) => {
   const { kapvorto } = request.body;
 
@@ -108,6 +92,22 @@ app.post('/api/delete-word-root', async (request, response) => {
   }
 });
 
+app.post('/api/get-related-words', async (request, response) => {
+  const { kapvorto } = request.body;
+
+  const client = await pool.connect();
+  const result = await client.query(
+    getRelatedWords,
+    [
+      kapvorto
+    ]
+  );
+
+  const rows = result.rows;
+  response.json(rows);
+  client.release();
+});
+
 app.post('/api/upsert-definition', async (request, response) => {
   const { kapvorto, vorto, difino, bildadreso } = request.body;
 
@@ -133,8 +133,71 @@ app.post('/api/upsert-definition', async (request, response) => {
   }
 });
 
-
 app.post('/api/delete-word', async (request, response) => {
+  const { kapvorto, vorto } = request.body;
+
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      deleteWord,
+      [
+        kapvorto,
+        vorto,
+      ]
+    );
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
+
+app.post('/api/get-images', async (request, response) => {
+  const { kapvorto, vorto } = request.body;
+
+  const client = await pool.connect();
+  const result = await client.query(
+    getRelatedWords,
+    [
+      `${kapvorto}%`
+    ]
+  );
+
+  const rows = result.rows;
+  response.json(rows);
+  client.release();
+});
+
+app.post('/api/upsert-image', async (request, response) => {
+  const { kapvorto, vorto, retejaAdreso, kredito } = request.body;
+
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(
+      upsertDefinition,
+      [
+        kapvorto,
+        vorto,
+        retejaAdreso,
+        kredito
+      ]
+    );
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
+
+app.post('/api/delete-image', async (request, response) => {
   const { kapvorto, vorto } = request.body;
 
   const client = await pool.connect();

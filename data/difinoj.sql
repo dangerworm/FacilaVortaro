@@ -2,7 +2,6 @@ CREATE TABLE public.difinoj (
 	kapvorto TEXT NOT NULL,
 	vorto TEXT NOT NULL,
   difino TEXT NULL,
-	bildadreso TEXT NULL,
 
   CONSTRAINT pk_difinoj PRIMARY KEY (kapvorto, vorto),
   CONSTRAINT fk_difinoj_kapvorto FOREIGN KEY (kapvorto) REFERENCES public.kapvortoj (kapvorto)
