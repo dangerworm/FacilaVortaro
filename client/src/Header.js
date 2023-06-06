@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { AppBar, Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
+import { AppBar, Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography, rgbToHex } from "@mui/material"
 import { Box } from "@mui/system";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PersonIcon from '@mui/icons-material/Person';
@@ -43,6 +43,7 @@ export const Header = () => {
         <Toolbar
           sx={{
             pr: '24px', // keep right padding when drawer closed
+            backgroundColor: 'rgb(0,154,43)'
           }}
         >
           <Typography
