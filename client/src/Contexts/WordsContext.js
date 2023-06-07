@@ -22,7 +22,7 @@ export const WordsContextProvider = ({ children }) => {
   const [deletingWord, setDeletingWord] = useState(false);
   const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
-  /*
+  //*
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
   /*/
   const baseUrl = "http://localhost:5000/api";
