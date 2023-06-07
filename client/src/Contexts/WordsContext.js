@@ -11,6 +11,8 @@ export const WordsContextProvider = ({ children }) => {
   const [wordRoot, setWordRoot] = useState("");
   const [loadingRelatedWords, setLoadingRelatedWords] = useState(false);
   const [relatedWords, setRelatedWords] = useState([]);
+  const [loadingImages, setLoadingImages] = useState(false);
+  const [images, setImages] = useState([]);
   const [addingWordRoot, setAddingWordRoot] = useState(false);
   const [deletingWordRoot, setDeletingWordRoot] = useState(false);
   const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
@@ -20,7 +22,7 @@ export const WordsContextProvider = ({ children }) => {
   const [deletingWord, setDeletingWord] = useState(false);
   const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
-  //*
+  /*
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
   /*/
   const baseUrl = "http://localhost:5000/api";
@@ -32,7 +34,7 @@ export const WordsContextProvider = ({ children }) => {
     axios
       .post(`${baseUrl}/get-word-roots`)
       .then((response) => {
-        response.data.sort(sortAlphabeticallyInEsperanto);
+        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'kapvorto'));
         setWordRoots(response.data);
       })
       .catch((error) => {
@@ -42,27 +44,6 @@ export const WordsContextProvider = ({ children }) => {
         setLoadingWordRoots(false);
       });
   }
-
-  const getRelatedWords = useCallback(async (kapvorto) => {
-    setLoadingRelatedWords(true);
-    setRelatedWords([]);
-
-    axios
-      .post(`${baseUrl}/get-related-words`, {
-        kapvorto
-      })
-      .then((response) => {
-        response.data.sort(sortAlphabeticallyInEsperanto);
-        setRelatedWords(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoadingRelatedWords(false);
-      });
-
-  }, [baseUrl])
 
   const addWordRoot = async (kapvorto) => {
     setAddingWordRoot(true);
@@ -103,20 +84,57 @@ export const WordsContextProvider = ({ children }) => {
       });
   }
 
-  const upsertWord = async (kapvorto, vorto, difino, bildadreso) => {
+  const getRelatedWords = useCallback(async (kapvorto) => {
+    setLoadingRelatedWords(true);
+    setRelatedWords([]);
+
+    axios
+      .post(`${baseUrl}/get-related-words`, {
+        kapvorto
+      })
+      .then((response) => {
+        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'vorto'));
+        setRelatedWords(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoadingRelatedWords(false);
+      });
+
+  }, [baseUrl])
+
+
+  const upsertWord = async (vorto, difino, bilddatumo, mimetipo, bildadreso, kredito) => {
     setPerformingUpsert(true);
     setUpsertSuccessful(undefined);
 
     axios
       .post(`${baseUrl}/upsert-definition`, {
-        kapvorto,
+        kapvorto: wordRoot,
         vorto,
         difino,
-        bildadreso
       })
       .then((response) => {
-        setUpsertSuccessful(true);
-        getRelatedWords(kapvorto);
+        axios
+          .post(`${baseUrl}/upsert-image`, {
+            kapvorto: wordRoot,
+            vorto,
+            bilddatumo,
+            mimetipo,
+            bildadreso,
+            kredito,
+          })
+          .then((response) => {
+            setUpsertSuccessful(true);
+          })
+          .catch((error) => {
+            console.log(error);
+            setUpsertSuccessful(false);
+          });
+
+        getRelatedWords(wordRoot);
       })
       .catch((error) => {
         console.log(error);
@@ -149,6 +167,20 @@ export const WordsContextProvider = ({ children }) => {
       });
   }
 
+  const getImages = async (kapvorto, vorto, callback) => {
+    axios
+      .post(`${baseUrl}/get-images`, {
+        kapvorto,
+        vorto,
+      })
+      .then((response) => {
+        callback(kapvorto, vorto, response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   const searchResults = useMemo(() => {
     return wordRoots.filter((word) => {
       return word.kapvorto?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
@@ -166,6 +198,29 @@ export const WordsContextProvider = ({ children }) => {
     }
   }, [getRelatedWords, wordRoot]);
 
+  useEffect(() => {
+    if (!relatedWords || relatedWords.length === 0) {
+      return;
+    }
+
+    setImages([]);
+    setLoadingImages(true);
+
+    const fetchData = async () => {
+      for (let word of relatedWords) {
+        await getImages(word.kapvorto, word.vorto, (kapvorto, vorto, images) => {
+          for (let imageData of images) {
+            setImages(current => [...current, { kapvorto, vorto, bilddatumo: imageData.bilddatumo, mimetipo: imageData.mime_tipo }]);
+          }
+
+          setLoadingImages(false);
+        });
+      }
+    }
+
+    fetchData();
+  }, [relatedWords]);
+
   return (
     <WordsContext.Provider
       value={{
@@ -179,10 +234,12 @@ export const WordsContextProvider = ({ children }) => {
         loadingRelatedWords,
         setRelatedWords,
         relatedWords,
+        images,
         addWordRoot,
         addingWordRoot,
         addingWordRootSuccessful,
         deleteWordRoot,
+        deletingWordRoot,
         wordRootError,
         upsertWord,
         performingUpsert,

@@ -1,3 +1,3 @@
-export const sortAlphabeticallyInEsperanto = (a, b) => {
-  return a.localeCompare(b, 'eo');
+export const sortAlphabeticallyInEsperanto = (a, b, key) => {
+  return a[key].localeCompare(b[key], 'eo');
 }

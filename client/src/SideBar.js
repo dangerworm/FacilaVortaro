@@ -77,7 +77,7 @@ export const SideBar = () => {
               sx={{
                 paddingLeft: '2.8em'
               }}>
-              {kapvorto}{'-'}
+              {kapvorto}
             </ListItemButton>
           ))}
         </List>
