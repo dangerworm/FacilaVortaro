@@ -24,20 +24,21 @@ export const WordRoot = () => {
   const [editIndex, setEditIndex] = React.useState(-1);
   const [wordBeingEdited, setWordBeingEdited] = React.useState({});
   const [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] = React.useState(false);
-
-  const deleteCurrentWordRoot = () => {
-    deleteWordRoot(wordRoot);
-    setWordRoot('');
-    setRelatedWords([]);
-    setEditIndex(-1);
-  }
-
+  
   const openDeleteConfirmationDialog  = () => {
     setShowDeleteConfirmationDialog(true);
   }
 
   const closeDeleteConfirmationDialog = () => {
     setShowDeleteConfirmationDialog(false);
+  }
+
+  const deleteCurrentWordRoot = () => {
+    deleteWordRoot(wordRoot);
+    setWordRoot('');
+    setRelatedWords([]);
+    setEditIndex(-1);
+    closeDeleteConfirmationDialog();
   }
 
   const clearControls = (editIndex = -1) => {
