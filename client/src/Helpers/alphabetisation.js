@@ -1,7 +1,10 @@
+import { removeAllCharactersExceptLetters, removePunctuation } from "./word-display";
+
 export const incorrectAlphabet = "abĉcdefĝgĥhiĵjklmnoprŝstŭuvz";
 export const alphabet = "abcĉdefgĝhĥijĵklmnoprsŝtuŭvz";
 
-const cleanseWord = (word) => word.toLowerCase().replace(/[^a-zĉĝĥĵŝŭ]/g, '');
+const cleanseWord = (word) =>
+  removeAllCharactersExceptLetters(removePunctuation(word.toLowerCase()));
 
 const translate = (word, incorrectAlphabet, correctAlphabetOrder) =>
   word.split('').map((letter) => 
