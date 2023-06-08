@@ -2,7 +2,7 @@ import { Grid, Link, Typography } from "@mui/material";
 import React from "react";
 
 export const ImageView = ({ image, startEditing }) => {
-  const { bilddatumo, mimetipo, bildadreso, kredito } = image;
+  const { bilddatumo, mimetipo, bildadreso, atribuo } = image;
 
   return (
     <Grid container spacing={0} sx={{ mb: 2, textAlign: 'left' }}>
@@ -16,9 +16,9 @@ export const ImageView = ({ image, startEditing }) => {
           <Link href={bildadreso} target="_blank">Fonto</Link>
         </Grid>
       )}
-      {kredito && (
+      {atribuo && (
         <Grid item xs={12}>
-          <Typography variant={'caption'}>{kredito}</Typography>
+          <Typography variant={'caption'}>{atribuo}</Typography>
         </Grid>
       )}
     </Grid>

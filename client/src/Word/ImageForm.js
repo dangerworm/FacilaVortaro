@@ -57,9 +57,9 @@ export const ImageForm = ({ image, setImage, isNewImage, saveEdits, cancelEditin
       <Grid item xs={12} sx={{ textAlign: 'left' }}>
         <TextField
           fullWidth
-          label={'Kredito'}
-          value={image.kredito}
-          onChange={(e) => setImage(current => ({ ...current, kredito: e.target.value }))}
+          label={'Atribuo'}
+          value={image.atribuo}
+          onChange={(e) => setImage(current => ({ ...current, atribuo: e.target.value }))}
         />
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'right' }}>
@@ -67,7 +67,7 @@ export const ImageForm = ({ image, setImage, isNewImage, saveEdits, cancelEditin
           variant={'outlined'}
           color={'success'}
           onClick={saveEdits}>
-          Konservu
+          Konservu bildon
         </Button>
         <Button
           variant={'outlined'}

@@ -8,12 +8,12 @@ import { removePunctuation } from 'Helpers/word-display';
 export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
   const [addingNewImage, setAddingNewImage] = React.useState(false);
   const [editIndex, setEditIndex] = React.useState(-1);
-  const [imageBeingEdited, setImageBeingEdited] = React.useState({});
+  const [imageBeingEdited, setImageBeingEdited] = React.useState(null);
 
   const clearControls = (editIndex = -1) => {
     setAddingNewImage(false);
     setEditIndex(editIndex);
-    setImageBeingEdited({});
+    setImageBeingEdited(null);
   }
 
   const addNewImage = () => {
@@ -28,7 +28,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
       bilddatumo: '',
       mimetipo: '',
       bildadreso: '',
-      kredito: ''
+      atribuo: ''
     };
 
     setAddingNewImage(true);
@@ -79,7 +79,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
         )}
       </Grid>
       <Grid item xs={6} sx={{ textAlign: 'right' }}>
-        <Button variant={'outlined'} color={'success'} sx={{ mr: 2 }} onClick={saveWordEdits}>
+        <Button variant={'outlined'} color={'success'} disabled={imageBeingEdited !== null} sx={{ mr: 2 }} onClick={saveWordEdits}>
           Konservu
         </Button>
         <Button variant={'outlined'} color={'warning'} sx={{ mr: 2 }} onClick={cancelWordEditing}>
@@ -122,7 +122,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
         </>
       ))}
       {!addingNewImage && (
-        <Grid item xs={3} sx={{ p: 1, textAlign: 'left' }}>
+        <Grid item xs={6} sx={{ p: 1, textAlign: 'left' }}>
           <Button variant={'outlined'} color={'success'} startIcon={<AddPhotoAlternateIcon />} onClick={addNewImage}>
             Aldonu bildon
           </Button>

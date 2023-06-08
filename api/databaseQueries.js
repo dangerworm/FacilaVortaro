@@ -26,26 +26,26 @@ const deleteWord =
   'AND vorto = $2;';
 
 const getImages =
-  'SELECT kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, kredito ' +
+  'SELECT kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo ' +
   'FROM public.bildoj ' +
   'WHERE kapvorto = $1 ' +
   'AND vorto = $2';
 
 const upsertImageMetadata =
-'INSERT INTO public.bildoj (kapvorto, vorto, bildadreso, kredito) ' +
+'INSERT INTO public.bildoj (kapvorto, vorto, bildadreso, atribuo) ' +
 'VALUES ($1, $2, $3, $4) ' +
 'ON CONFLICT (kapvorto, vorto) DO UPDATE SET ' + 
 'bildadreso = excluded.bildadreso, ' +
-'kredito = excluded.kredito';
+'atribuo = excluded.atribuo';
 
 const upsertImage =
-  'INSERT INTO public.bildoj (kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, kredito) ' +
+  'INSERT INTO public.bildoj (kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo) ' +
   'VALUES ($1, $2, $3, $4, $5, $6, $7) ' +
   'ON CONFLICT (kapvorto, vorto, indekso) DO UPDATE SET ' + 
   'bilddatumo = excluded.bilddatumo, ' +
   'mimetipo = excluded.mimetipo, ' +
   'bildadreso = excluded.bildadreso, ' +
-  'kredito = excluded.kredito';
+  'atribuo = excluded.atribuo';
 
 const deleteImage =
   'DELETE FROM public.bildoj ' +

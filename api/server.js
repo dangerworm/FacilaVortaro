@@ -149,7 +149,7 @@ app.post('/api/get-related-words', async (request, response) => {
           bilddatumo: image.bilddatumo,
           mimetipo: image.mimetipo,
           bildadreso: image.bildadreso,
-          kredito: image.kredito
+          atribuo: image.atribuo
         }
       });
     }
@@ -176,7 +176,7 @@ app.post('/api/upsert-word', async (request, response) => {
 
     if (images) {
       for (const image of images) {
-        const { indekso, bilddatumo, mimetipo, bildadreso, kredito } = image;
+        const { indekso, bilddatumo, mimetipo, bildadreso, atribuo } = image;
         await client.query(
           upsertImage,
           [
@@ -186,7 +186,7 @@ app.post('/api/upsert-word', async (request, response) => {
             bilddatumo,
             mimetipo,
             bildadreso,
-            kredito
+            atribuo
           ]
         );
       }
@@ -249,7 +249,7 @@ app.post('/api/upsert-image', async (request, response) => {
     bilddatumo,
     mimetipo,
     bildadreso,
-    kredito } = request.body;
+    atribuo } = request.body;
 
   const client = await pool.connect();
 
@@ -261,7 +261,7 @@ app.post('/api/upsert-image', async (request, response) => {
           kapvorto,
           vorto,
           bildadreso,
-          kredito
+          atribuo
         ]
       );
       response.status(200).json(result);
@@ -275,7 +275,7 @@ app.post('/api/upsert-image', async (request, response) => {
           bilddatumo,
           mimetipo,
           bildadreso,
-          kredito
+          atribuo
         ]
       );
       response.status(200).json(result);
