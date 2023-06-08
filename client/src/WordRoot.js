@@ -124,13 +124,13 @@ export const WordRoot = () => {
         )}
         {relatedWords && relatedWords.map((word, index) => (
           <>
-            {editIndex !== index && (
+            {(wordBeingEdited.kapvorto !== wordRoot || editIndex !== index) && (
               <WordView
                 key={index}
                 word={word}
                 startEditing={_ => startEditing(index)} />
             )}
-            {editIndex === index && (
+            {wordBeingEdited.kapvorto === wordRoot && editIndex === index && (
               <WordForm
                 key={index}
                 word={wordBeingEdited}
