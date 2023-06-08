@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Grid, TextField } from "@mui/material";
 import { useDatabaseContext } from "./Contexts/DatabaseContext";
+import { alphabet } from "Helpers/alphabetisation";
 
-const alphabet = "abcĉdefgĝhĥijĵklmnoprsŝtuŭvz";
 const keyboard = "ŝĝertŭuiopĵĥasdfghjklzĉcvbnm";
 
 export const Search = () => {

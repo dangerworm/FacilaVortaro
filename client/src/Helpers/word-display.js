@@ -1,0 +1,1 @@
+export const removePunctuation = (word) => word.replace(/[-]/g, '');

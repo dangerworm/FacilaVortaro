@@ -9,7 +9,7 @@ CREATE TABLE public.bildoj (
 
     CONSTRAINT pk_bildoj PRIMARY KEY (kapvorto, vorto, indekso),
     CONSTRAINT uq_bildoj_kapvorto_vorto UNIQUE (kapvorto, vorto, indekso),
-    CONSTRAINT fk_bildoj_difinoj FOREIGN KEY (kapvorto, vorto) REFERENCES public.difinoj (kapvorto, vorto)
+    CONSTRAINT fk_bildoj_difinoj FOREIGN KEY (kapvorto, vorto) REFERENCES public.difinoj (kapvorto, vorto) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO public.bildoj (kapvorto, vorto, indekso, bildadreso) VALUES ('abelo', 'abelo', 0, 'https://pixabay.com/photos/bee-insect-animal-hymenoptera-1726659/') ON CONFLICT (kapvorto, vorto, indekso) DO UPDATE SET bildadreso = excluded.bildadreso;

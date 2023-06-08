@@ -1,4 +1,5 @@
 import { sortAlphabeticallyInEsperanto } from "Helpers/alphabetisation";
+import { removePunctuation } from "Helpers/word-display";
 import axios from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
@@ -22,7 +23,7 @@ export const DatabaseContextProvider = ({ children }) => {
   const [deletingWord, setDeletingWord] = useState(false);
   const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
-  //*
+  /*
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
   /*/
   const baseUrl = "http://localhost:5000/api";
@@ -175,7 +176,7 @@ export const DatabaseContextProvider = ({ children }) => {
 
   const searchResults = useMemo(() => {
     return wordRoots.filter((word) => {
-      return word.kapvorto?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
+      return removePunctuation(word.kapvorto)?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
     })
   }, [query, wordRoots]);
 

@@ -4,7 +4,7 @@ CREATE TABLE public.difinoj (
   difino TEXT NULL,
 
   CONSTRAINT pk_difinoj PRIMARY KEY (kapvorto, vorto),
-  CONSTRAINT fk_difinoj_kapvorto FOREIGN KEY (kapvorto) REFERENCES public.kapvortoj (kapvorto)
+  CONSTRAINT fk_difinoj_kapvorto FOREIGN KEY (kapvorto) REFERENCES public.kapvortoj (kapvorto) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 INSERT INTO public.difinoj (kapvorto, vorto, difino) VALUES ('abelo', 'abelo', 'abelo: utila insekto, kiu vizitas florojn kaj faras dolĉan manĝaĵon.') ON CONFLICT (kapvorto, vorto) DO UPDATE SET difino = excluded.difino;

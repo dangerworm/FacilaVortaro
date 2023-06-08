@@ -5,6 +5,8 @@ import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 import { Loading } from 'Loading';
 import { WordView } from 'Word/WordView';
 import { WordForm } from 'Word/WordForm';
+import { removePunctuation } from 'Helpers/word-display';
+import ConfirmationDialog from 'ConfirmationDialog';
 
 export const WordRoot = () => {
   const { userIsAdmin } = useAuthenticationContext();
@@ -21,11 +23,21 @@ export const WordRoot = () => {
   const [addingNewWord, setAddingNewWord] = React.useState(false);
   const [editIndex, setEditIndex] = React.useState(-1);
   const [wordBeingEdited, setWordBeingEdited] = React.useState({});
+  const [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] = React.useState(false);
 
   const deleteCurrentWordRoot = () => {
     deleteWordRoot(wordRoot);
     setWordRoot('');
+    setRelatedWords([]);
     setEditIndex(-1);
+  }
+
+  const openDeleteConfirmationDialog  = () => {
+    setShowDeleteConfirmationDialog(true);
+  }
+
+  const closeDeleteConfirmationDialog = () => {
+    setShowDeleteConfirmationDialog(false);
   }
 
   const clearControls = (editIndex = -1) => {
@@ -79,6 +91,7 @@ export const WordRoot = () => {
   }
 
   return (
+    <>
     <Paper sx={{ p: 2, pl: 5, pr: 5, pb: 5, minHeight: '50vh' }}>
       <Grid container spacing={2} textAlign={'left'}>
         {!wordRoot && (
@@ -91,7 +104,7 @@ export const WordRoot = () => {
         )}
         {wordRoot && (
           <Grid item xs={4}>
-            <h1 style={{ marginTop: '1em' }}>{wordRoot}</h1>
+            <h1 style={{ marginTop: '1em' }}>{removePunctuation(wordRoot)}</h1>
           </Grid>
         )}
         {wordRoot && userIsAdmin && (
@@ -99,7 +112,7 @@ export const WordRoot = () => {
             <Button variant='outlined' color={'primary'} onClick={addNewWord}>
               Aldonu vorton
             </Button>
-            <Button variant='outlined' color={'error'} style={{ marginLeft: '1em' }} onClick={deleteCurrentWordRoot}>
+            <Button variant='outlined' color={'error'} style={{ marginLeft: '1em' }} onClick={openDeleteConfirmationDialog}> {/*deleteCurrentWordRoot}>*/}
               Forigu kapvorton
             </Button>
           </Grid>
@@ -131,5 +144,15 @@ export const WordRoot = () => {
         ))}
       </Grid>
     </Paper >
+    <ConfirmationDialog
+      open={showDeleteConfirmationDialog}
+      title={'Ĉu vi certas?'}
+      contentText1={'Ĉi tio forigos ĉi tiun kapvorton, ĉiujn ĝiajn difinojn, kaj ĉiujn rilatajn bildojn.'}
+      contentText2={`Ĉu vi vere volas forigi la kapvorton "${wordRoot}"?`}
+      cancelButtonText={'Nuligu'}
+      confirmButtonText={'Konfirmu'}
+      onClose={closeDeleteConfirmationDialog}
+      onConfirm={deleteCurrentWordRoot} />
+    </>
   );
 }

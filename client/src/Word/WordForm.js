@@ -3,6 +3,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import { ImageView } from './ImageView';
 import { ImageForm } from './ImageForm';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { removePunctuation } from 'Helpers/word-display';
 
 export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
   const [addingNewImage, setAddingNewImage] = React.useState(false);
@@ -74,7 +75,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
           />
         )}
         {!isNewWord && (
-          <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{word.vorto}</h3>
+          <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{removePunctuation(word.vorto)}</h3>
         )}
       </Grid>
       <Grid item xs={6} sx={{ textAlign: 'right' }}>

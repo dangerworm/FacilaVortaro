@@ -6,6 +6,7 @@ import { useDatabaseContext } from './Contexts/DatabaseContext';
 import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { removePunctuation } from 'Helpers/word-display';
 
 const drawerWidth = 300;
 
@@ -77,7 +78,7 @@ export const SideBar = () => {
               sx={{
                 paddingLeft: '2.8em'
               }}>
-              {kapvorto}
+              {removePunctuation(kapvorto)}
             </ListItemButton>
           ))}
         </List>

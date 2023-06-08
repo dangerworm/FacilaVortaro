@@ -19,6 +19,21 @@ const {
 const app = express();
 const port = process.env.PORT ?? 5000;
 
+/*
+// Localhost against Docker container
+const pool = new Pool({
+  user: 'postgres',
+  password: 'postgres',
+  database: 'postgres',
+  port: 5432,
+  host: 'localhost',
+  pool: {
+    min: 1,
+    max: 2,
+    idleTimeoutMillis: 5000
+  }
+});
+/*/
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   user: process.env.FACILA_VORTARO_DATABASE_USER,
@@ -35,6 +50,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
+//*/
 
 app.use(cors());
 
