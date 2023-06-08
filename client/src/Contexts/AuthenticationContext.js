@@ -60,7 +60,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   ], []);
 
   const userIsAdmin = useMemo(() =>
-    true || (user && admins.includes(user.email))
+    (user && admins.includes(user.email))
   , [admins, user]);
 
 return (
