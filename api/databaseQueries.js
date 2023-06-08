@@ -13,12 +13,12 @@ const deleteWordRoot =
 const getRelatedWords =
   'SELECT kapvorto, vorto, difino ' +
   'FROM public.difinoj ' + 
-  'WHERE kapvorto = $1';
+  'WHERE kapvorto = $1;';
 
 const upsertWord =
   'INSERT INTO public.difinoj (kapvorto, vorto, difino) ' +
   'VALUES ($1, $2, $3) ' +
-  'ON CONFLICT (kapvorto, vorto) DO UPDATE SET difino = excluded.difino';
+  'ON CONFLICT (kapvorto, vorto) DO UPDATE SET difino = excluded.difino;';
 
 const deleteWord = 
   'DELETE FROM public.difinoj ' +
@@ -29,14 +29,14 @@ const getImages =
   'SELECT kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo ' +
   'FROM public.bildoj ' +
   'WHERE kapvorto = $1 ' +
-  'AND vorto = $2';
+  'AND vorto = $2;';
 
 const upsertImageMetadata =
 'INSERT INTO public.bildoj (kapvorto, vorto, bildadreso, atribuo) ' +
 'VALUES ($1, $2, $3, $4) ' +
 'ON CONFLICT (kapvorto, vorto) DO UPDATE SET ' + 
 'bildadreso = excluded.bildadreso, ' +
-'atribuo = excluded.atribuo';
+'atribuo = excluded.atribuo;';
 
 const upsertImage =
   'INSERT INTO public.bildoj (kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo) ' +
@@ -45,12 +45,13 @@ const upsertImage =
   'bilddatumo = excluded.bilddatumo, ' +
   'mimetipo = excluded.mimetipo, ' +
   'bildadreso = excluded.bildadreso, ' +
-  'atribuo = excluded.atribuo';
+  'atribuo = excluded.atribuo;';
 
-const deleteImage =
+const deleteRemainingImages =
   'DELETE FROM public.bildoj ' +
   'WHERE kapvorto = $1 ' +
-  'AND vorto = $2';
+  'AND vorto = $2 ' +
+  'AND indekso >= $3;';
 
 module.exports = {
   getWordRoots,
@@ -62,5 +63,5 @@ module.exports = {
   getImages,
   upsertImageMetadata,
   upsertImage,
-  deleteImage,
+  deleteRemainingImages,
 };

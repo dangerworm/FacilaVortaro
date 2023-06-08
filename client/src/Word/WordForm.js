@@ -58,7 +58,13 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
   }
 
   const deleteCurrentImage = (index) => {
-    setWord(current => ({ ...current, images: current.images.filter((_, i) => i !== index) }))
+    setWord(current => ({ 
+      ...current,
+      images: current.images
+        .filter((_, i) => i !== index)
+        .map((image, i) => ({ ...image, indekso: i }))
+    }));
+
     clearControls();
   }
 
@@ -101,11 +107,13 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
       {word.images && word.images.map((image, index) => (
         <>
           {editIndex !== index && (
-            <Grid item xs={3} sx={{ textAlign: 'center' }}>
+            <Grid item xs={4} sx={{ textAlign: 'center' }}>
               <ImageView
                 key={index}
                 image={image}
-                startEditing={startEditing}
+                showEditControls={true}
+                startEditing={_ => startEditing(index)}
+                deleteImage={_ => deleteCurrentImage(index)}
               />
             </Grid>
           )}

@@ -13,7 +13,7 @@ const {
   getImages,
   upsertImageMetadata,
   upsertImage,
-  deleteImage,
+  deleteRemainingImages,
 } = require('./databaseQueries');
 
 const app = express();
@@ -189,6 +189,15 @@ app.post('/api/upsert-word', async (request, response) => {
             atribuo
           ]
         );
+
+      await client.query(
+        deleteRemainingImages,
+        [
+          kapvorto,
+          vorto,
+          images.length
+        ]
+      );
       }
     }
 
@@ -240,77 +249,6 @@ app.post('/api/get-images', async (request, response) => {
   const rows = result.rows;
   response.json(rows);
   client.release();
-});
-
-app.post('/api/upsert-image', async (request, response) => {
-  const {
-    kapvorto,
-    vorto,
-    bilddatumo,
-    mimetipo,
-    bildadreso,
-    atribuo } = request.body;
-
-  const client = await pool.connect();
-
-  try {
-    if (!bilddatumo) {
-      const result = await client.query(
-        upsertImageMetadata,
-        [
-          kapvorto,
-          vorto,
-          bildadreso,
-          atribuo
-        ]
-      );
-      response.status(200).json(result);
-    }
-    else {
-      const result = await client.query(
-        upsertImage,
-        [
-          kapvorto,
-          vorto,
-          bilddatumo,
-          mimetipo,
-          bildadreso,
-          atribuo
-        ]
-      );
-      response.status(200).json(result);
-    }
-  }
-  catch (error) {
-    console.log(error);
-    response.status(500).json(error);
-  }
-  finally {
-    client.release();
-  }
-});
-
-app.post('/api/delete-image', async (request, response) => {
-  const { kapvorto, vorto } = request.body;
-
-  const client = await pool.connect();
-
-  try {
-    const result = await client.query(
-      deleteImage,
-      [
-        kapvorto,
-        vorto,
-      ]
-    );
-    response.status(200).json(result);
-  }
-  catch (error) {
-    response.status(500).json(error);
-  }
-  finally {
-    client.release();
-  }
 });
 
 app.listen(port, () => {

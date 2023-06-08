@@ -24,10 +24,11 @@ export const WordView = ({ word, startEditing }) => {
         <Typography variant='body1' sx={{ mb: 1 }}>{difino}</Typography>
       </Grid>
       {images && images.map((image, index) => (
-        <Grid key={index} item xs={3} sx={{ textAlign: 'center' }}>
+        <Grid key={index} item xs={4} sx={{ textAlign: 'center' }}>
           <ImageView
             image={image}
-            startEditing={startEditing} />
+            showEditControls={false}
+          />
         </Grid>
       ))}
     </Grid>

@@ -44,12 +44,12 @@ export const SideBar = () => {
       <div style={{
         left: "1em",
         fontSize: "120%",
-        marginBottom: '1em',
+        margin: '0.25em 0 1em 2em',
         position: "absolute",
         top: "1em",
         width: "50%"
       }}>
-        Facila Vortaro
+        Vortaro por Lernantoj
       </div>
       <Toolbar
         sx={{

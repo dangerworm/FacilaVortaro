@@ -24,7 +24,7 @@ export const Search = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
-      <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
+      <Grid item xs={12} sx={{ m: 2 }}>
         <TextField
           fullWidth
           id="serĉu"
