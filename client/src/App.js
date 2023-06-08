@@ -3,7 +3,7 @@ import { ThemeProvider } from '@emotion/react';
 import { Box, createTheme, CssBaseline } from '@mui/material';
 import { Main } from './Main';
 import { AuthenticationContextProvider } from './Contexts/AuthenticationContext';
-import { WordsContextProvider } from './Contexts/WordsContext';
+import { DatabaseContextProvider } from './Contexts/DatabaseContext';
 import './App.css';
 
 const mdTheme = createTheme();
@@ -13,12 +13,12 @@ function App() {
     <div className="App">
       <ThemeProvider theme={mdTheme}>
         <AuthenticationContextProvider>
-          <WordsContextProvider>
+          <DatabaseContextProvider>
             <Box sx={{ display: 'flex' }}>
               <CssBaseline />
               <Main />
             </Box>
-          </WordsContextProvider>
+          </DatabaseContextProvider>
         </AuthenticationContextProvider>
       </ThemeProvider>
     </div>

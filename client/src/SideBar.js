@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import { List, ListItemButton, Toolbar } from '@mui/material';
 import { Loading } from './Loading';
 import { Search } from './Search';
-import { useWordsContext } from './Contexts/WordsContext';
+import { useDatabaseContext } from './Contexts/DatabaseContext';
 import MuiDrawer from '@mui/material/Drawer';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 );
 
 export const SideBar = () => {
-  const { loadingWordRoots, query, searchResults, setWordRoot } = useWordsContext();
+  const { loadingWordRoots, query, searchResults, setWordRoot } = useDatabaseContext();
 
   return (
     <StyledDrawer variant="permanent" open={true}>

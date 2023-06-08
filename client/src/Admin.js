@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
-import { useWordsContext } from './Contexts/WordsContext';
+import { useDatabaseContext } from './Contexts/DatabaseContext';
 import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 
 export const Admin = () => {
   const { userIsAdmin } = useAuthenticationContext();
-  const { addWordRoot, addingWordRootSuccessful, wordRootError } = useWordsContext();
+  const { addWordRoot, addingWordRootSuccessful, wordRootError } = useDatabaseContext();
 
   const [wordRoot, setWordRoot] = React.useState('');
   const [showResponse, setShowResponse] = React.useState(false);

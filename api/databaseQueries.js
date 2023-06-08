@@ -15,7 +15,7 @@ const getRelatedWords =
   'FROM public.difinoj ' + 
   'WHERE kapvorto = $1';
 
-const upsertDefinition =
+const upsertWord =
   'INSERT INTO public.difinoj (kapvorto, vorto, difino) ' +
   'VALUES ($1, $2, $3) ' +
   'ON CONFLICT (kapvorto, vorto) DO UPDATE SET difino = excluded.difino';
@@ -26,7 +26,7 @@ const deleteWord =
   'AND vorto = $2;';
 
 const getImages =
-  'SELECT kapvorto, vorto, bilddatumo, mimetipo, bildadreso, kredito ' +
+  'SELECT kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, kredito ' +
   'FROM public.bildoj ' +
   'WHERE kapvorto = $1 ' +
   'AND vorto = $2';
@@ -39,9 +39,9 @@ const upsertImageMetadata =
 'kredito = excluded.kredito';
 
 const upsertImage =
-  'INSERT INTO public.bildoj (kapvorto, vorto, bilddatumo, mimetipo, bildadreso, kredito) ' +
-  'VALUES ($1, $2, $3, $4, $5, $6) ' +
-  'ON CONFLICT (kapvorto, vorto) DO UPDATE SET ' + 
+  'INSERT INTO public.bildoj (kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, kredito) ' +
+  'VALUES ($1, $2, $3, $4, $5, $6, $7) ' +
+  'ON CONFLICT (kapvorto, vorto, indekso) DO UPDATE SET ' + 
   'bilddatumo = excluded.bilddatumo, ' +
   'mimetipo = excluded.mimetipo, ' +
   'bildadreso = excluded.bildadreso, ' +
@@ -57,7 +57,7 @@ module.exports = {
   addWordRoot,
   deleteWordRoot,
   getRelatedWords,
-  upsertDefinition,
+  upsertWord,
   deleteWord,
   getImages,
   upsertImageMetadata,

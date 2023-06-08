@@ -8,7 +8,7 @@ const {
   addWordRoot,
   deleteWordRoot,
   getRelatedWords,
-  upsertDefinition,
+  upsertWord,
   deleteWord,
   getImages,
   upsertImageMetadata,
@@ -114,25 +114,68 @@ app.post('/api/get-related-words', async (request, response) => {
     ]
   );
 
-  const rows = result.rows;
-  response.json(rows);
+  if (result.rows)
+  {
+    for (let row of result.rows) {
+      const imagesResult = await client.query(
+        getImages,
+        [
+          row.kapvorto,
+          row.vorto
+        ]
+      );
+
+      row.images = imagesResult.rows.map(image => {
+        return {
+          kapvorto: image.kapvorto,
+          vorto: image.vorto,
+          indekso: image.indekso,
+          bilddatumo: image.bilddatumo,
+          mimetipo: image.mimetipo,
+          bildadreso: image.bildadreso,
+          kredito: image.kredito
+        }
+      });
+    }
+  }
+
+  response.json(result.rows);
   client.release();
 });
 
-app.post('/api/upsert-definition', async (request, response) => {
-  const { kapvorto, vorto, difino } = request.body;
+app.post('/api/upsert-word', async (request, response) => {
+  const { kapvorto, vorto, difino, images } = request.body;
 
   const client = await pool.connect();
 
   try {
     const result = await client.query(
-      upsertDefinition,
+      upsertWord,
       [
         kapvorto,
         vorto,
         difino
       ]
     );
+
+    if (images) {
+      for (const image of images) {
+        const { indekso, bilddatumo, mimetipo, bildadreso, kredito } = image;
+        await client.query(
+          upsertImage,
+          [
+            kapvorto,
+            vorto,
+            indekso,
+            bilddatumo,
+            mimetipo,
+            bildadreso,
+            kredito
+          ]
+        );
+      }
+    }
+
     response.status(200).json(result);
   }
   catch (error) {

@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Grid, TextField } from "@mui/material";
-import { useWordsContext } from "./Contexts/WordsContext";
+import { useDatabaseContext } from "./Contexts/DatabaseContext";
 
 const alphabet = "abcĉdefgĝhĥijĵklmnoprsŝtuŭvz";
 const keyboard = "ŝĝertŭuiopĵĥasdfghjklzĉcvbnm";
 
 export const Search = () => {
-  const { query, setQuery } = useWordsContext();
+  const { query, setQuery } = useDatabaseContext();
 
   const [letterLayout, setLetterLayout] = React.useState(alphabet);
 

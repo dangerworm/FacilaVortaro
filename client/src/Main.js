@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import { Header } from "./Header";
 import { SideBar } from "./SideBar";
-import { Word } from "./Word";
+import { WordRoot } from "./WordRoot";
 import { Admin } from "./Admin";
 import { Footer } from "./Footer";
 
@@ -28,7 +28,7 @@ export const Main = () => {
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Routes>
-            <Route path="/" element={<Word />} />
+            <Route path="/" element={<WordRoot />} />
             <Route path="/admin" element={<Admin />} />
           </Routes>
           <Footer />

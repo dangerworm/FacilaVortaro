@@ -2,27 +2,27 @@ import { sortAlphabeticallyInEsperanto } from "Helpers/alphabetisation";
 import axios from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
-export const WordsContext = createContext(null);
+export const DatabaseContext = createContext(null);
 
-export const WordsContextProvider = ({ children }) => {
+export const DatabaseContextProvider = ({ children }) => {
   const [loadingWordRoots, setLoadingWordRoots] = useState(false);
   const [wordRoots, setWordRoots] = useState([]);
+  const [addingWordRoot, setAddingWordRoot] = useState(false);
+  const [deletingWordRoot, setDeletingWordRoot] = useState(false);
+  const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
+  const [wordRootError, setWordRootError] = useState(undefined);
   const [query, setQuery] = useState("");
   const [wordRoot, setWordRoot] = useState("");
   const [loadingRelatedWords, setLoadingRelatedWords] = useState(false);
   const [relatedWords, setRelatedWords] = useState([]);
   const [loadingImages, setLoadingImages] = useState(false);
   const [images, setImages] = useState([]);
-  const [addingWordRoot, setAddingWordRoot] = useState(false);
-  const [deletingWordRoot, setDeletingWordRoot] = useState(false);
-  const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
-  const [wordRootError, setWordRootError] = useState(undefined);
-  const [performingUpsert, setPerformingUpsert] = useState(false);
-  const [upsertSuccessful, setUpsertSuccessful] = useState(undefined);
+  const [upsertingWord, setUpsertingWord] = useState(false);
+  const [upsertingWordSuccessful, setUpsertingWordSuccessful] = useState(undefined);
   const [deletingWord, setDeletingWord] = useState(false);
   const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
-  //*
+  /*
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
   /*/
   const baseUrl = "http://localhost:5000/api";
@@ -106,42 +106,29 @@ export const WordsContextProvider = ({ children }) => {
   }, [baseUrl])
 
 
-  const upsertWord = async (vorto, difino, bilddatumo, mimetipo, bildadreso, kredito) => {
-    setPerformingUpsert(true);
-    setUpsertSuccessful(undefined);
+  const upsertWord = async (word) => {
+    const { kapvorto, vorto, difino, images } = word;
+
+    setUpsertingWord(true);
+    setUpsertingWordSuccessful(undefined);
 
     axios
-      .post(`${baseUrl}/upsert-definition`, {
-        kapvorto: wordRoot,
+      .post(`${baseUrl}/upsert-word`, {
+        kapvorto,
         vorto,
         difino,
+        images
       })
       .then((response) => {
-        axios
-          .post(`${baseUrl}/upsert-image`, {
-            kapvorto: wordRoot,
-            vorto,
-            bilddatumo,
-            mimetipo,
-            bildadreso,
-            kredito,
-          })
-          .then((response) => {
-            setUpsertSuccessful(true);
-          })
-          .catch((error) => {
-            console.log(error);
-            setUpsertSuccessful(false);
-          });
-
-        getRelatedWords(wordRoot);
+        setUpsertingWordSuccessful(true);
+        refreshRelatedWords();
       })
       .catch((error) => {
         console.log(error);
-        setUpsertSuccessful(false);
+        setUpsertingWordSuccessful(false);
       })
       .finally(() => {
-        setPerformingUpsert(false);
+        setUpsertingWord(false);
       });
   }
 
@@ -156,7 +143,7 @@ export const WordsContextProvider = ({ children }) => {
       })
       .then((response) => {
         setDeletingWordSuccessful(true);
-        getRelatedWords(kapvorto);
+        refreshRelatedWords();
       })
       .catch((error) => {
         console.log(error);
@@ -181,6 +168,11 @@ export const WordsContextProvider = ({ children }) => {
       })
   }
 
+  const refreshRelatedWords = useCallback(async () => {
+    setRelatedWords([]);
+    getRelatedWords(wordRoot)
+  }, [getRelatedWords, wordRoot])
+
   const searchResults = useMemo(() => {
     return wordRoots.filter((word) => {
       return word.kapvorto?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
@@ -193,36 +185,12 @@ export const WordsContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (wordRoot) {
-      setRelatedWords([]);
-      getRelatedWords(wordRoot);
+      refreshRelatedWords();
     }
-  }, [getRelatedWords, wordRoot]);
-
-  useEffect(() => {
-    if (!relatedWords || relatedWords.length === 0) {
-      return;
-    }
-
-    setImages([]);
-    setLoadingImages(true);
-
-    const fetchData = async () => {
-      for (let word of relatedWords) {
-        await getImages(word.kapvorto, word.vorto, (kapvorto, vorto, images) => {
-          for (let imageData of images) {
-            setImages(current => [...current, { kapvorto, vorto, bilddatumo: imageData.bilddatumo, mimetipo: imageData.mime_tipo }]);
-          }
-
-          setLoadingImages(false);
-        });
-      }
-    }
-
-    fetchData();
-  }, [relatedWords]);
+  }, [refreshRelatedWords, wordRoot]);
 
   return (
-    <WordsContext.Provider
+    <DatabaseContext.Provider
       value={{
         loadingWordRoots,
         setQuery,
@@ -230,7 +198,7 @@ export const WordsContextProvider = ({ children }) => {
         searchResults,
         setWordRoot,
         wordRoot,
-        getRelatedWords,
+        refreshRelatedWords,
         loadingRelatedWords,
         setRelatedWords,
         relatedWords,
@@ -242,20 +210,20 @@ export const WordsContextProvider = ({ children }) => {
         deletingWordRoot,
         wordRootError,
         upsertWord,
-        performingUpsert,
-        upsertSuccessful,
+        upsertingWord,
+        upsertingWordSuccessful,
         deleteWord,
         deletingWord,
         deletingWordSuccessful
       }}
     >
       {children}
-    </WordsContext.Provider>
+    </DatabaseContext.Provider>
   );
 }
 
-export const useWordsContext = () => {
-  const context = useContext(WordsContext);
+export const useDatabaseContext = () => {
+  const context = useContext(DatabaseContext);
   if (context) return context;
 
   throw Error("Words context was not registered");
