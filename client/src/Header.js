@@ -91,7 +91,6 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
                     borderRadius: '50%',
                     height: 50,
                     width: 50,
-                    marginLeft: '1em',
                     maxHeight: { xs: 50, md: 100 },
                     maxWidth: { xs: 50, md: 100 },
                   }}
@@ -110,10 +109,10 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
               'aria-labelledby': 'basic-button',
             }}>
             {!user && (
-              <MenuItem onClick={() => setDialogVisible(true)}>Log in</MenuItem>
+              <MenuItem onClick={() => setDialogVisible(true)}>Ensalutu</MenuItem>
             )}
             {user && (
-              <MenuItem component={Link} to='/' onClick={handleLogout}>Log out</MenuItem>
+              <MenuItem component={Link} to='/' onClick={handleLogout}>Elsalutu</MenuItem>
             )}
           </Menu>
         </Toolbar>
