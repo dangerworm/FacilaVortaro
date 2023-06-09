@@ -9,7 +9,7 @@ import { Admin } from "./Admin";
 import { Footer } from "./Footer";
 
 export const Main = () => {
-  const [sideBarOpen, setSideBarOpen] = React.useState(false);
+  const [sideBarOpen, setSideBarOpen] = React.useState(true);
 
   const toggleSideBarOpen = () => {
     setSideBarOpen(!sideBarOpen);
