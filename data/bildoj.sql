@@ -5,7 +5,7 @@ CREATE TABLE public.bildoj (
     bilddatumo TEXT NULL,
     mimetipo TEXT NULL,
     bildadreso TEXT NULL,
-    kredito TEXT NULL,
+    atribuo TEXT NULL,
 
     CONSTRAINT pk_bildoj PRIMARY KEY (kapvorto, vorto, indekso),
     CONSTRAINT uq_bildoj_kapvorto_vorto UNIQUE (kapvorto, vorto, indekso),

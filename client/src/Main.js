@@ -9,10 +9,16 @@ import { Admin } from "./Admin";
 import { Footer } from "./Footer";
 
 export const Main = () => {
+  const [sideBarOpen, setSideBarOpen] = React.useState(false);
+
+  const toggleSideBarOpen = () => {
+    setSideBarOpen(!sideBarOpen);
+  };
+
   return (
     <>
-      <Header />
-      <SideBar />
+      <Header sideBarOpen={sideBarOpen} toggleSideBarOpen={toggleSideBarOpen} />
+      <SideBar sideBarOpen={sideBarOpen} toggleSideBarOpen={toggleSideBarOpen} />
       <Box
         component="main"
         sx={{

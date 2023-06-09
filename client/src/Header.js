@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { AppBar, Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography, rgbToHex } from "@mui/material"
+import { Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system";
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import PersonIcon from '@mui/icons-material/Person';
 import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
+import { AppBar } from "./AppBar";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonIcon from '@mui/icons-material/Person';
 
-export const Header = () => {
+export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
   const { authenticateUser, user, userIsAdmin, logout } = useAuthenticationContext();
 
   const [anchorElement, setAnchorElement] = useState();
@@ -39,13 +41,26 @@ export const Header = () => {
 
   return (
     <>
-      <AppBar>
+      <AppBar position={'absolute'} open={sideBarOpen}>
         <Toolbar
           sx={{
             pr: '24px', // keep right padding when drawer closed
             backgroundColor: 'rgb(0,154,43)'
           }}
         >
+          <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={toggleSideBarOpen}
+          sx={{
+            marginLeft: '6px',
+            marginRight: '36px',
+            ...(sideBarOpen && { display: 'none' }),
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
           <Typography
             component="h1"
             variant="h6"
@@ -53,6 +68,7 @@ export const Header = () => {
             noWrap
             sx={{ flexGrow: 1 }}
           >
+            Vortaro por Lernantoj
           </Typography>
           {userIsAdmin && (
             <Link to='/admin' style={{ color: 'inherit', textDecoration: 'none' }}>
@@ -75,7 +91,6 @@ export const Header = () => {
                     borderRadius: '50%',
                     height: 50,
                     width: 50,
-                    marginLeft: '1em',
                     maxHeight: { xs: 50, md: 100 },
                     maxWidth: { xs: 50, md: 100 },
                   }}
@@ -94,10 +109,10 @@ export const Header = () => {
               'aria-labelledby': 'basic-button',
             }}>
             {!user && (
-              <MenuItem onClick={() => setDialogVisible(true)}>Log in</MenuItem>
+              <MenuItem onClick={() => setDialogVisible(true)}>Ensalutu</MenuItem>
             )}
             {user && (
-              <MenuItem component={Link} to='/' onClick={handleLogout}>Log out</MenuItem>
+              <MenuItem component={Link} to='/' onClick={handleLogout}>Elsalutu</MenuItem>
             )}
           </Menu>
         </Toolbar>
