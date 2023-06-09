@@ -1,5 +1,5 @@
 import { sortAlphabeticallyInEsperanto } from "Helpers/alphabetisation";
-import { removePunctuation } from "Helpers/word-display";
+import { cleanseWord } from "Helpers/word-display";
 import axios from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
@@ -155,20 +155,6 @@ export const DatabaseContextProvider = ({ children }) => {
       });
   }
 
-  const getImages = async (kapvorto, vorto, callback) => {
-    axios
-      .post(`${baseUrl}/get-images`, {
-        kapvorto,
-        vorto,
-      })
-      .then((response) => {
-        callback(kapvorto, vorto, response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-
   const refreshRelatedWords = useCallback(async () => {
     setRelatedWords([]);
     getRelatedWords(wordRoot)
@@ -176,7 +162,7 @@ export const DatabaseContextProvider = ({ children }) => {
 
   const searchResults = useMemo(() => {
     return wordRoots.filter((word) => {
-      return removePunctuation(word.kapvorto)?.toLowerCase().substring(0, query.length).includes(query.toLowerCase());
+      return cleanseWord(word.kapvorto)?.substring(0, query.length).includes(query.toLowerCase());
     })
   }, [query, wordRoots]);
 

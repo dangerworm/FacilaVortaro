@@ -1,20 +1,25 @@
-import { removeAllCharactersExceptLetters, removePunctuation } from "./word-display";
+import { cleanseWord } from "./word-display";
 
-export const incorrectAlphabet = "abĉcdefĝgĥhiĵjklmnoprŝstŭuvz";
 export const alphabet = "abcĉdefgĝhĥijĵklmnoprsŝtuŭvz";
 
-const cleanseWord = (word) =>
-  removeAllCharactersExceptLetters(removePunctuation(word.toLowerCase()));
+const getEsperantoAlphabetIndex = (letter) =>
+` ${alphabet}`.indexOf(letter) || letter.charCodeAt(0);
 
-const translate = (word, incorrectAlphabet, correctAlphabetOrder) =>
-  word.split('').map((letter) => 
-    correctAlphabetOrder[incorrectAlphabet.indexOf(letter)] || letter
-  ).join('');
+const comparer = (a, b) => {
+  for (let i = 0; i < Math.min(a.length, b.length); i++) {
+    const x = getEsperantoAlphabetIndex(a[i]);
+    const y = getEsperantoAlphabetIndex(b[i]);
+
+    if (x > y) return 1;
+    if (x < y) return -1;
+  }
+
+  return 0;
+}
 
 export const sortAlphabeticallyInEsperanto = (a, b, key) => {
-  const x = cleanseWord(a[key]);
-  const y = cleanseWord(b[key]);
+  a = cleanseWord(a[key]);
+  b = cleanseWord(b[key]);
 
-  return translate(x, incorrectAlphabet, alphabet)
-    .localeCompare(translate(y, incorrectAlphabet, alphabet));
-}
+  return comparer(a, b);
+};
