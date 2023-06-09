@@ -103,12 +103,16 @@ export const WordRoot = () => {
             </Typography>
           </Grid>
         )}
-        {wordRoot && (
-          <Grid item xs={4}>
+        {wordRoot && !userIsAdmin && (
+          <Grid item xs={12}>
             <h1 style={{ marginTop: '1em' }}>{removePunctuation(wordRoot)}</h1>
           </Grid>
         )}
         {wordRoot && userIsAdmin && (
+          <>
+          <Grid item xs={4}>
+            <h1 style={{ marginTop: '1em' }}>{removePunctuation(wordRoot)}</h1>
+          </Grid>
           <Grid item xs={8} sx={{ marginTop: '2.5em', textAlign: 'right' }}>
             <Button variant='outlined' color={'primary'} onClick={addNewWord}>
               Aldonu vorton
@@ -117,6 +121,7 @@ export const WordRoot = () => {
               Forigu kapvorton
             </Button>
           </Grid>
+          </>
         )}
         {loadingRelatedWords && (
           <Grid item xs={12} sx={{ ml: 2, mr: 2, textAlign: 'center' }}>
