@@ -1,10 +1,20 @@
-const getWordRoots =
+const getWordList =
+  'SELECT kapvorto, vorto ' +
+  'FROM public.difinoj;';
+
+const getWordRoot = 
   'SELECT kapvorto ' +
-  'FROM public.kapvortoj;';
+  'FROM public.kapvortoj ' +
+  'WHERE kapvorto = $1;';
 
 const addWordRoot =
   'INSERT INTO public.kapvortoj (kapvorto) ' +
   'VALUES ($1);';
+
+const addWordRootWord =
+  'INSERT INTO public.difinoj (kapvorto, vorto, difino) ' +
+  'VALUES ($1, $1, \'\') ' +
+  'ON CONFLICT (kapvorto, vorto) DO NOTHING;'
 
 const deleteWordRoot =
   'DELETE FROM public.kapvortoj ' +
@@ -54,8 +64,10 @@ const deleteRemainingImages =
   'AND indekso >= $3;';
 
 module.exports = {
-  getWordRoots,
+  getWordList,
+  getWordRoot,
   addWordRoot,
+  addWordRootWord,
   deleteWordRoot,
   getRelatedWords,
   upsertWord,

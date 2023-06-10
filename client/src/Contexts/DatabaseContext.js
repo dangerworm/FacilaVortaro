@@ -6,18 +6,16 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 export const DatabaseContext = createContext(null);
 
 export const DatabaseContextProvider = ({ children }) => {
-  const [loadingWordRoots, setLoadingWordRoots] = useState(false);
-  const [wordRoots, setWordRoots] = useState([]);
+  const [loadingWordList, setLoadingWordList] = useState(false);
+  const [wordList, setWordList] = useState([]);
   const [addingWordRoot, setAddingWordRoot] = useState(false);
-  const [deletingWordRoot, setDeletingWordRoot] = useState(false);
   const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
+  const [deletingWordRoot, setDeletingWordRoot] = useState(false);
   const [wordRootError, setWordRootError] = useState(undefined);
   const [query, setQuery] = useState("");
   const [wordRoot, setWordRoot] = useState("");
   const [loadingRelatedWords, setLoadingRelatedWords] = useState(false);
   const [relatedWords, setRelatedWords] = useState([]);
-  const [loadingImages, setLoadingImages] = useState(false);
-  const [images, setImages] = useState([]);
   const [upsertingWord, setUpsertingWord] = useState(false);
   const [upsertingWordSuccessful, setUpsertingWordSuccessful] = useState(undefined);
   const [deletingWord, setDeletingWord] = useState(false);
@@ -29,24 +27,24 @@ export const DatabaseContextProvider = ({ children }) => {
   const baseUrl = "http://localhost:5000/api";
   //*/
 
-  const getWordRoots = async () => {
-    setLoadingWordRoots(true);
+  const getWordList = async () => {
+    setLoadingWordList(true);
 
     axios
-      .post(`${baseUrl}/get-word-roots`)
+      .post(`${baseUrl}/get-word-list`)
       .then((response) => {
-        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'kapvorto'));
-        setWordRoots(response.data);
+        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'difino'));
+        setWordList(response.data);
       })
       .catch((error) => {
         console.log(error);
       })
       .finally(() => {
-        setLoadingWordRoots(false);
+        setLoadingWordList(false);
       });
   }
 
-  const addWordRoot = async (kapvorto) => {
+  const addWordRoot = async (kapvorto, onSuccess) => {
     setAddingWordRoot(true);
 
     axios
@@ -55,7 +53,8 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .then((response) => {
         setAddingWordRootSuccessful(true);
-        getWordRoots();
+        getWordList();
+        onSuccess && onSuccess();
       })
       .catch((error) => {
         setAddingWordRootSuccessful(false);
@@ -74,7 +73,7 @@ export const DatabaseContextProvider = ({ children }) => {
         kapvorto
       })
       .then((response) => {
-        getWordRoots();
+        getWordList();
       })
       .catch((error) => {
         console.log(error);
@@ -161,13 +160,13 @@ export const DatabaseContextProvider = ({ children }) => {
   }, [getRelatedWords, wordRoot])
 
   const searchResults = useMemo(() => {
-    return wordRoots.filter((word) => {
-      return cleanseWord(word.kapvorto)?.substring(0, query.length).includes(query.toLowerCase());
+    return wordList.filter((word) => {
+      return cleanseWord(word.vorto)?.substring(0, query.length).includes(query.toLowerCase());
     })
-  }, [query, wordRoots]);
+  }, [query, wordList]);
 
   useEffect(() => {
-    getWordRoots();
+    getWordList();
   }, []);
 
   useEffect(() => {
@@ -179,7 +178,7 @@ export const DatabaseContextProvider = ({ children }) => {
   return (
     <DatabaseContext.Provider
       value={{
-        loadingWordRoots,
+        loadingWordList,
         setQuery,
         query,
         searchResults,
@@ -189,7 +188,6 @@ export const DatabaseContextProvider = ({ children }) => {
         loadingRelatedWords,
         setRelatedWords,
         relatedWords,
-        images,
         addWordRoot,
         addingWordRoot,
         addingWordRootSuccessful,

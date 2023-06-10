@@ -69,7 +69,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
   }
 
   return (
-    <Grid container spacing={2} sx={{ ml: 0, mt: 2, textAlign: 'left' }}>
+    <Grid container spacing={2}>
       <Grid item xs={6} sx={{ m: 0 }}>
         {isNewWord && (
           <TextField

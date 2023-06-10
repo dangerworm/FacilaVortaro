@@ -78,16 +78,16 @@ export const SideBar = ({ sideBarOpen, toggleSideBarOpen }) => {
       )}
       {!loadingWordRoots && query && searchResults && (
         <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
-          {searchResults.map(({ kapvorto }) => (
+          {searchResults.map(({ kapvorto, vorto }) => (
             <ListItemButton
               component={Link}
               to='/'
-              key={kapvorto}
+              key={`${kapvorto}-${vorto}`}
               onClick={() => setWordRoot(kapvorto)}
               sx={{
                 paddingLeft: '2.8em'
               }}>
-              {removePunctuation(kapvorto)}
+              {removePunctuation(vorto)}
             </ListItemButton>
           ))}
         </List>

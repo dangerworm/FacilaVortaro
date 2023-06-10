@@ -129,7 +129,7 @@ export const WordRoot = () => {
           </Grid>
         )}
         {relatedWords && relatedWords.map((word, index) => (
-          <div key={index}>
+          <Grid key={index} item xs={12}>
             {(wordBeingEdited.kapvorto !== wordRoot || editIndex !== index) && (
               <WordView
                 key={index}
@@ -146,7 +146,7 @@ export const WordRoot = () => {
                 cancelWordEditing={_ => cancelEditing(index)}
                 deleteWord={_ => deleteCurrentWord(index)} />
             )}
-          </div>
+          </Grid>
         ))}
       </Grid>
     </Paper >

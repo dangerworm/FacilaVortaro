@@ -9,7 +9,7 @@ export const WordView = ({ word, startEditing }) => {
   const { userIsAdmin } = useAuthenticationContext();
 
   return (
-    <Grid container spacing={2} sx={{ ml: 0, mt: 2, textAlign: 'left' }}>
+    <Grid container spacing={2}>
       <Grid item xs={6} sx={{ m: 0 }}>
         <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{removePunctuation(vorto)}</h3>
       </Grid>

@@ -4,14 +4,15 @@ const express = require('express');
 
 const { Pool } = require('pg');
 const {
-  getWordRoots,
+  getWordList,
+  getWordRoot,
   addWordRoot,
+  addWordRootWord,
   deleteWordRoot,
   getRelatedWords,
   upsertWord,
   deleteWord,
   getImages,
-  upsertImageMetadata,
   upsertImage,
   deleteRemainingImages,
 } = require('./databaseQueries');
@@ -68,9 +69,9 @@ app.options('*', (request, response) => {
   response.sendStatus(200);
 });
 
-app.post('/api/get-word-roots', async (request, response) => {
+app.post('/api/get-word-list', async (request, response) => {
   const client = await pool.connect();
-  const result = await client.query(getWordRoots);
+  const result = await client.query(getWordList);
 
   const rows = result.rows;
   response.json(rows);
@@ -81,13 +82,23 @@ app.post('/api/add-word-root', async (request, response) => {
   const { kapvorto } = request.body;
 
   const client = await pool.connect();
+  let result;
+
   try {
-    const result = await client.query(
-      addWordRoot,
-      [
-        kapvorto
-      ]
-    );
+    result = await client.query(getWordRoot, [kapvorto]);
+  }
+  catch (error) {
+    response.status(500).json(error);
+    client.release();
+
+    return;
+  }
+
+  try {
+    if (result.rows.length === 0) {
+      result = await client.query(addWordRoot, [kapvorto]);
+      result = await client.query(addWordRootWord, [kapvorto]);
+    }
     response.status(200).json(result);
   }
   catch (error) {
@@ -103,12 +114,7 @@ app.post('/api/delete-word-root', async (request, response) => {
 
   const client = await pool.connect();
   try {
-    const result = await client.query(
-      deleteWordRoot,
-      [
-        kapvorto
-      ]
-    );
+    const result = await client.query(deleteWordRoot, [kapvorto]);
     response.status(200).json(result);
   }
   catch (error) {
@@ -123,15 +129,9 @@ app.post('/api/get-related-words', async (request, response) => {
   const { kapvorto } = request.body;
 
   const client = await pool.connect();
-  const result = await client.query(
-    getRelatedWords,
-    [
-      kapvorto
-    ]
-  );
+  const result = await client.query(getRelatedWords, [kapvorto]);
 
-  if (result.rows)
-  {
+  if (result.rows) {
     for (let row of result.rows) {
       const imagesResult = await client.query(
         getImages,
@@ -165,14 +165,7 @@ app.post('/api/upsert-word', async (request, response) => {
   const client = await pool.connect();
 
   try {
-    const result = await client.query(
-      upsertWord,
-      [
-        kapvorto,
-        vorto,
-        difino
-      ]
-    );
+    const result = await client.query(upsertWord, [kapvorto, vorto, difino]);
 
     if (images) {
       for (const image of images) {
@@ -190,14 +183,14 @@ app.post('/api/upsert-word', async (request, response) => {
           ]
         );
 
-      await client.query(
-        deleteRemainingImages,
-        [
-          kapvorto,
-          vorto,
-          images.length
-        ]
-      );
+        await client.query(
+          deleteRemainingImages,
+          [
+            kapvorto,
+            vorto,
+            images.length
+          ]
+        );
       }
     }
 
@@ -217,13 +210,7 @@ app.post('/api/delete-word', async (request, response) => {
   const client = await pool.connect();
 
   try {
-    const result = await client.query(
-      deleteWord,
-      [
-        kapvorto,
-        vorto,
-      ]
-    );
+    const result = await client.query(deleteWord, [kapvorto, vorto]);
     response.status(200).json(result);
   }
   catch (error) {
@@ -238,13 +225,7 @@ app.post('/api/get-images', async (request, response) => {
   const { kapvorto, vorto } = request.body;
 
   const client = await pool.connect();
-  const result = await client.query(
-    getImages,
-    [
-      kapvorto,
-      vorto
-    ]
-  );
+  const result = await client.query(getImages, [kapvorto, vorto]);
 
   const rows = result.rows;
   response.json(rows);
