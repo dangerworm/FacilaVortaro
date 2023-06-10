@@ -21,6 +21,15 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
     setAnchorElement(event.currentTarget);
   }
 
+  const handleUserMenuClose = () => {
+    setAnchorElement(undefined);
+  }
+
+  const showLoginDialog = () => {
+    setDialogVisible(true);
+    handleUserMenuClose();
+  }
+
   const onLoginSuccess = (response) => {
     authenticateUser(response.credential)
     setDialogVisible(false);
@@ -28,10 +37,7 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
 
   const onLoginError = (response) => {
     console.log("An error occurred connecting to the Google API");
-  }
-
-  const handleUserMenuClose = () => {
-    setAnchorElement(undefined);
+    setDialogVisible(false);
   }
 
   const handleLogout = () => {
@@ -49,18 +55,18 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
           }}
         >
           <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={toggleSideBarOpen}
-          sx={{
-            marginLeft: '6px',
-            marginRight: '36px',
-            ...(sideBarOpen && { display: 'none' }),
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleSideBarOpen}
+            sx={{
+              marginLeft: '6px',
+              marginRight: '36px',
+              ...(sideBarOpen && { display: 'none' }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography
             component="h1"
             variant="h6"
@@ -109,7 +115,7 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
               'aria-labelledby': 'basic-button',
             }}>
             {!user && (
-              <MenuItem onClick={() => setDialogVisible(true)}>Ensalutu</MenuItem>
+              <MenuItem onClick={() => showLoginDialog()}>Ensalutu</MenuItem>
             )}
             {user && (
               <MenuItem component={Link} to='/' onClick={handleLogout}>Elsalutu</MenuItem>
