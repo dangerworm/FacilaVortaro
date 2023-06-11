@@ -33,7 +33,7 @@ export const DatabaseContextProvider = ({ children }) => {
     axios
       .post(`${baseUrl}/get-word-list`)
       .then((response) => {
-        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'difino'));
+        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'vorto'));
         setWordList(response.data);
       })
       .catch((error) => {

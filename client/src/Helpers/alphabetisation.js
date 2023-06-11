@@ -2,8 +2,10 @@ import { cleanseWord } from "./word-display";
 
 export const alphabet = "abcĉdefgĝhĥijĵklmnoprsŝtuŭvz";
 
-const getEsperantoAlphabetIndex = (letter) =>
-` ${alphabet}`.indexOf(letter) || letter.charCodeAt(0);
+const getEsperantoAlphabetIndex = (letter) => {
+  const index = alphabet.indexOf(letter);
+  return index !== -1 ? index : alphabet.length + letter.charCodeAt(0);
+}
 
 const comparer = (a, b) => {
   for (let i = 0; i < Math.min(a.length, b.length); i++) {
@@ -14,7 +16,7 @@ const comparer = (a, b) => {
     if (x < y) return -1;
   }
 
-  return 0;
+  return a.length - b.length;
 }
 
 export const sortAlphabeticallyInEsperanto = (a, b, key) => {
