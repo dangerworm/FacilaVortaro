@@ -1,18 +1,17 @@
 import React from 'react';
-import { Button, Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { useDatabaseContext } from './Contexts/DatabaseContext';
-import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 import { Loading } from 'Loading';
 import { WordView } from 'Word/WordView';
 import { WordForm } from 'Word/WordForm';
-import { removePunctuation } from 'Helpers/word-display';
-import ConfirmationDialog from 'ConfirmationDialog';
+import { WordRootView } from 'WordRoot/WordRootView';
+import { WordRootForm } from 'WordRoot/WordRootForm';
 
 export const WordRoot = () => {
-  const { userIsAdmin } = useAuthenticationContext();
   const {
     wordRoot,
     setWordRoot,
+    updateWordRoot,
     loadingRelatedWords,
     setRelatedWords,
     relatedWords,
@@ -20,17 +19,16 @@ export const WordRoot = () => {
     upsertWord,
     deleteWord } = useDatabaseContext();
 
+  const [editingWordRoot, setEditingWordRoot] = React.useState(false);
   const [addingNewWord, setAddingNewWord] = React.useState(false);
   const [editIndex, setEditIndex] = React.useState(-1);
   const [wordBeingEdited, setWordBeingEdited] = React.useState({});
-  const [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] = React.useState(false);
-  
-  const openDeleteConfirmationDialog  = () => {
-    setShowDeleteConfirmationDialog(true);
-  }
 
-  const closeDeleteConfirmationDialog = () => {
-    setShowDeleteConfirmationDialog(false);
+
+  const clearControls = (editIndex = -1) => {
+    setAddingNewWord(false);
+    setEditIndex(editIndex);
+    setWordBeingEdited({});
   }
 
   const deleteCurrentWordRoot = () => {
@@ -38,13 +36,22 @@ export const WordRoot = () => {
     setWordRoot('');
     setRelatedWords([]);
     setEditIndex(-1);
-    closeDeleteConfirmationDialog();
   }
 
-  const clearControls = (editIndex = -1) => {
-    setAddingNewWord(false);
-    setEditIndex(editIndex);
-    setWordBeingEdited({});
+  const editWordRoot = () => {
+    setEditingWordRoot(true);
+  }
+
+  const saveWordRoot = (malnovaKapvorto, novaKapvorto) => {
+    updateWordRoot(malnovaKapvorto, novaKapvorto)
+      .then(() => {
+        setWordRoot(novaKapvorto);
+      });
+    setEditingWordRoot(false);
+  }
+
+  const cancelEditingWordRoot = () => {
+    setEditingWordRoot(false);
   }
 
   const addNewWord = () => {
@@ -81,7 +88,7 @@ export const WordRoot = () => {
     if (addingNewWord) {
       setRelatedWords(current => current.map((word, i) => i !== index));
     }
-    
+
     clearControls();
   }
 
@@ -93,72 +100,45 @@ export const WordRoot = () => {
 
   return (
     <>
-    <Paper sx={{ p: 2, pl: 5, pr: 5, pb: 5, minHeight: '50vh' }}>
-      <Grid container spacing={2} textAlign={'left'}>
-        {!wordRoot && (
-          <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
-            <h1>Bonvenon!</h1>
-            <Typography variant={'subtitle1'}>
-              Bonvolu serĉi kaj elekti vorton el la listo maldekstre.
-            </Typography>
-          </Grid>
-        )}
-        {wordRoot && !userIsAdmin && (
-          <Grid item xs={12}>
-            <h1 style={{ marginTop: '1em' }}>{removePunctuation(wordRoot)}</h1>
-          </Grid>
-        )}
-        {wordRoot && userIsAdmin && (
-          <>
-          <Grid item xs={4}>
-            <h1 style={{ marginTop: '1em' }}>{removePunctuation(wordRoot)}</h1>
-          </Grid>
-          <Grid item xs={8} sx={{ marginTop: '2.5em', textAlign: 'right' }}>
-            <Button variant='outlined' color={'primary'} onClick={addNewWord}>
-              Aldonu vorton
-            </Button>
-            <Button variant='outlined' color={'error'} style={{ marginLeft: '1em' }} onClick={openDeleteConfirmationDialog}> {/*deleteCurrentWordRoot}>*/}
-              Forigu kapvorton
-            </Button>
-          </Grid>
-          </>
-        )}
-        {loadingRelatedWords && (
-          <Grid item xs={12} sx={{ ml: 2, mr: 2, textAlign: 'center' }}>
-            <Loading />
-          </Grid>
-        )}
-        {relatedWords && relatedWords.map((word, index) => (
-          <Grid key={index} item xs={12}>
-            {(wordBeingEdited.kapvorto !== wordRoot || editIndex !== index) && (
-              <WordView
-                key={index}
-                word={word}
-                startEditing={_ => startEditing(index)} />
-            )}
-            {wordBeingEdited.kapvorto === wordRoot && editIndex === index && (
-              <WordForm
-                key={index}
-                word={wordBeingEdited}
-                setWord={setWordBeingEdited}
-                isNewWord={addingNewWord}
-                saveWordEdits={saveEdits}
-                cancelWordEditing={_ => cancelEditing(index)}
-                deleteWord={_ => deleteCurrentWord(index)} />
-            )}
-          </Grid>
-        ))}
-      </Grid>
-    </Paper >
-    <ConfirmationDialog
-      open={showDeleteConfirmationDialog}
-      title={'Ĉu vi certas?'}
-      contentText1={'Ĉi tio forigos ĉi tiun kapvorton, ĉiujn ĝiajn difinojn, kaj ĉiujn rilatajn bildojn.'}
-      contentText2={`Ĉu vi vere volas forigi la kapvorton "${wordRoot}"?`}
-      cancelButtonText={'Nuligu'}
-      confirmButtonText={'Konfirmu'}
-      onClose={closeDeleteConfirmationDialog}
-      onConfirm={deleteCurrentWordRoot} />
+      <Paper sx={{ p: 2, pl: 5, pr: 5, pb: 5, minHeight: '50vh' }}>
+        <Grid container spacing={2} textAlign={'left'}>
+          {!wordRoot && (
+            <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
+              <h1>Bonvenon!</h1>
+              <Typography variant={'subtitle1'}>
+                Bonvolu serĉi kaj elekti vorton el la listo maldekstre.
+              </Typography>
+            </Grid>
+          )}
+          {wordRoot && !editingWordRoot && <WordRootView addNewWord={addNewWord} editWordRoot={editWordRoot} />}
+          {wordRoot && editingWordRoot && <WordRootForm saveWordRoot={saveWordRoot} cancelEditing={cancelEditingWordRoot} deleteWordRoot={deleteCurrentWordRoot} />}
+          {loadingRelatedWords && (
+            <Grid item xs={12} sx={{ ml: 2, mr: 2, textAlign: 'center' }}>
+              <Loading />
+            </Grid>
+          )}
+          {relatedWords && relatedWords.map((word, index) => (
+            <Grid key={index} item xs={12}>
+              {(wordBeingEdited.kapvorto !== wordRoot || editIndex !== index) && (
+                <WordView
+                  key={index}
+                  word={word}
+                  startEditing={_ => startEditing(index)} />
+              )}
+              {wordBeingEdited.kapvorto === wordRoot && editIndex === index && (
+                <WordForm
+                  key={index}
+                  word={wordBeingEdited}
+                  setWord={setWordBeingEdited}
+                  isNewWord={addingNewWord}
+                  saveWordEdits={saveEdits}
+                  cancelWordEditing={_ => cancelEditing(index)}
+                  deleteWord={_ => deleteCurrentWord(index)} />
+              )}
+            </Grid>
+          ))}
+        </Grid>
+      </Paper >
     </>
   );
 }

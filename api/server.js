@@ -8,6 +8,7 @@ const {
   getWordRoot,
   addWordRoot,
   addWordRootWord,
+  updateWordRoot,
   deleteWordRoot,
   getRelatedWords,
   upsertWord,
@@ -99,6 +100,25 @@ app.post('/api/add-word-root', async (request, response) => {
       result = await client.query(addWordRoot, [kapvorto]);
       result = await client.query(addWordRootWord, [kapvorto]);
     }
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
+
+app.post('/api/update-word-root', async (request, response) => {
+  const { malnovaKapvorto, novaKapvorto } = request.body;
+
+  const client = await pool.connect();
+  let result;
+
+  try {
+    result = await client.query(updateWordRoot, [malnovaKapvorto, novaKapvorto]);
+
     response.status(200).json(result);
   }
   catch (error) {

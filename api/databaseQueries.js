@@ -13,8 +13,12 @@ const addWordRoot =
 
 const addWordRootWord =
   'INSERT INTO public.difinoj (kapvorto, vorto, difino) ' +
-  'VALUES ($1, $1, \'\') ' +
-  'ON CONFLICT (kapvorto, vorto) DO NOTHING;'
+  'VALUES ($1, $1, \'\');'
+
+const updateWordRoot =
+  'UPDATE public.kapvortoj ' +
+  'SET kapvorto = $2 ' +
+  'WHERE kapvorto = $1;'
 
 const deleteWordRoot =
   'DELETE FROM public.kapvortoj ' +
@@ -62,6 +66,7 @@ module.exports = {
   getWordRoot,
   addWordRoot,
   addWordRootWord,
+  updateWordRoot,
   deleteWordRoot,
   getRelatedWords,
   upsertWord,

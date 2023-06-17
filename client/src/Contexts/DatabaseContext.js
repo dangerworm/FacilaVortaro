@@ -10,6 +10,8 @@ export const DatabaseContextProvider = ({ children }) => {
   const [wordList, setWordList] = useState([]);
   const [addingWordRoot, setAddingWordRoot] = useState(false);
   const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
+  const [updatingWordRoot, setUpdatingWordRoot] = useState(false);
+  const [updatingWordRootSuccessful, setUpdatingWordRootSuccessful] = useState(undefined);
   const [deletingWordRoot, setDeletingWordRoot] = useState(false);
   const [wordRootError, setWordRootError] = useState(undefined);
   const [query, setQuery] = useState("");
@@ -62,6 +64,26 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .finally(() => {
         setAddingWordRoot(false);
+      });
+  }
+
+  const updateWordRoot = async(malnovaKapvorto, novaKapvorto) => {
+    setUpdatingWordRoot(true);
+
+    axios
+      .post(`${baseUrl}/update-word-root`, {
+        malnovaKapvorto,
+        novaKapvorto
+      })
+      .then((response) => {
+        setUpdatingWordRootSuccessful(true);
+        getWordList();
+      })
+      .catch((error) => {
+        setUpdatingWordRootSuccessful(false);
+      })
+      .finally(() => {
+        setUpdatingWordRoot(false);
       });
   }
 
@@ -178,6 +200,7 @@ export const DatabaseContextProvider = ({ children }) => {
   return (
     <DatabaseContext.Provider
       value={{
+        getWordList,
         loadingWordList,
         setQuery,
         query,
@@ -191,6 +214,9 @@ export const DatabaseContextProvider = ({ children }) => {
         addWordRoot,
         addingWordRoot,
         addingWordRootSuccessful,
+        updateWordRoot,
+        updatingWordRoot,
+        updatingWordRootSuccessful,
         deleteWordRoot,
         deletingWordRoot,
         wordRootError,
