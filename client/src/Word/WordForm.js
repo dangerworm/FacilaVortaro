@@ -107,7 +107,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
       {word.images && word.images.map((image, index) => (
         <>
           {editIndex !== index && (
-            <Grid item xs={4} sx={{ textAlign: 'center' }}>
+            <Grid item xs={image.larĝo} sx={{ textAlign: 'center' }}>
               <ImageView
                 key={index}
                 image={image}

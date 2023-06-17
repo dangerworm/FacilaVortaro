@@ -36,26 +36,20 @@ const deleteWord =
   'AND vorto = $2;';
 
 const getImages =
-  'SELECT kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo ' +
+  'SELECT kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo, "larĝo" ' +
   'FROM public.bildoj ' +
   'WHERE kapvorto = $1 ' +
   'AND vorto = $2;';
 
-const upsertImageMetadata =
-'INSERT INTO public.bildoj (kapvorto, vorto, bildadreso, atribuo) ' +
-'VALUES ($1, $2, $3, $4) ' +
-'ON CONFLICT (kapvorto, vorto) DO UPDATE SET ' + 
-'bildadreso = excluded.bildadreso, ' +
-'atribuo = excluded.atribuo;';
-
 const upsertImage =
-  'INSERT INTO public.bildoj (kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo) ' +
-  'VALUES ($1, $2, $3, $4, $5, $6, $7) ' +
+  'INSERT INTO public.bildoj (kapvorto, vorto, indekso, bilddatumo, mimetipo, bildadreso, atribuo, "larĝo") ' +
+  'VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ' +
   'ON CONFLICT (kapvorto, vorto, indekso) DO UPDATE SET ' + 
   'bilddatumo = excluded.bilddatumo, ' +
   'mimetipo = excluded.mimetipo, ' +
   'bildadreso = excluded.bildadreso, ' +
-  'atribuo = excluded.atribuo;';
+  'atribuo = excluded.atribuo, ' +
+  '"larĝo" = excluded.larĝo;';
 
 const deleteRemainingImages =
   'DELETE FROM public.bildoj ' +
@@ -73,7 +67,6 @@ module.exports = {
   upsertWord,
   deleteWord,
   getImages,
-  upsertImageMetadata,
   upsertImage,
   deleteRemainingImages,
 };

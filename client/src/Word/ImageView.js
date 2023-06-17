@@ -2,14 +2,14 @@ import { EditNote, HideImage } from "@mui/icons-material";
 import { Button, Grid, Link, Typography } from "@mui/material";
 import React from "react";
 
-export const ImageView = ({ image, showEditControls, startEditing = () => {}, deleteImage = () => {} }) => {
+export const ImageView = ({ image, showEditControls, startEditing = () => { }, deleteImage = () => { } }) => {
   const { bilddatumo, mimetipo, bildadreso, atribuo } = image;
 
   return (
     <Grid container spacing={0} sx={{ mb: 2, textAlign: 'left' }}>
       {bilddatumo && mimetipo && (
         <Grid item xs={12}>
-          <img src={`data:${mimetipo};base64,${bilddatumo}`} alt={''} style={{ maxWidth: '100%', borderRadius: '1em' }} />
+          <img src={`data:${mimetipo};base64,${bilddatumo}`} alt={''} style={{ width: '100%', borderRadius: '1em' }} />
         </Grid>
       )}
       {bildadreso && (
@@ -26,7 +26,9 @@ export const ImageView = ({ image, showEditControls, startEditing = () => {}, de
         </>
       )}
       {atribuo && (
-        <Typography variant={'caption'}>{atribuo}</Typography>
+        <Grid item xs={12} sx={{ pt: 0.5 }}>
+          <Typography variant={'caption'}>{atribuo}</Typography>
+        </Grid>
       )}
     </Grid>
   )
