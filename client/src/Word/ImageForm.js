@@ -51,6 +51,7 @@ export const ImageForm = ({ image, setImage, isNewImage, saveEdits, cancelEditin
               fullWidth
               type={'number'}
               label={'Larĝo (1-12)'}
+              defaultValue={4}
               value={image.larĝo}
               onChange={(e) => setImage(current => ({ ...current, larĝo: e.target.value }))}
             />
