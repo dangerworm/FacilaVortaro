@@ -19,7 +19,7 @@ export const ImageView = ({ image, showEditControls, startEditing = () => { }, d
           </Grid>
           {showEditControls && (
             <Grid item xs={8} sx={{ textAlign: 'right' }}>
-              <Button variant="outlined" color="warning" size="small" startIcon={<EditNote />} onClick={startEditing}>Redaktu</Button>
+              <Button variant="outlined" color="secondary" size="small" startIcon={<EditNote />} onClick={startEditing}>Redaktu</Button>
               <Button variant="outlined" color="error" size="small" startIcon={<HideImage />} onClick={deleteImage} sx={{ ml: 1 }}>Forigu</Button>
             </Grid>
           )}

@@ -5,6 +5,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const {
   getWordList,
+  getWordRootList,
   getWordRoot,
   addWordRoot,
   addWordRootWord,
@@ -12,6 +13,8 @@ const {
   deleteWordRoot,
   getRelatedWords,
   upsertWord,
+  moveWord,
+  moveImage,
   deleteWord,
   getImages,
   upsertImage,
@@ -21,7 +24,7 @@ const {
 const app = express();
 const port = process.env.PORT ?? 5000;
 
-/*
+//*
 // Localhost against Docker container
 const pool = new Pool({
   user: 'postgres',
@@ -66,8 +69,25 @@ app.use((request, response, next) => {
   next();
 })
 
+const cleanUpWordRoot = async (client, kapvorto) => {
+  const result = await client.query(getRelatedWords, [kapvorto]);
+
+  if (result.rows.length === 0) {
+    await client.query(deleteWordRoot, [kapvorto]);
+  }
+}
+
 app.options('*', (request, response) => {
   response.sendStatus(200);
+});
+
+app.post('/api/get-word-root-list', async (request, response) => {
+  const client = await pool.connect();
+  const result = await client.query(getWordRootList);
+
+  const rows = result.rows;
+  response.json(rows);
+  client.release();
 });
 
 app.post('/api/get-word-list', async (request, response) => {
@@ -226,14 +246,36 @@ app.post('/api/upsert-word', async (request, response) => {
   }
 });
 
+app.post('/api/move-word', async (request, response) => {
+  const { vorto, malnovaKapvorto, novaKapvorto } = request.body;
+
+  const client = await pool.connect();
+
+  try {
+    let result = await client.query(moveWord, [vorto, malnovaKapvorto, novaKapvorto]);
+    result = await client.query(moveImage, [vorto, malnovaKapvorto, novaKapvorto]);
+    cleanUpWordRoot(client, malnovaKapvorto);
+
+    response.status(200).json(result);
+  }
+  catch (error) {
+    response.status(500).json(error);
+  }
+  finally {
+    client.release();
+  }
+});
+
 app.post('/api/delete-word', async (request, response) => {
   const { kapvorto, vorto } = request.body;
 
   const client = await pool.connect();
 
   try {
-    const result = await client.query(deleteWord, [kapvorto, vorto]);
-    response.status(200).json(result);
+    const actionResult = await client.query(deleteWord, [kapvorto, vorto]);
+    cleanUpWordRoot(client, kapvorto);
+
+    response.status(200).json(actionResult);
   }
   catch (error) {
     response.status(500).json(error);

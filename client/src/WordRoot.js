@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Paper, Typography } from '@mui/material';
 import { useDatabaseContext } from './Contexts/DatabaseContext';
 import { Loading } from 'Loading';
@@ -96,6 +96,13 @@ export const WordRoot = () => {
     deleteWord(wordRoot, relatedWords[index].vorto);
     clearControls();
   }
+
+  useEffect(() => {
+    if (wordRoot) {
+      cancelEditingWordRoot();
+      cancelEditing();
+    }
+  }, [wordRoot])
 
   return (
     <>

@@ -6,12 +6,15 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 export const DatabaseContext = createContext(null);
 
 export const DatabaseContextProvider = ({ children }) => {
+  const [wordRootList, setWordRootList] = useState([]);
   const [loadingWordList, setLoadingWordList] = useState(false);
   const [wordList, setWordList] = useState([]);
   const [addingWordRoot, setAddingWordRoot] = useState(false);
   const [addingWordRootSuccessful, setAddingWordRootSuccessful] = useState(undefined);
   const [updatingWordRoot, setUpdatingWordRoot] = useState(false);
   const [updatingWordRootSuccessful, setUpdatingWordRootSuccessful] = useState(undefined);
+  const [movingWord, setMovingWord] = useState(false);
+  const [movingWordSuccessful, setMovingWordSuccessful] = useState(undefined);
   const [deletingWordRoot, setDeletingWordRoot] = useState(false);
   const [wordRootError, setWordRootError] = useState(undefined);
   const [query, setQuery] = useState("");
@@ -23,11 +26,23 @@ export const DatabaseContextProvider = ({ children }) => {
   const [deletingWord, setDeletingWord] = useState(false);
   const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
-  /*
+  //*
   const baseUrl = "http://localhost:5000/api";
   /*/
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
   //*/
+
+  const getWordRootList = useCallback(async () => {
+    axios
+      .post(`${baseUrl}/get-word-root-list`)
+      .then((response) => {
+        response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, "kapvorto"));
+        setWordRootList(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }, [baseUrl]);
 
   const getWordList = async () => {
     setLoadingWordList(true);
@@ -67,7 +82,7 @@ export const DatabaseContextProvider = ({ children }) => {
       });
   }
 
-  const updateWordRoot = async(malnovaKapvorto, novaKapvorto) => {
+  const updateWordRoot = async (malnovaKapvorto, novaKapvorto) => {
     setUpdatingWordRoot(true);
 
     axios
@@ -95,7 +110,7 @@ export const DatabaseContextProvider = ({ children }) => {
         kapvorto
       })
       .then((response) => {
-        getWordList();
+        refresh();
       })
       .catch((error) => {
         console.log(error);
@@ -116,7 +131,9 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .then((response) => {
         response.data.sort((a, b) => sortAlphabeticallyInEsperanto(a, b, 'vorto'));
+        response.data.forEach((word) => word.images.sort((a, b) => a - b));
         setRelatedWords(response.data);
+
       })
       .catch((error) => {
         console.log(error);
@@ -143,7 +160,8 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .then((response) => {
         setUpsertingWordSuccessful(true);
-        refreshRelatedWords();
+        refresh();
+        getWordList();
       })
       .catch((error) => {
         console.log(error);
@@ -151,6 +169,30 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .finally(() => {
         setUpsertingWord(false);
+      });
+  }
+
+  const moveWord = async (vorto, malnovaKapvorto, novaKapvorto) => {
+    setMovingWord(true);
+    setMovingWordSuccessful(undefined);
+
+    axios
+      .post(`${baseUrl}/move-word`, {
+        vorto,
+        malnovaKapvorto,
+        novaKapvorto
+      })
+      .then((response) => {
+        setMovingWordSuccessful(true);
+        cleanUpWordRoots();
+        refresh();
+      })
+      .catch((error) => {
+        console.log(error);
+        setMovingWordSuccessful(false);
+      })
+      .finally(() => {
+        setMovingWord(false);
       });
   }
 
@@ -165,7 +207,8 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .then((response) => {
         setDeletingWordSuccessful(true);
-        refreshRelatedWords();
+        cleanUpWordRoots();
+        refresh();
       })
       .catch((error) => {
         console.log(error);
@@ -176,9 +219,22 @@ export const DatabaseContextProvider = ({ children }) => {
       });
   }
 
-  const refreshRelatedWords = useCallback(async () => {
+  const cleanUpWordRoots = async () => {
+    getWordRootList()
+      .then(() => {
+        if (!wordRootList.includes(wordRoot)) {
+          setWordRoot(undefined);
+        }
+        else {
+          getRelatedWords(wordRoot);
+        }
+      });
+  }
+
+  const refresh = useCallback(async () => {
+    getWordList();
     setRelatedWords([]);
-    getRelatedWords(wordRoot)
+    getRelatedWords(wordRoot);
   }, [getRelatedWords, wordRoot])
 
   const searchResults = useMemo(() => {
@@ -188,18 +244,21 @@ export const DatabaseContextProvider = ({ children }) => {
   }, [query, wordList]);
 
   useEffect(() => {
+    getWordRootList();
     getWordList();
   }, []);
 
   useEffect(() => {
     if (wordRoot) {
-      refreshRelatedWords();
+      refresh();
     }
-  }, [refreshRelatedWords, wordRoot]);
+  }, [refresh, wordRoot]);
 
   return (
     <DatabaseContext.Provider
       value={{
+        getWordRootList,
+        wordRootList,
         getWordList,
         loadingWordList,
         setQuery,
@@ -207,7 +266,7 @@ export const DatabaseContextProvider = ({ children }) => {
         searchResults,
         setWordRoot,
         wordRoot,
-        refreshRelatedWords,
+        refresh,
         loadingRelatedWords,
         setRelatedWords,
         relatedWords,
@@ -217,6 +276,9 @@ export const DatabaseContextProvider = ({ children }) => {
         updateWordRoot,
         updatingWordRoot,
         updatingWordRootSuccessful,
+        moveWord,
+        movingWord,
+        movingWordSuccessful,
         deleteWordRoot,
         deletingWordRoot,
         wordRootError,

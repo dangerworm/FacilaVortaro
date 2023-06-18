@@ -1,4 +1,8 @@
-const getWordList =
+const getWordRootList = 
+  'SELECT kapvorto ' +
+  'FROM public.kapvortoj;';
+
+  const getWordList =
   'SELECT kapvorto, vorto ' +
   'FROM public.difinoj;';
 
@@ -34,6 +38,18 @@ const upsertWord =
   'VALUES ($1, $2, $3) ' +
   'ON CONFLICT (kapvorto, vorto) DO UPDATE SET difino = excluded.difino;';
 
+const moveWord = 
+  'UPDATE public.difinoj ' +
+  'SET kapvorto = $3 ' +
+  'WHERE kapvorto = $2 ' +
+  'AND vorto = $1;';
+
+const moveImage = 
+  'UPDATE public.bildoj ' +
+  'SET kapvorto = $3 ' +
+  'WHERE kapvorto = $2 ' +
+  'AND vorto = $1;';
+
 const deleteWord = 
   'DELETE FROM public.difinoj ' +
   'WHERE kapvorto = $1 ' +
@@ -62,6 +78,7 @@ const deleteRemainingImages =
   'AND indekso >= $3;';
 
 module.exports = {
+  getWordRootList,
   getWordList,
   getWordRoot,
   addWordRoot,
@@ -70,6 +87,8 @@ module.exports = {
   deleteWordRoot,
   getRelatedWords,
   upsertWord,
+  moveWord,
+  moveImage,
   deleteWord,
   getImages,
   upsertImage,

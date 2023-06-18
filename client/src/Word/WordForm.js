@@ -2,11 +2,14 @@ import React from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 import { ImageView } from './ImageView';
 import { ImageForm } from './ImageForm';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { removePunctuation } from 'Helpers/word-display';
+import { MoveWordForm } from './MoveWordForm';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import MoveUpIcon from '@mui/icons-material/MoveUp';
 
-export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
+export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
   const [addingNewImage, setAddingNewImage] = React.useState(false);
+  const [movingWord, setMovingWord] = React.useState(false);
   const [editIndex, setEditIndex] = React.useState(-1);
   const [imageBeingEdited, setImageBeingEdited] = React.useState(null);
 
@@ -59,7 +62,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
   }
 
   const deleteCurrentImage = (index) => {
-    setWord(current => ({ 
+    setWord(current => ({
       ...current,
       images: current.images
         .filter((_, i) => i !== index)
@@ -130,12 +133,23 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
         </>
       ))}
       {!addingNewImage && (
-        <Grid item xs={6} sx={{ p: 1, textAlign: 'left' }}>
-          <Button variant={'outlined'} color={'success'} startIcon={<AddPhotoAlternateIcon />} onClick={addNewImage}>
+        <Grid item xs={12} sx={{ p: 1, textAlign: 'left' }}>
+          <Button variant={'outlined'} color={'primary'} startIcon={<AddPhotoAlternateIcon />} onClick={addNewImage}>
             Aldonu bildon
           </Button>
         </Grid>
       )}
+      {!movingWord && (
+        <Grid item xs={12} sx={{ p: 1, textAlign: 'left' }}>
+          <Button variant={'outlined'} color={'primary'} startIcon={<MoveUpIcon />} onClick={() => setMovingWord(true)}>
+            Movu vorton
+          </Button>
+        </Grid>
+      )}
+      {movingWord && <MoveWordForm
+        word={word.vorto}
+        setMovingWord={setMovingWord}
+      />}
     </Grid>
   );
 }
