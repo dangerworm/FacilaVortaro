@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 
-export const ImageForm = ({ image, setImage, isNewImage, saveEdits, cancelEditing }) => {
+export const ImageForm = ({ image, setImage, saveEdits, cancelEditing }) => {
 
   useEffect(() => {
     if (!image.file) {

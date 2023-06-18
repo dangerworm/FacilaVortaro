@@ -204,17 +204,17 @@ app.post('/api/upsert-word', async (request, response) => {
             larĝo
           ]
         );
-
-        await client.query(
-          deleteRemainingImages,
-          [
-            kapvorto,
-            vorto,
-            images.length
-          ]
-        );
       }
     }
+
+    await client.query(
+      deleteRemainingImages,
+      [
+        kapvorto,
+        vorto,
+        images?.length ?? 0
+      ]
+    );
 
     response.status(200).json(result);
   }

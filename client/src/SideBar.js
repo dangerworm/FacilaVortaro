@@ -38,7 +38,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
 );
 
 export const SideBar = ({ sideBarOpen, toggleSideBarOpen }) => {
-  const { loadingWordRoots, query, searchResults, setWordRoot } = useDatabaseContext();
+  const { loadingWordList, query, searchResults, setWordRoot } = useDatabaseContext();
 
   return (
     <StyledDrawer variant="permanent" open={sideBarOpen}>
@@ -70,13 +70,13 @@ export const SideBar = ({ sideBarOpen, toggleSideBarOpen }) => {
         </IconButton>
       </Toolbar>
       <Search />
-      {loadingWordRoots && <Loading />}
-      {!loadingWordRoots && !query && (
+      {loadingWordList && <Loading />}
+      {!loadingWordList && !query && (
         <p>
           Bonvolu enigi serĉdemandon.
         </p>
       )}
-      {!loadingWordRoots && query && searchResults && (
+      {!loadingWordList && query && searchResults && (
         <List component="nav" style={{ textAlign: 'left', maxHeight: '70vh', overflowY: 'auto', scrollBehavior: 'smooth' }}>
           {searchResults.map(({ kapvorto, vorto }) => (
             <ListItemButton

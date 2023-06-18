@@ -24,7 +24,6 @@ export const WordRoot = () => {
   const [editIndex, setEditIndex] = React.useState(-1);
   const [wordBeingEdited, setWordBeingEdited] = React.useState({});
 
-
   const clearControls = (editIndex = -1) => {
     setAddingNewWord(false);
     setEditIndex(editIndex);

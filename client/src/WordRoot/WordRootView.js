@@ -6,10 +6,7 @@ import React from 'react';
 
 export const WordRootView = ({ addNewWord, editWordRoot }) => {
   const { userIsAdmin } = useAuthenticationContext();
-  const {
-    wordRoot,
-    setWordRoot,
-  } = useDatabaseContext();
+  const { wordRoot } = useDatabaseContext();
 
   return (
     <>

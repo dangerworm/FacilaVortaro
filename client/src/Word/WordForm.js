@@ -28,7 +28,8 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
       bilddatumo: '',
       mimetipo: '',
       bildadreso: '',
-      atribuo: ''
+      atribuo: '',
+      larĝo: 4
     };
 
     setAddingNewImage(true);
@@ -122,7 +123,6 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
               <ImageForm
                 image={imageBeingEdited}
                 setImage={setImageBeingEdited}
-                isNewImage={addingNewImage}
                 saveEdits={_ => saveImageEdits(index)}
                 cancelEditing={_ => cancelEditing(index)} />
             </Grid>
