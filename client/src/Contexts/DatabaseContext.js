@@ -26,7 +26,7 @@ export const DatabaseContextProvider = ({ children }) => {
   const [deletingWord, setDeletingWord] = useState(false);
   const [deletingWordSuccessful, setDeletingWordSuccessful] = useState(undefined);
 
-  //*
+  /*
   const baseUrl = "http://localhost:5000/api";
   /*/
   const baseUrl = process.env.REACT_APP_FACILA_VORTARO_API_BASE_URL_HEROKU;
@@ -160,8 +160,8 @@ export const DatabaseContextProvider = ({ children }) => {
       })
       .then((response) => {
         setUpsertingWordSuccessful(true);
-        refresh();
         getWordList();
+        refresh();
       })
       .catch((error) => {
         console.log(error);
@@ -185,6 +185,7 @@ export const DatabaseContextProvider = ({ children }) => {
       .then((response) => {
         setMovingWordSuccessful(true);
         cleanUpWordRoots();
+        getWordList();
         refresh();
       })
       .catch((error) => {
@@ -208,6 +209,7 @@ export const DatabaseContextProvider = ({ children }) => {
       .then((response) => {
         setDeletingWordSuccessful(true);
         cleanUpWordRoots();
+        getWordList();
         refresh();
       })
       .catch((error) => {
@@ -232,7 +234,6 @@ export const DatabaseContextProvider = ({ children }) => {
   }
 
   const refresh = useCallback(async () => {
-    getWordList();
     setRelatedWords([]);
     getRelatedWords(wordRoot);
   }, [getRelatedWords, wordRoot])

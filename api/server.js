@@ -24,7 +24,7 @@ const {
 const app = express();
 const port = process.env.PORT ?? 5000;
 
-//*
+/*
 // Localhost against Docker container
 const pool = new Pool({
   user: 'postgres',
