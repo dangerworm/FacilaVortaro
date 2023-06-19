@@ -1,12 +1,13 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Box, Container } from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
 import { Header } from "./Header";
 import { SideBar } from "./SideBar";
 import { WordRoot } from "./WordRoot";
 import { Admin } from "./Admin";
 import { Footer } from "./Footer";
+import { Facililujo } from "Facililo/Facililo";
+import Toolbar from "@mui/material/Toolbar";
 
 export const Main = () => {
   const [sideBarOpen, setSideBarOpen] = React.useState(true);
@@ -36,6 +37,7 @@ export const Main = () => {
           <Routes>
             <Route path="/" element={<WordRoot />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/facililo" element={<Facililujo />} />
           </Routes>
           <Footer />
         </Container>

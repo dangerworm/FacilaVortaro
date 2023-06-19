@@ -6,6 +6,7 @@ import { Box } from "@mui/system";
 import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
 import { AppBar } from "./AppBar";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -76,6 +77,11 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
           >
             Vortaro por Lernantoj
           </Typography>
+            <Link to='/facililo' style={{ color: 'inherit', textDecoration: 'none' }}>
+              <IconButton color="inherit">
+                <EditNoteIcon style={{ fontSize: '40pt' }} />
+              </IconButton>
+            </Link>
           {userIsAdmin && (
             <Link to='/admin' style={{ color: 'inherit', textDecoration: 'none' }}>
               <IconButton color="inherit">

@@ -4,10 +4,14 @@ import { ImageView } from './ImageView';
 import { ImageForm } from './ImageForm';
 import { removePunctuation } from 'Helpers/word-display';
 import { MoveWordForm } from './MoveWordForm';
+import { Facililo } from 'Facililo/Facililo';
+import { useFacililoContext } from 'Contexts/FacililoContext';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MoveUpIcon from '@mui/icons-material/MoveUp';
 
 export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
+  const { purigu } = useFacililoContext();
+
   const [addingNewImage, setAddingNewImage] = React.useState(false);
   const [movingWord, setMovingWord] = React.useState(false);
   const [editIndex, setEditIndex] = React.useState(-1);
@@ -17,6 +21,7 @@ export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, ca
     setAddingNewImage(false);
     setEditIndex(editIndex);
     setImageBeingEdited(null);
+    purigu();
   }
 
   const addNewImage = () => {
@@ -100,12 +105,11 @@ export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, ca
         </Button>
       </Grid>
       <Grid item xs={12} sx={{ mt: 2, textAlign: 'left' }}>
-        <TextField
-          fullWidth
-          label={'Difino'}
-          value={word.difino}
-          onChange={(e) => setWord(current => ({ ...current, difino: e.target.value }))}
-          sx={{ mb: 2 }}
+        <Facililo
+          rows={3}
+          etikedo={'Difino'}
+          teksto={word.difino}
+          setTeksto={(novaTeksto) => setWord(current => ({ ...current, difino: novaTeksto }))}
         />
       </Grid>
       {word.images && word.images.map((image, index) => (
