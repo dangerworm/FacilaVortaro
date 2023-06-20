@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Alert, Autocomplete, Button, Grid, TextField } from '@mui/material';
 import { useDatabaseContext } from 'Contexts/DatabaseContext';
 
@@ -12,7 +12,7 @@ export const MoveWordForm = ({ word, setMovingWord }) => {
     .filter(item => item.kapvorto !== wordRoot)
     .map((item, index) => (
       { id: index, label: item.kapvorto }
-    )), [wordRootList]);
+    )), [wordRootList, wordRoot]);
 
   const move = () => {
     if (!wordRootList

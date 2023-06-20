@@ -12,6 +12,8 @@ export const Alineoj = ({ alineoj }) => {
         return 'rgb(255, 200, 84)';
       case 'neEnVortaro':
         return 'rgb(255, 128, 128)';
+      default:
+        return 'white';
     }
   }
 

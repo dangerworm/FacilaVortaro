@@ -69,24 +69,26 @@ export const FacililoContextProvider = ({ children }) => {
       .replace(/ux/g, "ŭ");
   };
 
+  const niveloj = ['treFacila', 'facila', 'malfacila', 'neEnVortaro'];
+
   const enarbigu = (arbo, vortero, tipo, nivelo) => {
     if (!arbo) arbo = [];
-    if (vortero.length == 0) {
+    if (vortero.length === 0) {
       arbo['ekzistas'] = { tipo: tipo, nivelo: nivelo };
       return arbo;
     }
     else {
-      var litero = vortero[0];
+      const litero = vortero[0];
       arbo[litero] = enarbigu(arbo[litero], vortero.slice(1), tipo, nivelo);
       return arbo;
     }
   }
 
   const enarbiguLaŭTipoj = (arbo, vortoj, nivelo) => {
-    for (var i = 0; i < vortoj.length; i++) {
-      var vorto = vortoj[i];
-      var tipo;
-      if (vorto[vorto.length - 1] == "-") {
+    for (let i = 0; i < vortoj.length; i++) {
+      let vorto = vortoj[i];
+      let tipo;
+      if (vorto[vorto.length - 1] === "-") {
         // Vorto kiu bezonas vortoklasan finaĵon.
         // Ni forigu la streketon kaj konservu la radikon.
         vorto = vorto.slice(0, vorto.length - 1);
@@ -102,15 +104,14 @@ export const FacililoContextProvider = ({ children }) => {
   }
 
   const pliAltaNivelo = (a, b) => {
-    var niveloj = ['treFacila', 'facila', 'malfacila', 'neEnVortaro'];
     return (niveloj.indexOf(a) > niveloj.indexOf(b))
       ? a
       : b;
   }
 
   const trovuVorterojn = (arbo, vorto, komenco, minimumaNivelo) => {
-    var vorteroj = [];
-    for (var i = komenco; i < vorto.length; i++) {
+    const vorteroj = [];
+    for (let i = komenco; i < vorto.length; i++) {
       if (arbo[vorto[i]]) {
         arbo = arbo[vorto[i]];
         if (arbo['ekzistas']) {
@@ -129,19 +130,19 @@ export const FacililoContextProvider = ({ children }) => {
   }
 
   const akiruNivelon = (vorto, devasEstiVorteto) => {
-    var vorteroj = trovuVorterojn(arbo, vorto, 0, 0);
+    let vorteroj = trovuVorterojn(arbo, vorto, 0, 0);
     while (vorteroj.length > 0) {
-      var novajVorteroj = [];
-      for (var i = 0; i < vorteroj.length; i++) {
-        if (vorteroj[i].fino == vorto.length - 1)
-          if (vorteroj[i].tipo == 2 || !devasEstiVorteto)
+      let novajVorteroj = [];
+      for (let i = 0; i < vorteroj.length; i++) {
+        if (vorteroj[i].fino === vorto.length - 1)
+          if (vorteroj[i].tipo === 2 || !devasEstiVorteto)
             return vorteroj[i].nivelo;
         // XXX: Nivelo je kombinoj
         novajVorteroj = novajVorteroj.concat(
           trovuVorterojn(arbo, vorto, vorteroj[i].fino + 1, vorteroj[i].nivelo));
         // Permesu unu el la vokaloj A, O, E kaj I, aŭ streketo, inter radikoj.
         // e.g. skribtablo vs skrib`o`tablo, okulvitroj vs okul-vitroj
-        if ("aoei-".indexOf(vorto[vorteroj[i].fino + 1]) != -1)
+        if ("aoei-".indexOf(vorto[vorteroj[i].fino + 1]) !== -1)
           novajVorteroj = novajVorteroj.concat(
             trovuVorterojn(arbo, vorto, vorteroj[i].fino + 2, vorteroj[i].nivelo));
       }
@@ -155,15 +156,15 @@ export const FacililoContextProvider = ({ children }) => {
   // redonu 'vorto'n sen 'sufikso', alie redonu null.
   const senSufikso = (vorto, sufikso) => {
     const loko = vorto.indexOf(sufikso, vorto.length - sufikso.length);
-    return loko == -1 ? null : vorto.substring(0, loko);
+    return loko === -1 ? null : vorto.substring(0, loko);
   }
 
   const senSufiksoj = (vorto, sufiksoj) => {
     const radikoj = sufiksoj
       .map(sufikso => senSufikso(vorto, sufikso))
-      .filter(senSufikso => senSufikso != null);
+      .filter(senSufikso => senSufikso !== null);
 
-    if (radikoj.length == 0) {
+    if (radikoj.length === 0) {
       return null;
     }
 
@@ -171,8 +172,8 @@ export const FacililoContextProvider = ({ children }) => {
   }
 
   const akiruNivelonElArbo = (vorto, sufiksoj) => {
-    var vortradiko;
-    if (vortradiko = senSufiksoj(vorto, sufiksoj)) {
+    const vortradiko = senSufiksoj(vorto, sufiksoj);
+    if (vortradiko) {
       return akiruNivelon(vortradiko, false);
     }
     return null;
@@ -181,8 +182,8 @@ export const FacililoContextProvider = ({ children }) => {
   const kontroluVorton = (vorto) => {
     // Ĉu ĝi estas persona aŭ poseda pronomo?
     // Atentu pri la ordo de sufiksoj!
-    var pronomo = senSufiksoj(vorto, pronomSufiksoj);
-    if (pronomo && personajPronomoj.indexOf(pronomo) != -1) {
+    const pronomo = senSufiksoj(vorto, pronomSufiksoj);
+    if (pronomo && personajPronomoj.indexOf(pronomo) !== -1) {
       return 'treFacila';
     }
 
@@ -191,35 +192,35 @@ export const FacililoContextProvider = ({ children }) => {
     let rezulto;
 
     rezulto = akiruNivelonElArbo(vorto, verbSufiksoj);
-    if (rezulto && rezulto != 'malfacila') { return rezulto; }
+    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
 
     // Ĉu ĝi estas substantivo?
     rezulto = akiruNivelonElArbo(vorto, substantivSufiksoj);
-    if (rezulto && rezulto != 'malfacila') { return rezulto; }
+    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
 
     // Ĉu ĝi estas adjektivo?
     rezulto = akiruNivelonElArbo(vorto, adjektivSufiksoj);
-    if (rezulto && rezulto != 'malfacila') { return rezulto; }
+    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
 
     // Ĉu ĝi estas adverbo?
     rezulto = akiruNivelonElArbo(vorto, adverbSufiksoj);
-    if (rezulto && rezulto != 'malfacila') { return rezulto; }
+    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
 
     return akiruNivelon(vorto, true);
   }
 
   const alineigu = (teksteroj) => {
-    if (teksteroj.length == 0) return [];
+    if (teksteroj.length === 0) return [];
 
-    var nunaAlineo = [], alineoj = [nunaAlineo];
+    let nunaAlineo = [], alineoj = [nunaAlineo];
 
-    for (var i = 0; i < teksteroj.length; i++) {
-      var tekstero = teksteroj[i];
-      var linioj = tekstero.tekstero.split(/\n+/);
+    for (let i = 0; i < teksteroj.length; i++) {
+      let tekstero = teksteroj[i];
+      let linioj = tekstero.tekstero.split(/\n+/);
       if (linioj === null || linioj.length <= 1) {
         nunaAlineo.push(tekstero);
       } else {
-        for (var j = 0; j < linioj.length; j++) {
+        for (let j = 0; j < linioj.length; j++) {
           nunaAlineo.push({ tekstero: linioj[j], nivelo: tekstero.nivelo });
           if (j < linioj.length - 1) {
             nunaAlineo = [];
@@ -233,27 +234,26 @@ export const FacililoContextProvider = ({ children }) => {
 
   const kontrolu = (teksto) => {
     const vortoRe = /[A-ZĈĜĤĴŜŬa-zĉĝĥĵŝŭ-]+/g;
-    var rezulto;
+    let rezulto;
 
-    var teksteroj = [], treFacilaj = [], facilaj = [], malfacilaj = [], neEnVortaro = [];
-    var ek = 0;
+    let teksteroj = [], treFacilaj = [], facilaj = [], malfacilaj = [], neEnVortaro = [];
+    let ek = 0;
 
     while ((rezulto = vortoRe.exec(teksto)) !== null) {
       if (ek < rezulto.index) {
         teksteroj.push({ tekstero: teksto.slice(ek, rezulto.index), nivelo: 'treFacila' });
       }
-      var vorto = rezulto[0];
+      const vorto = rezulto[0];
       ek = rezulto.index + vorto.length;
 
-      var minuskla = vorto.toLowerCase();
-      var nivelo = kontroluVorton(minuskla);
-      if (nivelo == 'treFacila') {
+      const nivelo = kontroluVorton(vorto.toLowerCase());
+      if (nivelo === 'treFacila') {
         treFacilaj.push(vorto);
       }
-      else if (nivelo == 'facila') {
+      else if (nivelo === 'facila') {
         facilaj.push(vorto);
       }
-      else if (nivelo == 'malfacila') {
+      else if (nivelo === 'malfacila') {
         malfacilaj.push(vorto);
       }
       else {
