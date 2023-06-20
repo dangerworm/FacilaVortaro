@@ -9,7 +9,9 @@ export const Alineoj = ({ alineoj }) => {
       case 'facila':
         return 'rgb(192, 220, 255)';
       case 'malfacila':
-        return 'rgb(255, 192, 192)';
+        return 'rgb(255, 200, 84)';
+      case 'neEnVortaro':
+        return 'rgb(255, 128, 128)';
     }
   }
 

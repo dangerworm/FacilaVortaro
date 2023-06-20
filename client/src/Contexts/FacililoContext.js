@@ -31,6 +31,9 @@ import {
   prefiksojFacilaj,
   sufiksojFacilaj
 } from "./facilaj";
+import {
+  vortaroMalFacilaj
+} from "./malFacilaj";
 
 export const FacililoContext = createContext(null);
 
@@ -48,6 +51,7 @@ export const FacililoContextProvider = ({ children }) => {
   const [treFacilaj, setTreFacilaj] = React.useState([]);
   const [facilaj, setFacilaj] = React.useState([]);
   const [malfacilaj, setMalfacilaj] = React.useState([]);
+  const [neEnVortaro, setNeEnVortaro] = React.useState([]);
 
   const maliksigu = (teksto) => {
     return teksto
@@ -98,7 +102,7 @@ export const FacililoContextProvider = ({ children }) => {
   }
 
   const pliAltaNivelo = (a, b) => {
-    var niveloj = ['treFacila', 'facila', 'malfacila'];
+    var niveloj = ['treFacila', 'facila', 'malfacila', 'neEnVortaro'];
     return (niveloj.indexOf(a) > niveloj.indexOf(b))
       ? a
       : b;
@@ -135,16 +139,16 @@ export const FacililoContextProvider = ({ children }) => {
         // XXX: Nivelo je kombinoj
         novajVorteroj = novajVorteroj.concat(
           trovuVorterojn(arbo, vorto, vorteroj[i].fino + 1, vorteroj[i].nivelo));
-        // Permesu unu el la vokaloj A, O, E kaj I inter radikoj.
-        // e.g. skribtablo vs skrib`o`tablo
-        if ("aoei".indexOf(vorto[vorteroj[i].fino + 1]) != -1)
+        // Permesu unu el la vokaloj A, O, E kaj I, aŭ streketo, inter radikoj.
+        // e.g. skribtablo vs skrib`o`tablo, okulvitroj vs okul-vitroj
+        if ("aoei-".indexOf(vorto[vorteroj[i].fino + 1]) != -1)
           novajVorteroj = novajVorteroj.concat(
             trovuVorterojn(arbo, vorto, vorteroj[i].fino + 2, vorteroj[i].nivelo));
       }
       vorteroj = novajVorteroj;
     }
 
-    return 'malfacila';
+    return 'neEnVortaro';
   }
 
   // Se 'sufikso' estas ĉe la fino de 'vorto', 
@@ -177,9 +181,8 @@ export const FacililoContextProvider = ({ children }) => {
   const kontroluVorton = (vorto) => {
     // Ĉu ĝi estas persona aŭ poseda pronomo?
     // Atentu pri la ordo de sufiksoj!
-    var pronomo;
-    if (pronomo = senSufiksoj(vorto, pronomSufiksoj) &&
-      personajPronomoj.indexOf(pronomo) != -1) {
+    var pronomo = senSufiksoj(vorto, pronomSufiksoj);
+    if (pronomo && personajPronomoj.indexOf(pronomo) != -1) {
       return 'treFacila';
     }
 
@@ -229,10 +232,10 @@ export const FacililoContextProvider = ({ children }) => {
   }
 
   const kontrolu = (teksto) => {
-    const vortoRe = /[A-ZĈĜĤĴŜŬa-zĉĝĥĵŝŭ]+/g;
+    const vortoRe = /[A-ZĈĜĤĴŜŬa-zĉĝĥĵŝŭ-]+/g;
     var rezulto;
 
-    var teksteroj = [], treFacilaj = [], facilaj = [], malfacilaj = [];
+    var teksteroj = [], treFacilaj = [], facilaj = [], malfacilaj = [], neEnVortaro = [];
     var ek = 0;
 
     while ((rezulto = vortoRe.exec(teksto)) !== null) {
@@ -250,8 +253,11 @@ export const FacililoContextProvider = ({ children }) => {
       else if (nivelo == 'facila') {
         facilaj.push(vorto);
       }
-      else {
+      else if (nivelo == 'malfacila') {
         malfacilaj.push(vorto);
+      }
+      else {
+        neEnVortaro.push(vorto);
       }
       teksteroj.push({ tekstero: vorto, nivelo: nivelo });
     }
@@ -264,6 +270,7 @@ export const FacililoContextProvider = ({ children }) => {
     setTreFacilaj(treFacilaj);
     setFacilaj(facilaj);
     setMalfacilaj(malfacilaj);
+    setNeEnVortaro(neEnVortaro);
   }
 
   const load = () => {
@@ -278,6 +285,8 @@ export const FacililoContextProvider = ({ children }) => {
     prefiksojFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'facila'));
     sufiksojFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'facila'));
 
+    enarbiguLaŭTipoj(arbo, vortaroMalFacilaj, 'malfacila');
+
     setArbo(arbo);
     setLoading(false);
   }
@@ -288,6 +297,7 @@ export const FacililoContextProvider = ({ children }) => {
     setTreFacilaj([]);
     setFacilaj([]);
     setMalfacilaj([]);
+    setNeEnVortaro([]);
   }
 
   useEffect(() => {
@@ -305,6 +315,7 @@ export const FacililoContextProvider = ({ children }) => {
         treFacilaj,
         facilaj,
         malfacilaj,
+        neEnVortaro,
         purigu
       }}
     >

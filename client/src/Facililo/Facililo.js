@@ -10,7 +10,8 @@ export const Facililujo = () => {
   const {
     treFacilaj,
     facilaj,
-    malfacilaj
+    malfacilaj,
+    neEnVortaro,
   } = useFacililoContext();
 
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -37,19 +38,24 @@ export const Facililujo = () => {
               setTeksto={setTeksto}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Alert severity="success" icon={false} style={alertStyle}>
               Tre facilaj: {treFacilaj.length}
             </Alert>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Alert severity="info" icon={false} style={alertStyle}>
               Facilaj: {facilaj.length}
             </Alert>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
+            <Alert severity="warning" icon={false} style={alertStyle}>
+              Malfacilaj: {malfacilaj.length}
+            </Alert>
+          </Grid>
+          <Grid item xs={3}>
             <Alert severity="error" icon={false} style={alertStyle}>
-              Ne en la listo: {malfacilaj.length}
+              Ne en la listo: {neEnVortaro.length}
             </Alert>
           </Grid>
         </Grid>
