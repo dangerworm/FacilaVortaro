@@ -50,7 +50,7 @@ export const Facililujo = () => {
           </Grid>
           <Grid item xs={3}>
             <Alert severity="warning" icon={false} style={alertStyle}>
-              Malfacilaj: {malfacilaj.length}
+              Verŝajne ne en la listo: {malfacilaj.length}
             </Alert>
           </Grid>
           <Grid item xs={3}>
