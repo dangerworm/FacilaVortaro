@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Grid, Typography } from '@mui/material';
 import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 import { ImageView } from './ImageView';
-import { removePunctuation } from 'Helpers/word-display';
 
 export const WordView = ({ word, startEditing }) => {
   const { vorto, difino, images } = word;
@@ -11,7 +10,7 @@ export const WordView = ({ word, startEditing }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} sx={{ m: 0 }}>
-        <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{removePunctuation(vorto)}</h3>
+        <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{vorto}</h3>
       </Grid>
       {userIsAdmin && (
         <Grid item xs={6} sx={{ textAlign: 'right' }}>

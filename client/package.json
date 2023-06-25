@@ -18,6 +18,9 @@
     "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1"
   },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.7"
+  },
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",

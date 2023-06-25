@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 import { ImageView } from './ImageView';
 import { ImageForm } from './ImageForm';
-import { removePunctuation } from 'Helpers/word-display';
 import { MoveWordForm } from './MoveWordForm';
 import { Facililo } from 'Facililo/Facililo';
 import { useFacililoContext } from 'Contexts/FacililoContext';
@@ -90,7 +89,7 @@ export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, ca
           />
         )}
         {!isNewWord && (
-          <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{removePunctuation(word.vorto)}</h3>
+          <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{word.vorto}</h3>
         )}
       </Grid>
       <Grid item xs={6} sx={{ textAlign: 'right' }}>

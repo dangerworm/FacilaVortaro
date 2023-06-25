@@ -5,7 +5,6 @@ import { Loading } from './Loading';
 import { Search } from './Search';
 import { useDatabaseContext } from './Contexts/DatabaseContext';
 import { Link } from 'react-router-dom';
-import { removePunctuation } from 'Helpers/word-display';
 import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import esperantaFlago from './esperanta-flago.png';
@@ -87,7 +86,7 @@ export const SideBar = ({ sideBarOpen, toggleSideBarOpen }) => {
               sx={{
                 paddingLeft: '2.8em'
               }}>
-              {removePunctuation(vorto)}
+              {vorto}
             </ListItemButton>
           ))}
         </List>
