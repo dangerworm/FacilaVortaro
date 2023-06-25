@@ -118,8 +118,9 @@ export const FacililoContextProvider = ({ children }) => {
           vorteroj.push(
             {
               fino: i,
+              nivelo: pliAltaNivelo(arbo['ekzistas'].nivelo, minimumaNivelo),
+              radiko: vorto,
               tipo: arbo['ekzistas'].tipo,
-              nivelo: pliAltaNivelo(arbo['ekzistas'].nivelo, minimumaNivelo)
             });
         }
       }
@@ -136,7 +137,7 @@ export const FacililoContextProvider = ({ children }) => {
       for (let i = 0; i < vorteroj.length; i++) {
         if (vorteroj[i].fino === vorto.length - 1)
           if (vorteroj[i].tipo === 2 || !devasEstiVorteto)
-            return vorteroj[i].nivelo;
+            return vorteroj[i];
         // XXX: Nivelo je kombinoj
         novajVorteroj = novajVorteroj.concat(
           trovuVorterojn(arbo, vorto, vorteroj[i].fino + 1, vorteroj[i].nivelo));
@@ -149,7 +150,7 @@ export const FacililoContextProvider = ({ children }) => {
       vorteroj = novajVorteroj;
     }
 
-    return 'neEnVortaro';
+    return { fino: null, nivelo: 'neEnVortaro', radiko: null, tipo: null };
   }
 
   // Se 'sufikso' estas ĉe la fino de 'vorto', 
@@ -170,7 +171,6 @@ export const FacililoContextProvider = ({ children }) => {
 
     return radikoj[0];
   }
-
   const akiruNivelonElArbo = (vorto, sufiksoj) => {
     const vortradiko = senSufiksoj(vorto, sufiksoj);
     if (vortradiko) {
@@ -191,22 +191,24 @@ export const FacililoContextProvider = ({ children }) => {
     // la sola participa finaĵo permesata en la nivelo "tre facila"?
     let rezulto;
 
+    const isValid = (rezulto) => rezulto && rezulto.nivelo !== 'neEnVortaro' && (rezulto.tipo === 1 || rezulto.radiko === vorto);
+
     rezulto = akiruNivelonElArbo(vorto, verbSufiksoj);
-    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
+    if (isValid(rezulto)) { return rezulto.nivelo; }
 
     // Ĉu ĝi estas substantivo?
     rezulto = akiruNivelonElArbo(vorto, substantivSufiksoj);
-    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
+    if (isValid(rezulto)) { return rezulto.nivelo; }
 
     // Ĉu ĝi estas adjektivo?
     rezulto = akiruNivelonElArbo(vorto, adjektivSufiksoj);
-    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
+    if (isValid(rezulto)) { return rezulto.nivelo; }
 
     // Ĉu ĝi estas adverbo?
     rezulto = akiruNivelonElArbo(vorto, adverbSufiksoj);
-    if (rezulto && rezulto !== 'neEnVortaro') { return rezulto; }
+    if (isValid(rezulto)) { return rezulto.nivelo; }
 
-    return akiruNivelon(vorto, true);
+    return akiruNivelon(vorto, true).nivelo;
   }
 
   const alineigu = (teksteroj) => {
