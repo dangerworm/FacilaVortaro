@@ -20,20 +20,21 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import React, { createContext, useContext, useEffect } from "react";
-import { 
+import {
   vortaroTreFacilaj,
   personajPronomoj,
   prefiksojTreFacilaj,
   sufiksojTreFacilaj
-} from './treFacilaj';
+} from '../Facililo/treFacilaj';
 import {
   vortaroFacilaj,
   prefiksojFacilaj,
   sufiksojFacilaj
-} from "./facilaj";
+} from "../Facililo/facilaj";
 import {
   vortaroMalFacilaj
-} from "./malFacilaj";
+} from "../Facililo/malFacilaj";
+import { tabelvortoj } from "Facililo/tabelvortoj";
 
 export const FacililoContext = createContext(null);
 
@@ -88,15 +89,18 @@ export const FacililoContextProvider = ({ children }) => {
     for (let i = 0; i < vortoj.length; i++) {
       let vorto = vortoj[i];
       let tipo;
-      if (vorto[vorto.length - 1] === "-") {
+
+      const finKaraktero = vorto[vorto.length - 1];
+
+      if (["-", "*"].includes(finKaraktero)) {
         // Vorto kiu bezonas vortoklasan finaĵon.
         // Ni forigu la streketon kaj konservu la radikon.
         vorto = vorto.slice(0, vorto.length - 1);
-        tipo = 1;
+        tipo = finKaraktero === "-" ? 1 : 2;
       }
       else {
         // Vorteto sen vortoklasa finaĵo
-        tipo = 2;
+        tipo = 3;
       }
 
       arbo = enarbigu(arbo, vorto, tipo, nivelo);
@@ -130,22 +134,23 @@ export const FacililoContextProvider = ({ children }) => {
     return vorteroj;
   }
 
-  const akiruNivelon = (vorto, devasEstiVorteto) => {
-    let vorteroj = trovuVorterojn(arbo, vorto, 0, 0);
+  const akiruNivelon = (vorto, devasEstiVorteto, arbeto = null) => {
+    if (!arbeto) arbeto = arbo;
+    let vorteroj = trovuVorterojn(arbeto, vorto, 0, 0);
     while (vorteroj.length > 0) {
       let novajVorteroj = [];
       for (let i = 0; i < vorteroj.length; i++) {
         if (vorteroj[i].fino === vorto.length - 1)
-          if (vorteroj[i].tipo === 2 || !devasEstiVorteto)
+          if (!devasEstiVorteto || vorteroj[i].tipo > 1)
             return vorteroj[i];
         // XXX: Nivelo je kombinoj
         novajVorteroj = novajVorteroj.concat(
-          trovuVorterojn(arbo, vorto, vorteroj[i].fino + 1, vorteroj[i].nivelo));
+          trovuVorterojn(arbeto, vorto, vorteroj[i].fino + 1, vorteroj[i].nivelo));
         // Permesu unu el la vokaloj A, O, E kaj I, aŭ streketo, inter radikoj.
         // e.g. skribtablo vs skrib`o`tablo, okulvitroj vs okul-vitroj
         if ("aoei-".indexOf(vorto[vorteroj[i].fino + 1]) !== -1)
           novajVorteroj = novajVorteroj.concat(
-            trovuVorterojn(arbo, vorto, vorteroj[i].fino + 2, vorteroj[i].nivelo));
+            trovuVorterojn(arbeto, vorto, vorteroj[i].fino + 2, vorteroj[i].nivelo));
       }
       vorteroj = novajVorteroj;
     }
@@ -191,7 +196,7 @@ export const FacililoContextProvider = ({ children }) => {
     // la sola participa finaĵo permesata en la nivelo "tre facila"?
     let rezulto;
 
-    const isValid = (rezulto) => rezulto && rezulto.nivelo !== 'neEnVortaro' && (rezulto.tipo === 1 || rezulto.radiko === vorto);
+    const isValid = (rezulto) => rezulto && rezulto.nivelo !== 'neEnVortaro' && (rezulto.tipo < 3 || rezulto.radiko === vorto);
 
     rezulto = akiruNivelonElArbo(vorto, verbSufiksoj);
     if (isValid(rezulto)) { return rezulto.nivelo; }
@@ -282,6 +287,7 @@ export const FacililoContextProvider = ({ children }) => {
     enarbiguLaŭTipoj(arbo, vortaroTreFacilaj, 'treFacila');
     prefiksojTreFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'treFacila'));
     sufiksojTreFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'treFacila'));
+    tabelvortoj.forEach(x => arbo = enarbigu(arbo, x, 3, 'treFacila'));
 
     enarbiguLaŭTipoj(arbo, vortaroFacilaj, 'facila');
     prefiksojFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'facila'));
