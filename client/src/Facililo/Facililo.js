@@ -4,13 +4,14 @@ import { Alert, Grid, Paper, TextField } from "@mui/material";
 import { useFacililoContext } from "Contexts/FacililoContext";
 import { Informoj } from "./Informoj";
 import { Loading } from "Loading";
-import { Alineoj } from "./Alineoj";
+import { Alineoj, getColor } from "./Alineoj";
 
 export const Facililujo = () => {
   const {
     treFacilaj,
     facilaj,
-    malfacilaj,
+    loknomoj,
+    bezonasDifinojn,
     neEnVortaro,
   } = useFacililoContext();
 
@@ -19,6 +20,7 @@ export const Facililujo = () => {
 
   const alertStyle = {
     borderRadius: '10px',
+    color: 'black',
     justifyContent: 'center'
   };
 
@@ -38,23 +40,28 @@ export const Facililujo = () => {
               setTeksto={setTeksto}
             />
           </Grid>
-          <Grid item xs={3}>
-            <Alert severity="success" icon={false} style={alertStyle}>
+          <Grid item xs={2}>
+            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('treFacila')}}>
               Tre facilaj: {treFacilaj.length}
             </Alert>
           </Grid>
-          <Grid item xs={3}>
-            <Alert severity="info" icon={false} style={alertStyle}>
+          <Grid item xs={2}>
+            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('facila')}}>
               Facilaj: {facilaj.length}
             </Alert>
           </Grid>
-          <Grid item xs={3}>
-            <Alert severity="warning" icon={false} style={alertStyle}>
-              Verŝajne ne en la listo: {malfacilaj.length}
+          <Grid item xs={2}>
+            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('loknomo')}}>
+              Loknomoj: {loknomoj.length}
             </Alert>
           </Grid>
           <Grid item xs={3}>
-            <Alert severity="error" icon={false} style={alertStyle}>
+            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('bezonasDifinon')}}>
+              Bezonas difinojn: {bezonasDifinojn.length}
+            </Alert>
+          </Grid>
+          <Grid item xs={3}>
+            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('neEnVortaro')}}>
               Ne en la listo: {neEnVortaro.length}
             </Alert>
           </Grid>

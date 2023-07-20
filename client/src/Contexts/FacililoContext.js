@@ -32,8 +32,17 @@ import {
   sufiksojFacilaj
 } from "../Facililo/facilaj";
 import {
+  vortaroLoknomoj
+} from "../Facililo/loknomoj";
+import {
+  vortaroBezonasDifinojn
+} from "../Facililo/bezonasDifinojn";
+import {
   vortaroMalFacilaj
 } from "../Facililo/malFacilaj";
+import {
+  neEnLaListo
+} from "../Facililo/neEnLaListo";
 import { tabelvortoj } from "Facililo/tabelvortoj";
 
 export const FacililoContext = createContext(null);
@@ -44,6 +53,7 @@ export const FacililoContextProvider = ({ children }) => {
   const substantivSufiksoj = ["o", "on", "oj", "ojn"];
   const adjektivSufiksoj = ["a", "an", "aj", "ajn"];
   const adverbSufiksoj = ["e", "en"];
+  const lokSufiksoj = ["io", "ion", "ujo", "ujon"];
 
   const [arbo, setArbo] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -51,7 +61,8 @@ export const FacililoContextProvider = ({ children }) => {
   const [vortoj, setVortoj] = React.useState([]);
   const [treFacilaj, setTreFacilaj] = React.useState([]);
   const [facilaj, setFacilaj] = React.useState([]);
-  const [malfacilaj, setMalfacilaj] = React.useState([]);
+  const [loknomoj, setLoknomoj] = React.useState([]);
+  const [bezonasDifinojn, setBezonasDifinojn] = React.useState([]);
   const [neEnVortaro, setNeEnVortaro] = React.useState([]);
 
   const maliksigu = (teksto) => {
@@ -70,7 +81,7 @@ export const FacililoContextProvider = ({ children }) => {
       .replace(/ux/g, "ŭ");
   };
 
-  const niveloj = ['treFacila', 'facila', 'malfacila', 'neEnVortaro'];
+  const niveloj = ['treFacila', 'facila', 'loknomo', 'bezonasDifinon', 'neEnVortaro'];
 
   const enarbigu = (arbo, vortero, tipo, nivelo) => {
     if (!arbo) arbo = [];
@@ -103,7 +114,7 @@ export const FacililoContextProvider = ({ children }) => {
         tipo = 3;
       }
 
-      arbo = enarbigu(arbo, vorto, tipo, nivelo);
+      arbo = enarbigu(arbo, vorto.toLowerCase(), tipo, nivelo);
     }
   }
 
@@ -148,9 +159,14 @@ export const FacililoContextProvider = ({ children }) => {
           trovuVorterojn(arbeto, vorto, vorteroj[i].fino + 1, vorteroj[i].nivelo));
         // Permesu unu el la vokaloj A, O, E kaj I, aŭ streketo, inter radikoj.
         // e.g. skribtablo vs skrib`o`tablo, okulvitroj vs okul-vitroj
-        if ("aoei-".indexOf(vorto[vorteroj[i].fino + 1]) !== -1)
+        if ("aoei-".indexOf(vorto[vorteroj[i].fino + 1]) !== -1) {
           novajVorteroj = novajVorteroj.concat(
             trovuVorterojn(arbeto, vorto, vorteroj[i].fino + 2, vorteroj[i].nivelo));
+        }
+        if (vorto.substring(vorteroj[i].fino + 1, vorteroj[i].fino + 3) === 'o-') {
+          novajVorteroj = novajVorteroj.concat(
+            trovuVorterojn(arbeto, vorto, vorteroj[i].fino + 3, vorteroj[i].nivelo));
+        }
       }
       vorteroj = novajVorteroj;
     }
@@ -213,6 +229,10 @@ export const FacililoContextProvider = ({ children }) => {
     rezulto = akiruNivelonElArbo(vorto, adverbSufiksoj);
     if (isValid(rezulto)) { return rezulto.nivelo; }
 
+    // Ĉu ĝi estas loko?
+    rezulto = akiruNivelonElArbo(vorto, lokSufiksoj);
+    if (isValid(rezulto)) { return rezulto.nivelo; }
+
     return akiruNivelon(vorto, true).nivelo;
   }
 
@@ -243,7 +263,7 @@ export const FacililoContextProvider = ({ children }) => {
     const vortoRe = /[A-ZĈĜĤĴŜŬa-zĉĝĥĵŝŭ-]+/g;
     let rezulto;
 
-    let teksteroj = [], treFacilaj = [], facilaj = [], malfacilaj = [], neEnVortaro = [];
+    let teksteroj = [], treFacilaj = [], facilaj = [], loknomoj = [], bezonasDifinojn = [], neEnVortaro = [];
     let ek = 0;
 
     while ((rezulto = vortoRe.exec(teksto)) !== null) {
@@ -260,8 +280,11 @@ export const FacililoContextProvider = ({ children }) => {
       else if (nivelo === 'facila') {
         facilaj.push(vorto);
       }
-      else if (nivelo === 'malfacila') {
-        malfacilaj.push(vorto);
+      else if (nivelo === 'loknomo') {
+        loknomoj.push(vorto);
+      }
+      else if (nivelo === 'bezonasDifinon') {
+        bezonasDifinojn.push(vorto);
       }
       else {
         neEnVortaro.push(vorto);
@@ -273,10 +296,10 @@ export const FacililoContextProvider = ({ children }) => {
     }
 
     setAlineoj(alineigu(teksteroj));
-    setVortoj(vortoj);
     setTreFacilaj(treFacilaj);
     setFacilaj(facilaj);
-    setMalfacilaj(malfacilaj);
+    setLoknomoj(loknomoj);
+    setBezonasDifinojn(bezonasDifinojn);
     setNeEnVortaro(neEnVortaro);
   }
 
@@ -293,7 +316,11 @@ export const FacililoContextProvider = ({ children }) => {
     prefiksojFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'facila'));
     sufiksojFacilaj.forEach(x => arbo = enarbigu(arbo, x, 1, 'facila'));
 
-    enarbiguLaŭTipoj(arbo, vortaroMalFacilaj, 'malfacila');
+    enarbiguLaŭTipoj(arbo, vortaroLoknomoj, 'loknomo');
+    
+    enarbiguLaŭTipoj(arbo, vortaroBezonasDifinojn, 'bezonasDifinon');
+    enarbiguLaŭTipoj(arbo, vortaroMalFacilaj, 'neEnVortaro');
+    enarbiguLaŭTipoj(arbo, neEnLaListo, 'neEnVortaro');
 
     setArbo(arbo);
     setLoading(false);
@@ -304,7 +331,7 @@ export const FacililoContextProvider = ({ children }) => {
     setVortoj([]);
     setTreFacilaj([]);
     setFacilaj([]);
-    setMalfacilaj([]);
+    setBezonasDifinojn([]);
     setNeEnVortaro([]);
   }
 
@@ -322,7 +349,8 @@ export const FacililoContextProvider = ({ children }) => {
         vortoj,
         treFacilaj,
         facilaj,
-        malfacilaj,
+        loknomoj,
+        bezonasDifinojn,
         neEnVortaro,
         purigu
       }}

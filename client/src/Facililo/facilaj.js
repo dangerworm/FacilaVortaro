@@ -107,6 +107,7 @@ export const vortaroFacilaj = [
   "energi-",
   "erar-",
   "esplor-",
+  "Esperanto",
   "esprim-",
   "evolu-",
   "fabrik-",

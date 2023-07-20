@@ -1,22 +1,25 @@
 import React from "react";
 import { Grid, Paper } from "@mui/material";
 
-export const Alineoj = ({ alineoj }) => {
-  const getColor = (nivelo) => {
-    switch (nivelo) {
-      case 'treFacila':
-        return 'rgb(192, 255, 192)';
-      case 'facila':
-        return 'rgb(192, 220, 255)';
-      case 'malfacila':
-        return 'rgb(255, 200, 84)';
-      case 'neEnVortaro':
-        return 'rgb(255, 128, 128)';
-      default:
-        return 'white';
-    }
+export const getColor = (nivelo) => {
+  switch (nivelo) {
+    case 'treFacila':
+      return 'rgb(192, 255, 192)';
+    case 'facila':
+      return 'rgb(192, 220, 255)';
+    case 'loknomo':
+      return 'rgb(224, 192, 255)';
+    case 'bezonasDifinon':
+      return 'rgb(255, 200, 84)';
+    case 'malfacila':
+    case 'neEnVortaro':
+      return 'rgb(255, 128, 128)';
+    default:
+      return 'white';
   }
+}
 
+export const Alineoj = ({ alineoj }) => {
   return (
     <>
       {alineoj && (
