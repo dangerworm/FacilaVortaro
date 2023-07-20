@@ -3,14 +3,9 @@
   "name": "Simpla kaj facila retejo por serĉi vortojn",
   "icons": [
     {
-      "src": "esperanto-flago.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/png"
-    },
-    {
-      "src": "esperanto-flago-128.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "src": "esperanto-flago-128.png",
+      "sizes": "128x128 64x64 32x32 24x24 16x16"
     }
   ],
   "start_url": ".",
