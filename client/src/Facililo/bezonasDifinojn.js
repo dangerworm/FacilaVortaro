@@ -37,7 +37,6 @@ export const vortaroBezonasDifinojn = [
   "fruktodon-",
   "glaciaĵ-",
   "ĝisost-",
-  "kaj… kaj…",
   "kaŝnom-",
   "kopirajt-",
   "kromlecion-",
