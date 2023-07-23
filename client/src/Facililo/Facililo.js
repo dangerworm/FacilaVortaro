@@ -41,28 +41,28 @@ export const Facililujo = () => {
             />
           </Grid>
           <Grid item xs={2}>
-            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('treFacila')}}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('treFacila') }}>
               Tre facilaj: {treFacilaj.length}
             </Alert>
           </Grid>
           <Grid item xs={2}>
-            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('facila')}}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('facila') }}>
               Facilaj: {facilaj.length}
             </Alert>
           </Grid>
-          <Grid item xs={2}>
-            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('loknomo')}}>
-              Loknomoj: {loknomoj.length}
+          <Grid item xs={3}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('neEnVortaro') }}>
+              Malfacilaj vortoj: {neEnVortaro.length}
             </Alert>
           </Grid>
           <Grid item xs={3}>
-            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('bezonasDifinon')}}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('bezonasDifinon') }}>
               Bezonas difinojn: {bezonasDifinojn.length}
             </Alert>
           </Grid>
-          <Grid item xs={3}>
-            <Alert severity="warning" icon={false} style={{...alertStyle, backgroundColor: getColor('neEnVortaro')}}>
-              Ne en la listo: {neEnVortaro.length}
+          <Grid item xs={2}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('loknomo') }}>
+              Loknomoj: {loknomoj.length}
             </Alert>
           </Grid>
         </Grid>
