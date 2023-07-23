@@ -81,7 +81,7 @@ export const FacililoContextProvider = ({ children }) => {
       .replace(/ux/g, "ŭ");
   };
 
-  const niveloj = ['treFacila', 'facila', 'loknomo', 'bezonasDifinon', 'neEnVortaro'];
+  const niveloj = ['treFacila', 'facila', 'loknomo', 'bezonasDifinon', 'malFacila', 'neEnVortaro'];
 
   const enarbigu = (arbo, vortero, tipo, nivelo) => {
     if (!arbo) arbo = [];
@@ -319,7 +319,7 @@ export const FacililoContextProvider = ({ children }) => {
     enarbiguLaŭTipoj(arbo, vortaroLoknomoj, 'loknomo');
     
     enarbiguLaŭTipoj(arbo, vortaroBezonasDifinojn, 'bezonasDifinon');
-    enarbiguLaŭTipoj(arbo, vortaroMalFacilaj, 'neEnVortaro');
+    enarbiguLaŭTipoj(arbo, vortaroMalFacilaj, 'malFacila');
     enarbiguLaŭTipoj(arbo, neEnLaListo, 'neEnVortaro');
 
     setArbo(arbo);

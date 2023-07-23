@@ -11,7 +11,7 @@ export const getColor = (nivelo) => {
       return 'rgb(224, 192, 255)';
     case 'bezonasDifinon':
       return 'rgb(255, 200, 84)';
-    case 'malfacila':
+    case 'malFacila':
     case 'neEnVortaro':
       return 'rgb(255, 128, 128)';
     default:

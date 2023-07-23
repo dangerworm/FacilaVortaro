@@ -9,7 +9,7 @@ export const vortaroMalFacilaj = [
   "analfabet-",
   "anas-",
   "aneks-",
-  "antioksidant-",
+  "antioksid-",
   "antologi-",
   "arest-",
   "arkeologi-",
