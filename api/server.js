@@ -41,11 +41,6 @@ const pool = new Pool({
 /*/
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  user: process.env.FACILA_VORTARO_DATABASE_USER,
-  password: process.env.FACILA_VORTARO_DATABASE_PASSWORD,
-  database: process.env.FACILA_VORTARO_DATABASE_NAME,
-  port: 5432,
-  host: process.env.FACILA_VORTARO_DATABASE_HOST,
   pool: {
     min: 1,
     max: 2,
@@ -65,6 +60,7 @@ app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 app.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*');
   response.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   next();
 })
