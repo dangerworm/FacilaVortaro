@@ -16,7 +16,7 @@ export const Loading = () => {
           <CircularProgress />
         </Grid>
         <Grid item xs={12}>
-          Ŝarĝante...
+          Ŝargante...
         </Grid>
       </Grid>
     </Box>

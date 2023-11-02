@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { throttle } from "lodash";
-import { Alert, Grid, Paper, TextField } from "@mui/material";
+import { Alert, Button, Grid, Paper, TextField } from "@mui/material";
 import { useFacililoContext } from "Contexts/FacililoContext";
 import { Informoj } from "./Informoj";
 import { Loading } from "Loading";
@@ -87,26 +87,40 @@ export const Facililo = ({ rows, etikedo, teksto, setTeksto }) => {
     kontrolu(novaTeksto);
   }, 1000);
 
+  const malbari = () => {
+    setTeksto('');
+  };
+
   useEffect(() => {
     processText(teksto);
   }, []);
 
   return (
-    <>
-      {loading && <Loading />}
-      {!loading && (
-        <TextField
-          fullWidth
-          id="tekstujo"
-          label={etikedo}
-          multiline
-          rows={rows}
-          value={teksto}
-          onChange={(e) => { processText(e.target.value) }}
-        />
-      )}
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        {loading && <Loading />}
+        {!loading && (
+          <TextField
+            fullWidth
+            id="tekstujo"
+            label={etikedo}
+            multiline
+            rows={rows}
+            value={teksto}
+            onChange={(e) => { processText(e.target.value) }}
+          />
+        )}
+      </Grid>
+      
+      <Grid item xs={12} sx={{ textAlign: 'right' }}>
+        <Button variant="contained" onClick={malbari}>
+          Malbari
+        </Button>
+      </Grid>
 
-      <Alineoj alineoj={alineoj} />
-    </>
+      <Grid item xs={12}>
+        <Alineoj alineoj={alineoj} />
+      </Grid>
+    </Grid>
   );
 }
