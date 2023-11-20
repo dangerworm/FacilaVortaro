@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { throttle } from "lodash";
-import { Alert, Button, Grid, Paper, TextField } from "@mui/material";
+import { Alert, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useFacililoContext } from "Contexts/FacililoContext";
-import { Informoj } from "./Informoj";
 import { Loading } from "Loading";
 import { Alineoj, getColor } from "./Alineoj";
 
@@ -15,7 +14,6 @@ export const Facililujo = () => {
     neEnVortaro,
   } = useFacililoContext();
 
-  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [teksto, setTeksto] = React.useState('');
 
   const alertStyle = {
@@ -26,11 +24,33 @@ export const Facililujo = () => {
 
   return (
     <>
-      <Paper sx={{ p: 2, pl: 5, pr: 5, pb: 5, minHeight: '50vh' }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <h1>Facililo</h1>
-            Verku facilan tekston laŭ la vortolisto de uea.facila.org.
+      <Paper sx={{ p: 2, px: 5, pb: 5, minHeight: '50vh' }}>
+        <Grid container spacing={2} textAlign={'left'}>
+          <Grid item xs={12} sx={{ m: 2 }}>
+            <Typography variant="h1">Facililo</Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              Facililo elstarigas vortojn, kiuj ne estas en la vortlisto de uea.facila. Jen la indikoj:
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              <span style={{ backgroundColor: getColor('treFacila') }}>Verda</span> aŭ&nbsp;
+              <span style={{ backgroundColor: getColor('facila') }}>blua</span>: Tiuj vortoj estas facilaj kaj troviĝas en la vortlisto de uea.facila.
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              <span style={{ backgroundColor: getColor('loknomo') }}>Lilakkolora</span>: Tiuj estas la nomoj de landoj kaj lingvoj. Kvankam ili ne aperas en la vortlisto de
+              uea.facila, ili povas esti libere uzataj en ties artikoloj, eĉ sen aldonita difino.
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              <span style={{ backgroundColor: getColor('bezonasDifinon') }}>Oranĝkolora</span>: Tiuj estas kunmetaĵoj. Kvankam iliaj elementoj troviĝas en la listo de uea.facila, ilia
+              signifo ne nepre estas klara al lernantoj. Tial ili bezonas klarigon, kiu estas trovebla en la Difinaro.
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              <span style={{ backgroundColor: getColor('malFacila') }}>Ruĝa</span>: Tiuj vortoj ne troviĝas en la vortlisto de uea.facila. Se ili aperas en artikoloj de uea.facila,
+              necesas aldoni difinon. Por multaj el tiuj vortoj, difino estas jam trovebla en la Difinaro, sed ne por
+              ĉiuj.
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              Facililo estis kreita de Magnus Henoch kaj poste modifita de Drew Morgan.
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Facililo
@@ -42,37 +62,36 @@ export const Facililujo = () => {
           </Grid>
           <Grid item xs={2}>
             <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('treFacila') }}>
-              Tre facilaj: {treFacilaj.length}
+              Tre facila: {treFacilaj.length}
             </Alert>
           </Grid>
           <Grid item xs={2}>
             <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('facila') }}>
-              Facilaj: {facilaj.length}
+              Facila: {facilaj.length}
             </Alert>
           </Grid>
           <Grid item xs={3}>
             <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('neEnVortaro') }}>
-              Malfacilaj vortoj: {neEnVortaro.length}
+              Bezonas klarigon: {neEnVortaro.length}
             </Alert>
           </Grid>
           <Grid item xs={3}>
             <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('bezonasDifinon') }}>
-              Bezonas difinojn: {bezonasDifinojn.length}
+              Bezonas klarigon: {bezonasDifinojn.length}
             </Alert>
           </Grid>
           <Grid item xs={2}>
             <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('loknomo') }}>
-              Loknomoj: {loknomoj.length}
+              Loknomo: {loknomoj.length}
             </Alert>
           </Grid>
         </Grid>
       </Paper>
-      <Informoj dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
     </>
   );
 };
 
-export const Facililo = ({ rows, etikedo, teksto, setTeksto }) => {
+export const Facililo = ({ rows, etikedo, teksto, setTeksto, montruForviŝuButonon = true }) => {
   const {
     loading,
     maliksigu,
@@ -93,7 +112,7 @@ export const Facililo = ({ rows, etikedo, teksto, setTeksto }) => {
 
   useEffect(() => {
     processText(teksto);
-  }, []);
+  }, [teksto]);
 
   return (
     <Grid container spacing={3}>
@@ -111,12 +130,14 @@ export const Facililo = ({ rows, etikedo, teksto, setTeksto }) => {
           />
         )}
       </Grid>
-      
-      <Grid item xs={12} sx={{ textAlign: 'right' }}>
-        <Button variant="contained" onClick={malbari}>
-          Malbari
-        </Button>
-      </Grid>
+
+      {montruForviŝuButonon && (
+        <Grid item xs={12} sx={{ textAlign: 'right' }}>
+          <Button variant="contained" onClick={malbari}>
+            Forviŝu
+          </Button>
+        </Grid>
+      )}
 
       <Grid item xs={12}>
         <Alineoj alineoj={alineoj} />

@@ -45,13 +45,13 @@ export const Search = () => {
           .map((number) => (
             <Grid key={number} item xs={12} sx={{ ml: 2, mr: 2 }}>
               {letterLayout.slice(10 * number, 10 * (number + 1)).split('').map((letter) => (
-                <Button 
+                <Button
                   key={letter}
                   variant={query[0] === letter ? "contained" : "outlined"}
                   onClick={() => selectLetter(letter)}
                   sx={{
                     m: "0.1em",
-                    p: 0, 
+                    p: 0,
                     fontSize: "12pt",
                     minWidth: "1.5em",
                     textTransform: 'lowercase'

@@ -33,14 +33,12 @@ export const Admin = () => {
   }, [addingWordRootSuccessful]);
 
   return (
-    <Paper sx={{ p: 4, pb: 5, minHeight: '50vh' }}>
+    <Paper sx={{ p: 2, px: 5, pb: 5, minHeight: '50vh' }}>
       {userIsAdmin && (
         <Grid container spacing={2} textAlign={'left'}>
           <Grid item xs={12} sx={{ m: 0, p: 0 }}>
-            <h1>Administrado</h1>
-          </Grid >
-          <Grid item xs={12} sx={{ m: 0, p: 0 }}>
-            <h3 style={{ margin: 0 }}>Aldonu kapvorton</h3>
+            <Typography variant="h1" sx={{ m: 2 }}>Administrado</Typography>
+            <Typography variant="h4" sx={{ m: 2 }}>Aldonu kapvorton</Typography>
           </Grid >
           <Grid item xs={12} sx={{ m: 0, p: 0 }}>
             <>
@@ -48,7 +46,6 @@ export const Admin = () => {
                 fullWidth
                 id="newWordRoot"
                 label="kapvorto"
-                variant="outlined"
                 value={newWordRoot}
                 onChange={(e) => setNewWordRoot(e.target.value)}
               />
@@ -65,7 +62,7 @@ export const Admin = () => {
             </>
           </Grid >
           <Grid item xs={12} sx={{ textAlign: 'right' }}>
-            <Button variant={'outlined'} color={'primary'} onClick={submitWordRoot}>
+            <Button variant={'contained'} color={'primary'} onClick={submitWordRoot}>
               Aldonu
             </Button>
           </Grid>

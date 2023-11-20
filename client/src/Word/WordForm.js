@@ -93,13 +93,13 @@ export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, ca
         )}
       </Grid>
       <Grid item xs={6} sx={{ textAlign: 'right' }}>
-        <Button variant={'outlined'} color={'success'} disabled={imageBeingEdited !== null} sx={{ mr: 2 }} onClick={saveWordEdits}>
+        <Button variant={'contained'} color={'success'} disabled={imageBeingEdited !== null} sx={{ mr: 2 }} onClick={saveWordEdits}>
           Konservu
         </Button>
-        <Button variant={'outlined'} color={'warning'} sx={{ mr: 2 }} onClick={cancelWordEditing}>
+        <Button variant={'contained'} color={'warning'} sx={{ mr: 2 }} onClick={cancelWordEditing}>
           Nuligu
         </Button>
-        <Button variant={'outlined'} color={'error'} onClick={deleteWord}>
+        <Button variant={'contained'} color={'error'} onClick={deleteWord}>
           Forigu
         </Button>
       </Grid>
@@ -109,6 +109,7 @@ export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, ca
           etikedo={'Difino'}
           teksto={word.difino}
           setTeksto={(novaTeksto) => setWord(current => ({ ...current, difino: novaTeksto }))}
+          montruForviŝuButonon={false}
         />
       </Grid>
       {word.images && word.images.map((image, index) => (
@@ -137,14 +138,14 @@ export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, ca
       ))}
       {!addingNewImage && (
         <Grid item xs={12} sx={{ p: 1, textAlign: 'left' }}>
-          <Button variant={'outlined'} color={'primary'} startIcon={<AddPhotoAlternateIcon />} onClick={addNewImage}>
+          <Button variant={'contained'} color={'primary'} startIcon={<AddPhotoAlternateIcon />} onClick={addNewImage}>
             Aldonu bildon
           </Button>
         </Grid>
       )}
       {!movingWord && (
         <Grid item xs={12} sx={{ p: 1, textAlign: 'left' }}>
-          <Button variant={'outlined'} color={'primary'} startIcon={<MoveUpIcon />} onClick={() => setMovingWord(true)}>
+          <Button variant={'contained'} color={'primary'} startIcon={<MoveUpIcon />} onClick={() => setMovingWord(true)}>
             Movu vorton
           </Button>
         </Grid>

@@ -75,13 +75,13 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Vortaro por Lernantoj
+            La difinoj de uea.facila
           </Typography>
-            <Link to='/facililo' style={{ color: 'inherit', textDecoration: 'none' }}>
-              <IconButton color="inherit">
-                <EditNoteIcon style={{ fontSize: '40pt' }} />
-              </IconButton>
-            </Link>
+          <Link to='/facililo' style={{ color: 'inherit', textDecoration: 'none' }}>
+            <IconButton color="inherit">
+              <EditNoteIcon style={{ fontSize: '40pt' }} />
+            </IconButton>
+          </Link>
           {userIsAdmin && (
             <Link to='/admin' style={{ color: 'inherit', textDecoration: 'none' }}>
               <IconButton color="inherit">

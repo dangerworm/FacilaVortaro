@@ -6,6 +6,7 @@ import { WordView } from 'Word/WordView';
 import { WordForm } from 'Word/WordForm';
 import { WordRootView } from 'WordRoot/WordRootView';
 import { WordRootForm } from 'WordRoot/WordRootForm';
+import { Link } from 'react-router-dom';
 
 export const WordRoot = () => {
   const {
@@ -106,13 +107,33 @@ export const WordRoot = () => {
 
   return (
     <>
-      <Paper sx={{ p: 2, pl: 5, pr: 5, pb: 5, minHeight: '50vh' }}>
+      <Paper sx={{ p: 2, px: 5, pb: 5, minHeight: '50vh' }}>
         <Grid container spacing={2} textAlign={'left'}>
           {!wordRoot && (
-            <Grid item xs={12} sx={{ ml: 2, mr: 2 }}>
-              <h1>Bonvenon!</h1>
-              <Typography variant={'subtitle1'}>
-                Bonvolu serĉi kaj elekti vorton el la listo maldekstre.
+            <Grid item xs={12} sx={{ m: 2 }}>
+              <Typography variant={'h1'}>Difinaro</Typography>
+              <Typography variant={'h2'}>La difinoj de uea.facila</Typography>
+              <Typography variant={'body1'} sx={{ my: 2 }}>
+                Ĉi tiu Difinaro prezentas ĉiujn difinojn iam aperintajn ĉe artikoloj en la facil-lingva
+                retejo <Link to={'https://uea.facila.org/'} target={'_blank'}>uea.facila</Link>. Ili estas verkitaj per simpla lingvaĵo, uzante nur vortojn el la vortlisto de uea.facila,
+                laŭeble ankaŭ kun ilustraĵo. Tial la Difinaro estas utila rimedo por lernantoj kaj instruistoj.
+              </Typography>
+              <Typography variant={'body1'} sx={{ my: 2 }}>
+                Por utiligi la Difinaron, kiel ankaŭ por legi artikolojn en uea.facila, lernantoj devas jam koni kaj
+                kompreni la bazan vortprovizon, kiu aperas en la vortlisto. Tial la eroj de la vortlisto mem ne
+                ricevas difinon, ĉar ni supozas, ke la uzantoj jam konas ilin.
+              </Typography>
+              <Typography variant={'body1'} sx={{ my: 2 }}>
+                Al la Difinaro ĉiusemajne aldoniĝas novaj eroj. Preskaŭ ĉiu nova artikolo en uea.facila enhavas
+                vortojn, kiuj ne estas en la vortlisto, kaj kiuj bezonas difinon verkitan per simpla lingvaĵo. Tial la
+                Difinaro konstante kreskas kaj iom post iom kompletiĝas.
+              </Typography>
+              <Typography variant={'body1'} sx={{ my: 2 }}>
+                La Difinaro estis kreita de <Link color="inherit" to="https://twitter.com/dangerworm/" target='_blank'>
+                  Drew Morgan
+                </Link> kaj <Link color="inherit" to="https://en.wikipedia.org/wiki/Anna_L%C3%B6wenstein" target='_blank'>
+                  Anna Lowenstein
+                </Link> per subvencio de ESF. Ni dankas ESF pro ĝia subteno.
               </Typography>
             </Grid>
           )}

@@ -33,13 +33,13 @@ export const WordRootForm = ({ cancelEditing, saveWordRoot, deleteWordRoot }) =>
             />
           </Grid>
           <Grid item xs={8} sx={{ marginTop: '2em', textAlign: 'right' }}>
-            <Button variant='outlined' color={'success'} onClick={() => saveWordRoot(wordRoot, newWordRoot)}>
+            <Button variant={'contained'} color={'success'} onClick={() => saveWordRoot(wordRoot, newWordRoot)}>
               Konservu kapvorton
             </Button>
-            <Button variant={'outlined'} color={'warning'} onClick={cancelEditing} sx={{ ml: 2 }}>
+            <Button variant={'contained'} color={'warning'} onClick={cancelEditing} sx={{ ml: 2 }}>
               Nuligu
             </Button>
-            <Button variant='outlined' color={'error'} style={{ marginLeft: '1em' }} onClick={openDeleteConfirmationDialog}>
+            <Button variant={'contained'} color={'error'} style={{ marginLeft: '1em' }} onClick={openDeleteConfirmationDialog}>
               Forigu kapvorton
             </Button>
           </Grid>

@@ -14,14 +14,18 @@ export const ImageView = ({ image, showEditControls, startEditing = () => { }, d
       )}
       {bildadreso && (
         <>
-          <Grid item xs={4} sx={{ pt: 0.5 }}>
+          <Grid item xs={12} sx={{ pt: 0.5 }}>
             <Link href={bildadreso} target="_blank">Fonto</Link>
           </Grid>
           {showEditControls && (
-            <Grid item xs={8} sx={{ textAlign: 'right' }}>
-              <Button variant="outlined" color="secondary" size="small" startIcon={<EditNote />} onClick={startEditing}>Redaktu</Button>
-              <Button variant="outlined" color="error" size="small" startIcon={<HideImage />} onClick={deleteImage} sx={{ ml: 1 }}>Forigu</Button>
-            </Grid>
+            <>
+              <Grid item xs={12} sx={{ textAlign: 'right', mb: 1 }}>
+                <Button variant="contained" color="secondary" size="small" startIcon={<EditNote />} onClick={startEditing}>Redaktu</Button>
+              </Grid>
+              <Grid item xs={12} sx={{ textAlign: 'right' }}>
+                <Button variant="contained" color="error" size="small" startIcon={<HideImage />} onClick={deleteImage} sx={{ ml: 1 }}>Forigu</Button>
+              </Grid>
+            </>
           )}
         </>
       )}

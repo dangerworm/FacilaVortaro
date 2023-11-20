@@ -23,7 +23,7 @@ export const Alineoj = ({ alineoj }) => {
   return (
     <>
       {alineoj && (
-        <Paper sx={{ mt: 2, p: 2 }}>
+        <Paper sx={{ p: 2 }}>
           <Grid container spacing={3}>
             <Grid item xs={12} sx={{ m: 0, p: 0, fontSize: '14pt', textAlign: 'left' }}>
               {alineoj.map((alineo, i) => (

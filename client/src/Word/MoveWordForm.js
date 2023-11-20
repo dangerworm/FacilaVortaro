@@ -40,10 +40,10 @@ export const MoveWordForm = ({ word, setMovingWord }) => {
         />
       </Grid>
       <Grid item xs={6} sx={{ p: 1, textAlign: 'left', mt: 1 }}>
-        <Button variant={'outlined'} color={'success'} onClick={move}>
+        <Button variant={'contained'} color={'success'} onClick={move}>
           Movu
         </Button>
-        <Button variant={'outlined'} color={'warning'} sx={{ ml: 2 }} onClick={() => setMovingWord(false)}>
+        <Button variant={'contained'} color={'warning'} sx={{ ml: 2 }} onClick={() => setMovingWord(false)}>
           Nuligu
         </Button>
       </Grid>

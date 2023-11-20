@@ -1,4 +1,4 @@
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { useAuthenticationContext } from 'Contexts/AuthenticationContext';
 import { useDatabaseContext } from 'Contexts/DatabaseContext';
 import React from 'react';
@@ -11,19 +11,23 @@ export const WordRootView = ({ addNewWord, editWordRoot }) => {
     <>
       {!userIsAdmin && (
         <Grid item xs={12}>
-          <h1 style={{ marginTop: '1em' }}>{wordRoot}</h1>
+          <Typography variant='h1' sx={{ m: 0, p: 0, mt: '0.25em' }}>
+            {wordRoot}
+          </Typography>
         </Grid>
       )}
       {userIsAdmin && (
         <>
           <Grid item xs={4}>
-            <h1 style={{ marginTop: '1em' }}>{wordRoot}</h1>
+            <Typography variant='h1' sx={{ m: 0, p: 0, mt: '0.25em' }}>
+              {wordRoot}
+            </Typography>
           </Grid>
           <Grid item xs={8} sx={{ marginTop: '2em', textAlign: 'right' }}>
-            <Button variant='outlined' color={'primary'} onClick={addNewWord}>
+            <Button variant='contained' color={'primary'} onClick={addNewWord}>
               Aldonu vorton
             </Button>
-            <Button variant={'outlined'} color={'secondary'} style={{ marginLeft: '1em' }} onClick={editWordRoot}>
+            <Button variant={'contained'} color={'secondary'} style={{ marginLeft: '1em' }} onClick={editWordRoot}>
               Redaktu kapvorton
             </Button>
           </Grid>

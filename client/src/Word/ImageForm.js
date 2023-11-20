@@ -34,7 +34,7 @@ export const ImageForm = ({ image, setImage, saveEdits, cancelEditing }) => {
               }}
             />
             <label htmlFor="raised-button-file">
-              <Button variant="outlined" component="span">
+              <Button variant={'contained'} component="span">
                 Alŝutu bildon
               </Button>
             </label>
@@ -81,13 +81,13 @@ export const ImageForm = ({ image, setImage, saveEdits, cancelEditing }) => {
       </Grid>
       <Grid item xs={12} sx={{ textAlign: 'right' }}>
         <Button
-          variant={'outlined'}
+          variant={'contained'}
           color={'success'}
           onClick={saveEdits}>
           Konservu bildon
         </Button>
         <Button
-          variant={'outlined'}
+          variant={'contained'}
           color={'warning'}
           onClick={cancelEditing}
           sx={{ ml: 2 }}>

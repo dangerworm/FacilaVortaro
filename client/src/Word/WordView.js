@@ -10,11 +10,13 @@ export const WordView = ({ word, startEditing }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} sx={{ m: 0 }}>
-        <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{vorto}</h3>
+        <Typography variant='h4' sx={{ m: '0.5em 0 0 0.1em', p: 0 }}>
+          {vorto}
+        </Typography>
       </Grid>
       {userIsAdmin && (
         <Grid item xs={6} sx={{ textAlign: 'right' }}>
-          <Button variant={'outlined'} color={'secondary'} onClick={_ => startEditing()}>
+          <Button variant={'contained'} color={'secondary'} onClick={_ => startEditing()}>
             Redaktu
           </Button>
         </Grid>
