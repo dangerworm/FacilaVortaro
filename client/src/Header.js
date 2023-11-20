@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
+import { Badge, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material"
 import { Box } from "@mui/system";
 import { useAuthenticationContext } from "./Contexts/AuthenticationContext";
 import { AppBar } from "./AppBar";
+import { useDatabaseContext } from "Contexts/DatabaseContext";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -16,7 +18,14 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
   const [anchorElement, setAnchorElement] = useState();
   const [dialogVisible, setDialogVisible] = useState(false);
 
+  const { setWordRoot, setRelatedWords } = useDatabaseContext();
+
   const userMenuOpen = Boolean(anchorElement);
+
+  const resetWordRoot = () => {
+    setWordRoot(undefined);
+    setRelatedWords([]);
+  }
 
   const handleUserMenuOpen = (event) => {
     setAnchorElement(event.currentTarget);
@@ -77,16 +86,27 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
           >
             La difinoj de uea.facila
           </Typography>
+          <Link to='/' style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Tooltip title="Hejme">
+              <IconButton color="inherit" onClick={resetWordRoot}>
+                <LocalLibraryIcon style={{ fontSize: '40pt' }} />
+              </IconButton>
+            </Tooltip>
+          </Link>
           <Link to='/facililo' style={{ color: 'inherit', textDecoration: 'none' }}>
-            <IconButton color="inherit">
-              <EditNoteIcon style={{ fontSize: '40pt' }} />
-            </IconButton>
+            <Tooltip title="Facililo">
+              <IconButton color="inherit">
+                <EditNoteIcon style={{ fontSize: '40pt' }} />
+              </IconButton>
+            </Tooltip>
           </Link>
           {userIsAdmin && (
             <Link to='/admin' style={{ color: 'inherit', textDecoration: 'none' }}>
-              <IconButton color="inherit">
-                <AdminPanelSettingsIcon style={{ fontSize: '40pt' }} />
-              </IconButton>
+              <Tooltip title="Administrado">
+                <IconButton color="inherit">
+                  <AdminPanelSettingsIcon style={{ fontSize: '40pt' }} />
+                </IconButton>
+              </Tooltip>
             </Link>
           )}
           <IconButton

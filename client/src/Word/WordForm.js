@@ -8,7 +8,7 @@ import { useFacililoContext } from 'Contexts/FacililoContext';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MoveUpIcon from '@mui/icons-material/MoveUp';
 
-export const WordForm = ({ word, setWord, isNewWord, moveWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
+export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEditing, deleteWord }) => {
   const { purigu } = useFacililoContext();
 
   const [addingNewImage, setAddingNewImage] = React.useState(false);
