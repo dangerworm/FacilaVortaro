@@ -5,8 +5,9 @@ import { Header } from "./Header";
 import { SideBar } from "./SideBar";
 import { WordRoot } from "./WordRoot";
 import { Admin } from "./Admin";
-import { Footer } from "./Footer";
+import { Vortlisto } from "Vortlisto";
 import { Facililujo } from "Facililo/Facililo";
+import { Footer } from "./Footer";
 import Toolbar from "@mui/material/Toolbar";
 
 export const Main = () => {
@@ -36,6 +37,7 @@ export const Main = () => {
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Routes>
             <Route path="/" element={<WordRoot />} />
+            <Route path="/vortlisto" element={<Vortlisto />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/facililo" element={<Facililujo />} />
           </Routes>

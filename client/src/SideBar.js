@@ -47,12 +47,13 @@ export const SideBar = ({ sideBarOpen, toggleSideBarOpen }) => {
         position: "absolute",
         width: "50%"
       }}>
-        <img 
+        <img
           src={esperantaFlago}
           alt="Esperanta flago"
-          style={{ 
+          style={{
             maxWidth: "4em",
-            marginRight: "0.5em" }}
+            marginRight: "0.5em"
+          }}
         />
       </div>
       <Toolbar
@@ -65,14 +66,14 @@ export const SideBar = ({ sideBarOpen, toggleSideBarOpen }) => {
         }}
       >
         <IconButton onClick={toggleSideBarOpen} style={{ marginTop: "-0.75em" }}>
-          <ChevronLeftIcon/>
+          <ChevronLeftIcon />
         </IconButton>
       </Toolbar>
       <Search />
       {loadingWordList && <Loading />}
       {!loadingWordList && !query && (
         <p>
-          Bonvolu enigi serĉdemandon.
+          Kiun vorton vi serĉas?
         </p>
       )}
       {!loadingWordList && query && searchResults && (

@@ -8,6 +8,7 @@ import { AppBar } from "./AppBar";
 import { useDatabaseContext } from "Contexts/DatabaseContext";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
@@ -93,6 +94,13 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
               </IconButton>
             </Tooltip>
           </Link>
+          <Link to='/vortlisto' style={{ color: 'inherit', textDecoration: 'none' }}>
+            <Tooltip title="Vortlisto">
+              <IconButton color="inherit">
+                <FormatListBulletedIcon style={{ fontSize: '40pt' }} />
+              </IconButton>
+            </Tooltip>
+          </Link>
           <Link to='/facililo' style={{ color: 'inherit', textDecoration: 'none' }}>
             <Tooltip title="Facililo">
               <IconButton color="inherit">
@@ -109,29 +117,31 @@ export const Header = ({ sideBarOpen, toggleSideBarOpen }) => {
               </Tooltip>
             </Link>
           )}
-          <IconButton
-            color="inherit"
-            onClick={handleUserMenuOpen}
-            aria-controls={userMenuOpen ? 'user-menu' : undefined}
-            aria-haspopup={true}
-            aria-expanded={userMenuOpen ? true : undefined}>
-            <Badge badgeContent={0} color="secondary">
-              {user?.picture ? (
-                <Box
-                  component="img"
-                  sx={{
-                    borderRadius: '50%',
-                    height: 50,
-                    width: 50,
-                    maxHeight: { xs: 50, md: 100 },
-                    maxWidth: { xs: 50, md: 100 },
-                  }}
-                  src={user.picture} />
-              ) : (
-                <PersonIcon />
-              )}
-            </Badge>
-          </IconButton>
+          <Tooltip title="Uzantmenuo">
+            <IconButton
+              color="inherit"
+              onClick={handleUserMenuOpen}
+              aria-controls={userMenuOpen ? 'user-menu' : undefined}
+              aria-haspopup={true}
+              aria-expanded={userMenuOpen ? true : undefined}>
+              <Badge badgeContent={0} color="secondary">
+                {user?.picture ? (
+                  <Box
+                    component="img"
+                    sx={{
+                      borderRadius: '50%',
+                      height: 50,
+                      width: 50,
+                      maxHeight: { xs: 50, md: 100 },
+                      maxWidth: { xs: 50, md: 100 },
+                    }}
+                    src={user.picture} />
+                ) : (
+                  <PersonIcon />
+                )}
+              </Badge>
+            </IconButton>
+          </Tooltip>
           <Menu
             id='user-menu'
             anchorEl={anchorElement}

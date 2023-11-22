@@ -29,6 +29,14 @@ export const Facililujo = () => {
           <Grid item xs={12} sx={{ m: 2 }}>
             <Typography variant="h1">Facililo</Typography>
             <Typography variant="body1" sx={{ my: 2 }}>
+              Facililo estis kreita de Magnus Henoch por helpi tiujn, kiuj deziras verki facil-lingvajn
+              artikolojn.
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
+              Se vi deziras mem verki artikolon per facila vortprovizo, vi povas aŭ verki ĝin rekte en la
+              suba fenestro, aŭ verki ĝin aparte kaj poste englui ĝin.
+            </Typography>
+            <Typography variant="body1" sx={{ my: 2 }}>
               Facililo elstarigas vortojn, kiuj ne estas en la vortlisto de uea.facila. Jen la indikoj:
             </Typography>
             <Typography variant="body1" sx={{ my: 2 }}>
@@ -36,17 +44,17 @@ export const Facililujo = () => {
               <span style={{ backgroundColor: getColor('facila') }}>blua</span>: Tiuj vortoj estas facilaj kaj troviĝas en la vortlisto de uea.facila.
             </Typography>
             <Typography variant="body1" sx={{ my: 2 }}>
-              <span style={{ backgroundColor: getColor('loknomo') }}>Lilakkolora</span>: Tiuj estas la nomoj de landoj kaj lingvoj. Kvankam ili ne aperas en la vortlisto de
-              uea.facila, ili povas esti libere uzataj en ties artikoloj, eĉ sen aldonita difino.
+              <span style={{ backgroundColor: getColor('loknomo') }}>Lilakkolora</span>: Tiuj estas la nomoj de landoj kaj lingvoj. Kvankam ili ne aperas en la vortlisto
+              de uea.facila, ili povas esti libere uzataj en ties artikoloj, eĉ sen aldonita difino.
             </Typography>
             <Typography variant="body1" sx={{ my: 2 }}>
-              <span style={{ backgroundColor: getColor('bezonasDifinon') }}>Oranĝkolora</span>: Tiuj estas kunmetaĵoj. Kvankam iliaj elementoj troviĝas en la listo de uea.facila, ilia
-              signifo ne nepre estas klara al lernantoj. Tial ili bezonas klarigon, kiu estas trovebla en la Difinaro.
+              <span style={{ backgroundColor: getColor('bezonasDifinon') }}>Oranĝkolora</span>:Tiuj estas kunmetaĵoj. Kvankam iliaj elementoj troviĝas en la vortlisto de
+              uea.facila, ilia signifo ne nepre estas klara al lernantoj. Tial ili bezonas klarigon, kiu estas trovebla en la Difinaro.
             </Typography>
             <Typography variant="body1" sx={{ my: 2 }}>
-              <span style={{ backgroundColor: getColor('malFacila') }}>Ruĝa</span>: Tiuj vortoj ne troviĝas en la vortlisto de uea.facila. Se ili aperas en artikoloj de uea.facila,
-              necesas aldoni difinon. Por multaj el tiuj vortoj, difino estas jam trovebla en la Difinaro, sed ne por
-              ĉiuj.
+              <span style={{ backgroundColor: getColor('malFacila') }}>Ruĝa</span>: Tiuj vortoj ne troviĝas en la vortlisto de uea.facila. Se ili aperas en artikolo, necesas
+              aldoni difinon. Por multaj el tiuj vortoj, difino estas jam trovebla en la Difinaro, sed ne por
+              ĉiuj. Se ne estas preta difino en la Difinaro, necesos verki ĝin.
             </Typography>
             <Typography variant="body1" sx={{ my: 2 }}>
               Facililo estis kreita de Magnus Henoch kaj poste modifita de Drew Morgan.
@@ -70,9 +78,9 @@ export const Facililujo = () => {
               Facila: {facilaj.length}
             </Alert>
           </Grid>
-          <Grid item xs={3}>
-            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('neEnVortaro') }}>
-              Bezonas klarigon: {neEnVortaro.length}
+          <Grid item xs={2}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('loknomo') }}>
+              Loknomo: {loknomoj.length}
             </Alert>
           </Grid>
           <Grid item xs={3}>
@@ -80,9 +88,9 @@ export const Facililujo = () => {
               Bezonas klarigon: {bezonasDifinojn.length}
             </Alert>
           </Grid>
-          <Grid item xs={2}>
-            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('loknomo') }}>
-              Loknomo: {loknomoj.length}
+          <Grid item xs={3}>
+            <Alert severity="warning" icon={false} style={{ ...alertStyle, backgroundColor: getColor('neEnVortaro') }}>
+              Bezonas difinon: {neEnVortaro.length}
             </Alert>
           </Grid>
         </Grid>
