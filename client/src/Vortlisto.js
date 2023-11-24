@@ -8,13 +8,13 @@ export const Vortlisto = () => {
     <>
       <Paper sx={{ p: 2, px: 5, pb: 5, minHeight: '50vh' }}>
         <Grid container spacing={2} textAlign={'left'}>
-          <Grid item xs={12} sx={{ m: 2 }}>
-            <Typography variant={'h1'}>Vortlisto</Typography>
+          <Grid item xs={12} sx={{ mt: 2 }}>
+            <Typography variant={"h3"}>Vortlisto</Typography>
           </Grid>
           <Grid item xs={12} md={6}>
             <Grid container spacing={2} textAlign={'left'}>
               <Grid item xs={12}>
-                <Typography variant={'h4'}>Gramatikaj finaĵoj</Typography>
+                <Typography variant={"h5"}>Gramatikaj finaĵoj</Typography>
               </Grid>
               <Grid item xs={12}>
                 <table width={'60%'} style={{ textAlign: 'center' }}>
@@ -62,7 +62,7 @@ export const Vortlisto = () => {
           <Grid item xs={12} md={6}>
             <Grid container spacing={2} textAlign={'left'}>
               <Grid item xs={12}>
-                <Typography variant={'h4'}>Pronomoj</Typography>
+                <Typography variant={"h5"}>Pronomoj</Typography>
               </Grid>
               <Grid item xs={12}>
                 <table width={'50%'} style={{ textAlign: 'center' }}>
@@ -95,7 +95,7 @@ export const Vortlisto = () => {
           <Grid item xs={12} md={6}>
             <Grid container spacing={2} textAlign={'left'}>
               <Grid item xs={12}>
-                <Typography variant={'h4'}>Prefiksoj kaj sufiksoj</Typography>
+                <Typography variant={"h5"}>Prefiksoj kaj sufiksoj</Typography>
               </Grid>
               <Grid item xs={12}>
                 <table width={'75%'} style={{ textAlign: 'center' }}>
@@ -168,7 +168,7 @@ export const Vortlisto = () => {
           <Grid item xs={12} md={6}>
             <Grid container spacing={2} textAlign={'left'}>
               <Grid item xs={12}>
-                <Typography variant={'h4'}>Tabelvortoj</Typography>
+                <Typography variant={"h5"}>Tabelvortoj</Typography>
               </Grid>
               <Grid item xs={12}>
                 <table width={'100%'} style={{ borderCollapse: 'collapse', textAlign: 'left' }}>
@@ -263,7 +263,7 @@ export const Vortlisto = () => {
           <Grid item xs={12} md={6}>
             <Grid container spacing={2} textAlign={'left'}>
               <Grid item xs={12}>
-                <Typography variant={'h4'}>Aliaj</Typography>
+                <Typography variant={"h5"}>Aliaj</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Accordion>
@@ -271,7 +271,7 @@ export const Vortlisto = () => {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="nombrovortoj"
                     id="nombrovortoj">
-                    <Typography variant={'h6'}>Nombrovortoj</Typography>
+                    <Typography variant={"h6"}>Nombrovortoj</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <ul>
@@ -298,7 +298,7 @@ export const Vortlisto = () => {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="tagoj-de-la-semajno"
                     id="tagoj-de-la-semajno">
-                    <Typography variant={'h6'}>Tagoj de la semajno</Typography>
+                    <Typography variant={"h6"}>Tagoj de la semajno</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <ul>
@@ -317,7 +317,7 @@ export const Vortlisto = () => {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="monatoj"
                     id="monatoj">
-                    <Typography variant={'h6'}>Monatoj</Typography>
+                    <Typography variant={"h6"}>Monatoj</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <ul>
@@ -341,7 +341,7 @@ export const Vortlisto = () => {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="kaj"
                     id="kaj">
-                    <Typography variant={'h6'}>Aliaj</Typography>
+                    <Typography variant={"h6"}>Aliaj</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <ul>
@@ -357,7 +357,7 @@ export const Vortlisto = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} sx={{ mt: 2 }}>
-            <Typography variant={'h4'}>Vortlisto</Typography>
+            <Typography variant={"h5"}>Vortlisto</Typography>
           </Grid>
           <Grid item xs={12} sx={{ m: 2 }}>
             <table width={'100%'} style={{ textAlign: 'left' }}>

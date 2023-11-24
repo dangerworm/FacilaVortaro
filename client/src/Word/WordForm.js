@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import { ImageView } from './ImageView';
 import { ImageForm } from './ImageForm';
 import { MoveWordForm } from './MoveWordForm';
@@ -89,7 +89,7 @@ export const WordForm = ({ word, setWord, isNewWord, saveWordEdits, cancelWordEd
           />
         )}
         {!isNewWord && (
-          <h3 style={{ margin: '0.5em 0 0 0.1em' }}>{word.vorto}</h3>
+          <Typography variant={"h5"} sx={{ mt: 1 }}>{word.vorto}</Typography>
         )}
       </Grid>
       <Grid item xs={6} sx={{ textAlign: 'right' }}>

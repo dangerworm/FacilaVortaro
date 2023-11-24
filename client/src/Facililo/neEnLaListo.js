@@ -1,4 +1,6 @@
 export const neEnLaListo = [
+  "aŭtor-",
+  "aŭtorin-",
   "diamant-",
   "ekspluat-",
   "esting-",

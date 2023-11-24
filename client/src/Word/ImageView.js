@@ -31,7 +31,7 @@ export const ImageView = ({ image, showEditControls, startEditing = () => { }, d
       )}
       {atribuo && (
         <Grid item xs={12} sx={{ pt: 0.5 }}>
-          <Typography variant={'caption'}>{atribuo}</Typography>
+          <Typography variant={"caption"}>{atribuo}</Typography>
         </Grid>
       )}
     </Grid>

@@ -27,36 +27,36 @@ export const Facililujo = () => {
       <Paper sx={{ p: 2, px: 5, pb: 5, minHeight: '50vh' }}>
         <Grid container spacing={2} textAlign={'left'}>
           <Grid item xs={12} sx={{ m: 2 }}>
-            <Typography variant="h1">Facililo</Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"h3"}>Facililo</Typography>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               Facililo estis kreita de Magnus Henoch por helpi tiujn, kiuj deziras verki facil-lingvajn
               artikolojn.
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               Se vi deziras mem verki artikolon per facila vortprovizo, vi povas aŭ verki ĝin rekte en la
               suba fenestro, aŭ verki ĝin aparte kaj poste englui ĝin.
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               Facililo elstarigas vortojn, kiuj ne estas en la vortlisto de uea.facila. Jen la indikoj:
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               <span style={{ backgroundColor: getColor('treFacila') }}>Verda</span> aŭ&nbsp;
               <span style={{ backgroundColor: getColor('facila') }}>blua</span>: Tiuj vortoj estas facilaj kaj troviĝas en la vortlisto de uea.facila.
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               <span style={{ backgroundColor: getColor('loknomo') }}>Lilakkolora</span>: Tiuj estas la nomoj de landoj kaj lingvoj. Kvankam ili ne aperas en la vortlisto
               de uea.facila, ili povas esti libere uzataj en ties artikoloj, eĉ sen aldonita difino.
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               <span style={{ backgroundColor: getColor('bezonasDifinon') }}>Oranĝkolora</span>:Tiuj estas kunmetaĵoj. Kvankam iliaj elementoj troviĝas en la vortlisto de
               uea.facila, ilia signifo ne nepre estas klara al lernantoj. Tial ili bezonas klarigon, kiu estas trovebla en la Difinaro.
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               <span style={{ backgroundColor: getColor('malFacila') }}>Ruĝa</span>: Tiuj vortoj ne troviĝas en la vortlisto de uea.facila. Se ili aperas en artikolo, necesas
               aldoni difinon. Por multaj el tiuj vortoj, difino estas jam trovebla en la Difinaro, sed ne por
               ĉiuj. Se ne estas preta difino en la Difinaro, necesos verki ĝin.
             </Typography>
-            <Typography variant="body1" sx={{ my: 2 }}>
+            <Typography variant={"body1"} sx={{ my: 2 }}>
               Facililo estis kreita de Magnus Henoch kaj poste modifita de Drew Morgan.
             </Typography>
           </Grid>

@@ -10,7 +10,7 @@ export const WordView = ({ word, startEditing }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} sx={{ m: 0 }}>
-        <Typography variant='h4' sx={{ m: '0.5em 0 0 0.1em', p: 0 }}>
+        <Typography variant={"h5"} sx={{ mt: 1 }}>
           {vorto}
         </Typography>
       </Grid>
@@ -22,7 +22,7 @@ export const WordView = ({ word, startEditing }) => {
         </Grid>
       )}
       <Grid item xs={12} sx={{ textAlign: 'left' }}>
-        <Typography variant='body1' sx={{ mb: 1 }}>{difino}</Typography>
+        <Typography variant={"body1"} sx={{ mb: 1 }}>{difino}</Typography>
       </Grid>
       {images && images.map((image, index) => (
         <Grid key={index} item xs={image.larĝo} sx={{ textAlign: 'center' }}>

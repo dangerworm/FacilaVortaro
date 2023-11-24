@@ -37,9 +37,9 @@ export const Admin = () => {
       {userIsAdmin && (
         <Grid container spacing={2} textAlign={'left'}>
           <Grid item xs={12} sx={{ m: 0, p: 0 }}>
-            <Typography variant="h1" sx={{ m: 2 }}>Administrado</Typography>
-            <Typography variant="h4" sx={{ m: 2 }}>Aldonu kapvorton</Typography>
-          </Grid >
+            <Typography variant={"h3"} sx={{ mt: 2 }}>Administrado</Typography>
+            <Typography variant={"h5"} sx={{ mt: 2 }}>Aldonu kapvorton</Typography>
+          </Grid>
           <Grid item xs={12} sx={{ m: 0, p: 0 }}>
             <>
               <TextField
@@ -50,12 +50,12 @@ export const Admin = () => {
                 onChange={(e) => setNewWordRoot(e.target.value)}
               />
               {newWordRootError && (
-                <Typography variant={'caption'} sx={{ color: 'red' }}>
+                <Typography variant={"caption"} sx={{ color: 'red' }}>
                   {newWordRootError}
                 </Typography>
               )}
               {showResponse && addingWordRootSuccessful === true && (
-                <Typography variant={'caption'} sx={{ color: 'green' }}>
+                <Typography variant={"caption"} sx={{ color: 'green' }}>
                   Kapvorto aldonita sukcese
                 </Typography>
               )}
@@ -72,7 +72,8 @@ export const Admin = () => {
             </Grid >
           )}
         </Grid >
-      )}
+      )
+      }
     </Paper >
   );
 }

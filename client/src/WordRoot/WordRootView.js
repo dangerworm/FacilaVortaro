@@ -11,7 +11,7 @@ export const WordRootView = ({ addNewWord, editWordRoot }) => {
     <>
       {!userIsAdmin && (
         <Grid item xs={12}>
-          <Typography variant='h1' sx={{ m: 0, p: 0, mt: '0.25em' }}>
+          <Typography variant={"h3"} sx={{ mt: 3 }}>
             {wordRoot}
           </Typography>
         </Grid>
@@ -19,7 +19,7 @@ export const WordRootView = ({ addNewWord, editWordRoot }) => {
       {userIsAdmin && (
         <>
           <Grid item xs={4}>
-            <Typography variant='h1' sx={{ m: 0, p: 0, mt: '0.25em' }}>
+            <Typography variant={"h3"} sx={{ mt: 3 }}>
               {wordRoot}
             </Typography>
           </Grid>
