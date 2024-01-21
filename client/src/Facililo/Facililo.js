@@ -44,7 +44,7 @@ export const Facililujo = () => {
               <span style={{ backgroundColor: getColor('facila') }}>blua</span>: Tiuj vortoj estas facilaj kaj troviĝas en la vortlisto de uea.facila.
             </Typography>
             <Typography variant={"body1"} sx={{ my: 2 }}>
-              <span style={{ backgroundColor: getColor('loknomo') }}>Lilakkolora</span>: Tiuj estas la nomoj de landoj kaj lingvoj. Kvankam ili ne aperas en la vortlisto
+              <span style={{ backgroundColor: getColor('loknomo') }}>Rozkolora</span>: Tiuj estas la nomoj de landoj kaj lingvoj. Kvankam ili ne aperas en la vortlisto
               de uea.facila, ili povas esti libere uzataj en ties artikoloj, eĉ sen aldonita difino.
             </Typography>
             <Typography variant={"body1"} sx={{ my: 2 }}>

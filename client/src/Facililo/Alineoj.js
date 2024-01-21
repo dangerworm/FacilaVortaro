@@ -8,7 +8,7 @@ export const getColor = (nivelo) => {
     case 'facila':
       return 'rgb(192, 220, 255)';
     case 'loknomo':
-      return 'rgb(224, 192, 255)';
+      return 'rgb(255, 221, 244)';
     case 'bezonasDifinon':
       return 'rgb(255, 200, 84)';
     case 'malFacila':
